@@ -14,12 +14,12 @@ class MobileButtonViewlet(ViewletBase):
     def buttons(self):
         buttons = list(getAdapters((self.context, self.request),
                                    IMobileButton))
-        self.sort_buttons(buttons)
+
+        buttons.sort(key=self.sort_buttons)
 
         for name, button in buttons:
             yield {'html': button.render_button(),
                    'name': name}
 
-    def sort_buttons(self, buttons):
-        buttons.sort(lambda name, adapter: adapter.position())
-        return None
+    def sort_buttons(self, button):
+        return button[1].position()

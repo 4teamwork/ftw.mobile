@@ -57,7 +57,7 @@ class UserButton(BaseButton):
         return _(u"User menu")
 
     def position(self):
-        return 10
+        return 1000
 
     def data(self):
         """json data to display"""
@@ -70,3 +70,19 @@ class UserButton(BaseButton):
             return {'url': item.get('url'),
                     'label': item.get('title')}
         return json.dumps(map(link_data, user_actions))
+
+
+class NavigationButton(BaseButton):
+
+    def label(self):
+        return _(u"Mobile navigation")
+
+    def position(self):
+        return 100
+
+    def data_template(self):
+        return 'ftw-mobile-navigation-template'
+
+    def data(self):
+        """json data to display"""
+        return json.dumps([])
