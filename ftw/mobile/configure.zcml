@@ -36,4 +36,7 @@
         layer="ftw.mobile.interfaces.IMobileLayer"
         />
 
+
+    <adapter factory=".buttons.UserButton" name="user-mobile-button" />
+
 </configure>
