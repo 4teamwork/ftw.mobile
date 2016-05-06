@@ -20,6 +20,10 @@ class TestUserButton(FunctionalTestCase):
     def test_user_button_data_url(self):
         self.assertEquals('', self.user_button.data_url())
 
+    def test_user_button_data_template(self):
+        self.assertEquals('ftw-mobile-list-template',
+                          self.user_button.data_template())
+
     def test_user_button_position(self):
         self.assertEquals(10, self.user_button.position())
 

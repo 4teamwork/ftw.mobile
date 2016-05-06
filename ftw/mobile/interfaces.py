@@ -20,6 +20,9 @@ class IMobileButton(Interface):
         """Url to call for json data"""
         return '#'
 
+    def data_template(self):
+        """Defines the template used to render the menu"""
+
     def position():
         """defines the order of the mobile buttons"""
 

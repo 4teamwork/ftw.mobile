@@ -7,7 +7,10 @@ from zope.interface import Interface
 import json
 
 LINK_TEMPLATE = '''
-<a href="{url}" data-mobileurl="{data_url}" data-mobiledata='{data}'>
+<a href="{url}"
+   data-mobileurl="{data_url}"
+   data-mobiletemplate="{mobile_template}"
+   data-mobiledata='{data}'>
     {label}
 </a>
 '''
@@ -34,12 +37,16 @@ class BaseButton(object):
         """Url for json data"""
         return ''
 
+    def data_template(self):
+        return 'ftw-mobile-list-template'
+
     def position(self):
         raise NotImplementedError("Implement a position (int)")
 
     def render_button(self):
         return LINK_TEMPLATE.format(url='#',
                                     data_url=self.data_url(),
+                                    mobile_template=self.data_template(),
                                     data=self.data(),
                                     label=self.label())
 
