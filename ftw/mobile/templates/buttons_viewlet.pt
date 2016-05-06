@@ -1,0 +1,9 @@
+<div class="ftw-mobile-buttons">
+
+    <ul>
+        <li tal:repeat="button view/buttons" tal:attributes="id button/name">
+            <a tal:replace="structure button/html" />
+        </li>
+    </ul>
+
+</div>

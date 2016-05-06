@@ -36,6 +36,14 @@
         layer="ftw.mobile.interfaces.IMobileLayer"
         />
 
+    <browser:viewlet
+        name="ftw.mobile.buttons.viewlet"
+        for="*"
+        class=".buttons_viewlet.MobileButtonViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        permission="zope2.View"
+        layer="ftw.mobile.interfaces.IMobileLayer"
+        />
 
     <adapter factory=".buttons.UserButton" name="user-mobile-button" />
 
