@@ -1,9 +1,9 @@
 <script id="ftw-mobile-list-template" type="text/x-handlebars-template">
 
-    <ul>
+    <ul class="mobile-menu mobile-menu-{{name}}">
         {{#each items}}
 
-            <li><a href="link.url">{{link.title}}</li>
+            <li><a href="{{url}}">{{label}}</a></li>
 
          {{/each}}
 

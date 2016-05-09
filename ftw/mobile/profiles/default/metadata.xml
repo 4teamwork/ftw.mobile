@@ -2,5 +2,6 @@
 <metadata>
   <version>1000</version>
   <dependencies>
+    <dependency>profile-ftw.theming:default</dependency>
   </dependencies>
 </metadata>

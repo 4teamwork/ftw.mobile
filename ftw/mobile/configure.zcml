@@ -8,6 +8,13 @@
     i18n_domain="ftw.mobile">
 
 
+    <include file="theming.zcml" />
+
+    <browser:resourceDirectory
+        name="ftw.mobile.js"
+        directory="js"
+        />
+
     <genericsetup:registerProfile
         name="default"
         title="ftw.mobile default profile"

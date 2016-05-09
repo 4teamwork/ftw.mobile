@@ -1,0 +1,73 @@
+$size-mobile-button: 54px !default;
+$font-size-mobile-button: 1.5em !default;
+
+$mobile-menu-height: 54px !default;
+
+@mixin auto-border-color($color: $color-primary) {
+  border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
+}
+
+.ftw-mobile-buttons {
+  li {
+    width: $size-mobile-button;
+
+    a {
+      @extend .fa-icon;
+
+      overflow: hidden;
+      white-space: nowrap;
+      color: transparent;
+      width: $size-mobile-button;
+
+      &:before {
+        @include auto-text-color($color-primary);
+
+        background-color: $color-primary;
+        width: $size-mobile-button;
+        line-height: $size-mobile-button;
+        font-size: $font-size-mobile-button;
+      }
+    }
+  }
+
+  #user-mobile-button a {
+    @extend .fa-user;
+  }
+
+  #navigation-mobile-button a {
+    @extend .fa-navicon;
+  }
+
+  ul {
+    @include list-horizontal;
+  }
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.mobile-menu {
+  background-color: red;
+
+  li {
+    > a {
+      display: block;
+      padding: ($padding-vertical * 2) $padding-horizontal;
+
+      @include auto-text-color($color-primary);
+
+      background-color: $color-primary;
+
+      @include auto-border-color($color-primary);
+
+      border-bottom: 1px solid;
+    }
+
+    &:last-child {
+      > a {
+        border-bottom: none;
+      }
+    }
+  }
+}

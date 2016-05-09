@@ -52,6 +52,8 @@ setup(name='ftw.mobile',
       install_requires=[
           'setuptools',
 
+          'ftw.theming',
+
           'AccessControl',
           'Acquisition',
           'Persistence',

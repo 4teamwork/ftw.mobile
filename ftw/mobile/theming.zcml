@@ -1,0 +1,16 @@
+<configure
+    xmlns:theme="http://namespaces.zope.org/ftw.theming"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="ftw.mobile">
+
+    <configure zcml:condition="installed ftw.theming">
+      <include package="ftw.theming" />
+
+      <theme:scss
+          file="scss/mobile-buttons.scss"
+          slot="addon"
+          profile="ftw.mobile:default"
+          />
+    </configure>
+
+</configure>
