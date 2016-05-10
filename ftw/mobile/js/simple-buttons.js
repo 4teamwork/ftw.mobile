@@ -22,6 +22,26 @@
                         {"current": "selected",
                          "initialIndex": firsTab});
 
+
+      $("body").on("click", "a.mobileActionNav", function(event){
+        event.preventDefault();
+        var self = $(this);
+        var node = mobileTree.getCurrentByUrl(self.attr("href"));
+        var templateSource = $("#ftw-mobile-navigation-list-template").html();
+        var template = Handlebars.compile(templateSource);
+
+        var context = node;
+        if (node.url === portal_url) {
+          context['maxdepth'] = 3;
+        } else {
+          context['maxdepth'] = node.depth;
+        }
+
+        var html = $(template(context));
+        self.parents('.tabPane').find('> ul').html(html);
+
+      });
+
     }
 
     function hideAllMenues(){
@@ -74,10 +94,7 @@
           return options.inverse(this);
         });
 
-
         Handlebars.registerPartial( "list", $( "#ftw-mobile-navigation-list-template" ).html() );
-
-
       }
 
       var container = link.parents(".ftw-mobile-buttons");

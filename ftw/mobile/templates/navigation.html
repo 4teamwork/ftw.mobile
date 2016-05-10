@@ -1,3 +1,5 @@
+<div i18n:domain="ftw.mobile" tal:omit-tag="python:True">
+
 <script id="ftw-mobile-navigation-template" type="text/x-handlebars-template">
 
     <div class="mobile-menu mobile-menu-{{name}}">
@@ -13,11 +15,9 @@
 
         <div class="tabPanes">
             {{#each nodes}}
-                <div class="tabPane" data-maxDepth="{{maxdepth}}">
+                <div class="tabPane">
                     <ul>
-                        {{#each nodes}}
-                             {{> list maxdepth=../maxdepth}}
-                        {{/each}}
+                         {{> list maxdepth=maxdepth}}
                      </ul>
 
                 </div>
@@ -30,19 +30,22 @@
 
 
 <script id="ftw-mobile-navigation-list-template" type="text/x-handlebars-template">
+     {{#each nodes}}
+        <li class="nav-depth-{{depth}}">
+            <a href="{{url}}">{{title}}</a>
+            <a href="{{url}}" class="mobileActionNav" i18n:translate="label_goto_children">
+                Unterhinhalte von: {{title}} anzeigen
+            </a>
 
-    <li class="nav-depth-{{depth}}">
-        <a href="{{url}}">{{title}}</a>
-
-        {{#ifDepth depth maxdepth}}
-            {{#if nodes}}
-                <ul>
-                    {{#each nodes}}
+            {{#ifDepth depth ../maxdepth}}
+                {{#if nodes}}
+                    <ul>
                         {{> list maxdepth=../maxdepth}}
-                    {{/each}}
-                </ul>
-            {{/if}}
-        {{/ifDepth}}
-    </li>
-
+                    </ul>
+                {{/if}}
+            {{/ifDepth}}
+        </li>
+    {{/each}}
 </script>
+
+</div>

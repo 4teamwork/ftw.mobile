@@ -90,11 +90,33 @@ $mobile-menu-height: 54px !default;
     margin-right: $margin-horizontal * 2;
 
     li {
+      display: block;
+      position: relative;
       > a {
         display: block;
         padding: $padding-vertical $padding-horizontal;
+        margin-right: $margin-horizontal * 4;
 
         @include auto-text-color($color-secondary);
+
+        &.mobileActionNav {
+          width: 3em;
+          padding: $padding-vertical 0;
+          margin-right: 0;
+          overflow: hidden;
+          white-space: nowrap;
+          color: transparent;
+          position: absolute;
+          top: 0;
+          right: 0;
+          @extend .fa-icon;
+          @extend .fa-chevron-right;
+
+          &:before {
+            @include auto-text-color($color-primary);
+            width: 3em;
+          }
+        }
       }
 
       > ul {
