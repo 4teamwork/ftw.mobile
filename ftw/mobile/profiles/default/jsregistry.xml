@@ -5,5 +5,7 @@
               insert-after="++resource++plone.app.jquery.js" />
   <javascript enabled="True" id="++resource++ftw.mobile.js/simple-buttons.js"
               insert-after="++resource++ftw.mobile.js/handlebars.js" />
+  <javascript enabled="True" id="++resource++ftw.mobile.js/navigation-button.js"
+              insert-after="++resource++ftw.mobile.js/simple-buttons.js" />
 
 </object>
