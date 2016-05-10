@@ -1,10 +1,13 @@
 from ftw.mobile import _
 from ftw.mobile.interfaces import IMobileButton
+from ftw.mobile.navigation import MobileNavigation
+from plone import api
 from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.interface import Interface
 import json
+
 
 LINK_TEMPLATE = '''
 <a href="{url}"
@@ -85,4 +88,5 @@ class NavigationButton(BaseButton):
 
     def data(self):
         """json data to display"""
-        return json.dumps([])
+        view = MobileNavigation(self.context, self.request)
+        return json.dumps(view())
