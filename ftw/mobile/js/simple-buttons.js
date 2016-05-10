@@ -26,19 +26,25 @@
       $("body").on("click", "a.mobileActionNav", function(event){
         event.preventDefault();
         var self = $(this);
-        var node = mobileTree.getCurrentByUrl(self.attr("href"));
+        var node = mobileTree.getNodeByUrl(self.attr("href"));
         var templateSource = $("#ftw-mobile-navigation-list-template").html();
         var template = Handlebars.compile(templateSource);
 
         var context = node;
-        if (node.url === portal_url) {
+        var parentNode = mobileTree.getParentNodeByUrl(self.attr("href"));
+
+        if (parentNode === null) {
           context['maxdepth'] = 3;
         } else {
           context['maxdepth'] = node.depth;
+          context['parentNode'] = parentNode;
         }
 
         var html = $(template(context));
         self.parents('.tabPane').find('> ul').html(html);
+
+        // Do no persist
+        delete context['parentNode'];
 
       });
 
@@ -77,9 +83,11 @@
 
         $(context['toplevel']).each(function(index, node){
           if (currentURL.indexOf(node.url) !== -1) {
-            var currentNode = mobileTree.getCurrentByUrl(currentURL);
+            var currentNode = mobileTree.getNodeByUrl(currentURL);
             context.nodes.push(currentNode);
             context.nodes[context.nodes.length - 1]['maxdepth'] = currentNode.depth + defaultDepth;
+            context.nodes[context.nodes.length - 1]['parentNode'] = mobileTree.getParentNodeByUrl(currentURL);
+
           } else {
             context.nodes.push(node);
             context.nodes[context.nodes.length - 1]['maxdepth'] = rootDepth;

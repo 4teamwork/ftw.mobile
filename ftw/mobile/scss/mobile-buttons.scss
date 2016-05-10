@@ -108,9 +108,16 @@ $mobile-menu-height: 54px !default;
           color: transparent;
           position: absolute;
           top: 0;
-          right: 0;
           @extend .fa-icon;
-          @extend .fa-chevron-right;
+
+          &.down {
+            right: 0;
+            @extend .fa-chevron-right;
+          }
+          &.up {
+            left: 0;
+            @extend .fa-chevron-left;
+          }
 
           &:before {
             @include auto-text-color($color-primary);
@@ -127,6 +134,12 @@ $mobile-menu-height: 54px !default;
           @include auto-text-color($color-primary);
           margin-bottom: 2px;
         }
+      }
+
+      &.navParentNode a:not(.up){
+        margin-left: $margin-horizontal * 4;
+        margin-right: 0;
+
       }
     }
   }
