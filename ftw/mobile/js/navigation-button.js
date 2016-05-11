@@ -7,6 +7,11 @@
 
       var storage = [];
 
+      function getPhysicalPath(url) {
+        var relativePath = url.replace(portal_url, "");
+        return relativePath.split("/");
+      }
+
       function init(nodes){
         storage = nodes;
       }
@@ -34,22 +39,41 @@
       }
 
       function getChildrenByUrl(url) {
-        var relativePath = url.replace(portal_url, "");
-        var physicalPath = relativePath.split("/");
+        var physicalPath = getPhysicalPath(url);
         return getNode(physicalPath, storage).nodes;
       }
 
       function getNodeByUrl(url) {
-        var relativePath = url.replace(portal_url, "");
-        var physicalPath = relativePath.split("/");
+        var physicalPath = getPhysicalPath(url);
         return getNode(physicalPath, storage);
       }
 
       function getParentNodeByUrl(url) {
-        var relativePath = url.replace(portal_url, "");
-        var physicalPath = relativePath.split("/");
+        var physicalPath = getPhysicalPath(url);
         var parentPhysicalPath = physicalPath.slice(0, physicalPath.length -1);
         return getNode(parentPhysicalPath, storage);
+      }
+
+      function getAllParentNodesByUrl(url) {
+        //XXX: Implement this in getNode, or a parent pointer
+        var parentNodes = [];
+
+        var node = getNodeByUrl(url);
+
+        function getParent(node) {
+          node = getParentNodeByUrl(node.url);
+
+          if (node === null) {
+            return;
+          }
+
+          parentNodes.push(node);
+          getParent(node);
+        }
+        getParent(node);
+
+        return parentNodes;
+
       }
 
       function getTopLevelNodes(){
@@ -61,7 +85,8 @@
               getChildrenByUrl: getChildrenByUrl,
               getNodeByUrl: getNodeByUrl,
               getTopLevelNodes: getTopLevelNodes,
-              getParentNodeByUrl: getParentNodeByUrl
+              getParentNodeByUrl: getParentNodeByUrl,
+              getAllParentNodesByUrl: getAllParentNodesByUrl
             };
 
     })();

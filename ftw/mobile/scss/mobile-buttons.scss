@@ -14,9 +14,9 @@ $mobile-menu-height: 54px !default;
     a {
       @extend .fa-icon;
 
+      color: transparent;
       overflow: hidden;
       white-space: nowrap;
-      color: transparent;
       width: $size-mobile-button;
 
       &:before {
@@ -76,8 +76,10 @@ $mobile-menu-height: 54px !default;
 
   > .topLevelTabs {
     @include tab-list($color-tab: $color-content-background, $color-tab-select: $color-content-background);
+
     > li > a {
       background-color: $color-secondary;
+
       @include auto-text-color($color-secondary);
     }
   }
@@ -92,6 +94,7 @@ $mobile-menu-height: 54px !default;
     li {
       display: block;
       position: relative;
+
       > a {
         display: block;
         padding: $padding-vertical $padding-horizontal;
@@ -108,19 +111,24 @@ $mobile-menu-height: 54px !default;
           color: transparent;
           position: absolute;
           top: 0;
+
           @extend .fa-icon;
 
           &.down {
             right: 0;
+
             @extend .fa-chevron-right;
           }
+
           &.up {
             left: 0;
+
             @extend .fa-chevron-left;
           }
 
           &:before {
             @include auto-text-color($color-primary);
+
             width: 3em;
           }
         }
@@ -131,15 +139,16 @@ $mobile-menu-height: 54px !default;
 
         li a {
           background-color: $color-primary;
+
           @include auto-text-color($color-primary);
+
           margin-bottom: 2px;
         }
       }
 
-      &.navParentNode a:not(.up){
+      &.navParentNode a:not(.up) {
         margin-left: $margin-horizontal * 4;
         margin-right: 0;
-
       }
     }
   }
