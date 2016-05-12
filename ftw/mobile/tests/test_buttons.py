@@ -25,7 +25,7 @@ class TestUserButton(FunctionalTestCase):
                           self.user_button.data_template())
 
     def test_user_button_position(self):
-        self.assertEquals(10, self.user_button.position())
+        self.assertEquals(1000, self.user_button.position())
 
     def test_user_button_data(self):
         expect = [
