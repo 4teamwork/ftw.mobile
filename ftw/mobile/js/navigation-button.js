@@ -9,9 +9,10 @@
       var endpoint;
 
       function init(current_url, endpoint_viewname, ready_callback){
-        storage = {node_by_path: {},
-                   nodes_by_parent_path: {},
-                   top_level_nodes: []};
+        var root_node = {url: portal_url};
+
+        storage = {node_by_path: {'': root_node},
+                   nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
         $.get(current_url + '/' + endpoint + '/startup',
               function(data) {
@@ -58,7 +59,8 @@
       }
 
       function getPhysicalPath(url) {
-        return url.replace(portal_url + '/', "");
+        // XXX Use navigation root
+        return url.replace(portal_url, "").replace(/^\//, '').replace(/\/$/, '');
       }
 
       function getParentPath(path) {
@@ -69,6 +71,10 @@
 
       function storeNode(node) {
         node.path = getPhysicalPath(node.url);
+        if (node.path in storage.node_by_path) {
+          return;
+        }
+
         // storage node_by_path
         storage.node_by_path[node.path] = node;
 
@@ -85,19 +91,10 @@
         if (node.children_loaded && !(node.path in storage.nodes_by_parent_path)) {
           storage.nodes_by_parent_path[node.path] = [];
         }
-
-        // storage top_level_nodes
-        if (node.path.indexOf('/') === -1) {
-          storage.top_level_nodes.push(node);
-        }
-
-        // register node methods
-        node.nodes = function() { return getChildrenByNode(node); };
-        node.depth = function() { return (node.path.match(/\//g) || []).length; };
       }
 
       function load(path, depth, callback, onRequest) {
-        var success = function() { callback(queryResults(path, depth)); };
+        var success = function() { callback(treeify(queryResults(path, depth))); };
         if (isLoaded(path, depth)) {
           success();
         } else {
@@ -114,23 +111,51 @@
         }
       }
 
+      function treeify(items) {
+        items = copyItems(items);
+        var tree = [];
+        var by_path = {};
+
+        $(items).each(function() {
+          by_path[this.path] = this;
+          this.nodes = [];
+        });
+
+        $(items).each(function() {
+          var parent_path = getParentPath(this.path);
+          if(!(parent_path in by_path)) {
+            tree.push(this);
+          } else {
+            by_path[parent_path].nodes.push(this);
+          }
+        });
+        return tree;
+      }
+
+      function copyItems(items) {
+        return $.map(items, function(item) {
+          return $.extend({}, item);
+        });
+      }
+
       function queryResults(path, depth) {
-        if (!isLoaded(path, depth)) {
-          throw 'content not loaded: use load()';
-        }
         if (depth < 1) {
           throw 'mobileTree.queryResults: Unsupported depth < 1';
         }
-        if (depth === 1) {
-          return path ? [storage.node_by_path[path]] : [];
+
+        var results = [];
+        if (path && path in storage.node_by_path) {
+          results.push(storage.node_by_path[path]);
         }
-        if (depth > 1) {
-          var results = path ? [storage.node_by_path[path]] : [];
-          $(storage.nodes_by_parent_path[path]).each(function() {
-            Array.prototype.push.apply(results, queryResults(this.path, depth-1));
-          });
+
+        if (depth === 1) {
           return results;
         }
+
+        $(storage.nodes_by_parent_path[path]).each(function() {
+          Array.prototype.push.apply(results, queryResults(this.path, depth-1));
+        });
+        return results;
       }
 
       function isLoaded(path, depth) {
@@ -157,32 +182,14 @@
         return true;
       }
 
-      function getChildrenByNode(node) {
-        return storage.nodes_by_parent_path[node.path] || [];
-      }
-
-      function getNodeByUrl(url) {
-        return storage.node_by_path[getPhysicalPath(url)];
-      }
-
-      function getParentNodeByUrl(url) {
-        return storage.node_by_path[getParentPath(getPhysicalPath(url))];
-      }
-
-      function getTopLevelNodes(){
-        return storage.top_level_nodes;
-      }
-
       return {init: init,
               query: query,
               queries: queries,
+              getPhysicalPath: getPhysicalPath,
+              getParentPath: getParentPath,
+              isLoaded: isLoaded,
 
-              getChildrenByNode: getChildrenByNode,
-              getNodeByUrl: getNodeByUrl,
-              getTopLevelNodes: getTopLevelNodes,
-              isLoaded: isLoaded, // XXX remove
-              storage: function() {return storage;}, // XXX remove
-              getParentNodeByUrl: getParentNodeByUrl
+              storage: function() {return storage;} // XXX remove
              };
 
     })();

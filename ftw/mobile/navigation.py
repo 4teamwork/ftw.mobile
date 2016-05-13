@@ -31,16 +31,13 @@ class MobileNavigation(BrowserView):
       'externallink': '<Boolean>'}
     """
 
-    # def __call__(self):
-    #     return map(self.brain_to_node, self.get_brains())
-
     def startup(self):
         """Return all nodes relevant for starting up a mobile navigation
         on the current context.
         """
         query = self.get_default_query()
         query['path'] = {'query': list(self.parent_paths_to_nav_root()),
-                         'depth': 2}
+                         'depth': 3}
         return json.dumps(self.get_nodes_by_query(query))
 
     def children(self):
@@ -61,7 +58,7 @@ class MobileNavigation(BrowserView):
 
     def get_nodes_by_query(self, query):
         nodes = map(self.brain_to_node, self.get_brains(query))
-        map(partial(self.mark_children_loaded_in_node, query), nodes)
+        map(partial(self.set_children_loaded_flag, query), nodes)
         return nodes
 
     def get_brains(self, query):
@@ -106,7 +103,7 @@ class MobileNavigation(BrowserView):
                 'absolute_path': brain.getPath(),
                 'externallink': is_external_link(brain)}
 
-    def mark_children_loaded_in_node(self, query, node):
+    def set_children_loaded_flag(self, query, node):
         if (not isinstance(query.get('path', None), dict)
             or 'depth' not in query.get('path', {})):
             # Since we have no path depth limitation we assume that all
