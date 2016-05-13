@@ -100,9 +100,3 @@ def make_tree_by_url(nodes):
             root['childrenIds'].append(node['id'])
 
     return root
-
-
-def tree_size(nodes_or_node):
-    if isinstance(nodes_or_node, list):
-        return sum(map(tree_size, nodes_or_node))
-    return sum(map(tree_size, nodes_or_node.get('nodes', []))) + 1
