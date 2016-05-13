@@ -1,7 +1,6 @@
 from ftw.mobile import _
 from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.navigation import MobileNavigation
-from plone import api
 from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.interface import implements

@@ -1,7 +1,6 @@
 from plone import api
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
-import json
 import os
 
 
