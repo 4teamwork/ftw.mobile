@@ -65,10 +65,10 @@ class MobileNavigation(BrowserView):
         catalog = api.portal.get_tool('portal_catalog')
         brains = catalog(query)
 
-        warnsize = 50
+        warnsize = 500
         if len(brains) > warnsize:
-            LOG.warning('Query results in more than {} results'
-                            .format(warnsize))
+            LOG.warning('Query results in more than {} results ({})'
+                            .format(warnsize, len(brains)))
 
         return [brain for brain in brains
                 if not brain.exclude_from_nav]
