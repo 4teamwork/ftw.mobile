@@ -44,7 +44,7 @@ class MobileNavigation(BrowserView):
         """Return all nodes
         """
         query = self.get_default_query()
-        query['path'] = {'query': '/'.join(self.context.getPhysicalPath()),
+        query['path'] = {'query': ['/'.join(self.context.getPhysicalPath())],
                          'depth': int(self.request.get('depth', 2))}
         return json.dumps(self.get_nodes_by_query(query))
 
@@ -123,6 +123,5 @@ class MobileNavigation(BrowserView):
         path_partials = node['absolute_path'].split('/')
         for _ in range(depth - 1):
             path_partials.pop()
-
-        if '/'.join(path_partials) in query['path']['query']:
-            node['children_loaded'] = True
+            if '/'.join(path_partials) in query['path']['query']:
+                node['children_loaded'] = True
