@@ -32,12 +32,6 @@ class MobileNavigation(BrowserView):
       'nodes': '<List> of nodes'}
     """
 
-    def __init__(self, context, request):
-        super(MobileNavigation, self).__init__(context, request)
-
-        self.startpath = None
-        self.depth = None
-
     def __call__(self):
         tree = make_tree_by_url(map(self.brain_to_node, self.get_brains()))
         return tree
