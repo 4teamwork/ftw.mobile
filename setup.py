@@ -21,8 +21,8 @@ extras_require = {
 
 setup(name='ftw.mobile',
       version=version,
-      description='ftw.mobile a mobile navigation and a basic infrastructiure'
-      ' for mobile buttons',
+      description='Mobile navigation and a basic infrastructure'
+      ' for mobile buttons on a Plone site.',
       long_description=open('README.rst').read() + '\n' +
       open(os.path.join('docs', 'HISTORY.txt')).read(),
 
