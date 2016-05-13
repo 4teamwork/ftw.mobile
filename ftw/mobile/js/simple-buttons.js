@@ -65,65 +65,90 @@
       var context;
       var depth;
       var currentURL = window.location.href;
+      var menu = $(".mobile-menu-" + name);
+
 
       if (templateName !== "ftw-mobile-navigation-template") {
         context = {"items": link.data("mobiledata"), "name": name};
 
-      } else {
-        mobileTree.init(link.data("mobiledata"));
+        var container = link.parents(".ftw-mobile-buttons");
 
-        context = {"toplevel": mobileTree.getTopLevelNodes(),
-                   "nodes": [],
-                   "name": name,
-                   "maxdepth": []};
+        if (menu.length === 0) {
+          hideAllMenues();
+          var html = $(template(context));
+          html.insertAfter(container);
 
-
-        var defaultDepth = 1;
-        var rootDepth = 3;
-
-        $(context['toplevel']).each(function(index, node){
-          if (currentURL.indexOf(node.url) !== -1) {
-            var currentNode = mobileTree.getNodeByUrl(currentURL);
-            context.nodes.push(currentNode);
-            context.nodes[context.nodes.length - 1]['maxdepth'] = currentNode.depth + defaultDepth;
-            context.nodes[context.nodes.length - 1]['parentNode'] = mobileTree.getParentNodeByUrl(currentURL);
-
-          } else {
-            context.nodes.push(node);
-            context.nodes[context.nodes.length - 1]['maxdepth'] = rootDepth;
+          if (templateName === "ftw-mobile-navigation-template") {
+            mobileNavigationTabs($(".mobile-menu-" + name));
           }
 
-        });
+        } else if (menu.is(":visible")) {
+          menu.hide();
 
-        Handlebars.registerHelper('ifDepth', function(depth, maxdepth, options) {
-          if(depth < maxdepth) {
-            return options.fn(this);
-          }
-          return options.inverse(this);
-        });
-
-        Handlebars.registerPartial( "list", $( "#ftw-mobile-navigation-list-template" ).html() );
-      }
-
-      var container = link.parents(".ftw-mobile-buttons");
-
-      var menu = $(".mobile-menu-" + name);
-
-      if (menu.length === 0) {
-        hideAllMenues();
-        var html = $(template(context));
-        html.insertAfter(container);
-
-        if (templateName === "ftw-mobile-navigation-template") {
-          mobileNavigationTabs($(".mobile-menu-" + name));
+        } else {
+          hideAllMenues();
+          menu.show();
         }
 
-      } else if (menu.is(":visible")) {
-        menu.hide();
+
+
 
       } else {
-        hideAllMenues();
-        menu.show();
+        if (menu.is(":visible")) {
+          menu.hide();
+          return;
+        }
+
+        mobileTree.init(window.location.href, link.data("mobileendpoint"), function() {
+          context = {"toplevel": mobileTree.getTopLevelNodes(),
+                     "nodes": [],
+                     "name": name,
+                     "maxdepth": []};
+
+          var defaultDepth = 1;
+          var rootDepth = 3;
+
+          $(context['toplevel']).each(function(index, node){
+            if (currentURL.indexOf(node.url) !== -1) {
+              var currentNode = mobileTree.getNodeByUrl(currentURL);
+              context.nodes.push(currentNode);
+              context.nodes[context.nodes.length - 1]['maxdepth'] = currentNode.depth + defaultDepth;
+              context.nodes[context.nodes.length - 1]['parentNode'] = mobileTree.getParentNodeByUrl(currentURL);
+
+            } else {
+              context.nodes.push(node);
+              context.nodes[context.nodes.length - 1]['maxdepth'] = rootDepth;
+            }
+
+          });
+
+          Handlebars.registerHelper('ifDepth', function(depth, maxdepth, options) {
+            if(depth < maxdepth) {
+              return options.fn(this);
+            }
+            return options.inverse(this);
+          });
+
+          Handlebars.registerPartial( "list", $( "#ftw-mobile-navigation-list-template" ).html() );
+
+
+          var container = link.parents(".ftw-mobile-buttons");
+
+          if (menu.length === 0) {
+            hideAllMenues();
+            var html = $(template(context));
+            html.insertAfter(container);
+
+            if (templateName === "ftw-mobile-navigation-template") {
+              mobileNavigationTabs($(".mobile-menu-" + name));
+            }
+
+          } else {
+            hideAllMenues();
+            menu.show();
+          }
+
+        });
       }
     });
 

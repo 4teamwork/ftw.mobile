@@ -1,6 +1,5 @@
 from ftw.mobile import _
 from ftw.mobile.interfaces import IMobileButton
-from ftw.mobile.navigation import MobileNavigation
 from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.interface import implements
@@ -11,6 +10,7 @@ import json
 LINK_TEMPLATE = '''
 <a href="{url}"
    data-mobileurl="{data_url}"
+   data-mobileendpoint="{endpoint}"
    data-mobiletemplate="{mobile_template}"
    data-mobiledata='{data}'>
     {label}
@@ -33,11 +33,16 @@ class BaseButton(object):
 
     def data(self):
         """json data to display"""
-        return json.dumps([])
+        return None
 
     def data_url(self):
         """Url for json data"""
-        return ''
+        return None
+
+    def endpoint(self):
+        """Viewname of the mobile navigation endpoint.
+        """
+        return None
 
     def data_template(self):
         return 'ftw-mobile-list-template'
@@ -50,7 +55,8 @@ class BaseButton(object):
                                     data_url=self.data_url(),
                                     mobile_template=self.data_template(),
                                     data=self.data(),
-                                    label=self.label())
+                                    label=self.label(),
+                                    endpoint=self.endpoint())
 
 
 class UserButton(BaseButton):
@@ -85,7 +91,5 @@ class NavigationButton(BaseButton):
     def data_template(self):
         return 'ftw-mobile-navigation-template'
 
-    def data(self):
-        """json data to display"""
-        view = MobileNavigation(self.context, self.request)
-        return json.dumps(view())
+    def endpoint(self):
+        return '@@mobilenav'
