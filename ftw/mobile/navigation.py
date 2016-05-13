@@ -1,7 +1,6 @@
 from plone import api
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
-import os
 
 
 def is_external_link(brain):
@@ -10,11 +9,6 @@ def is_external_link(brain):
         return not url.startswith(api.portal.get().absolute_url())
     else:
         return False
-
-
-def get_path_depth(brain):
-    portal_url = '/'.join(api.portal.get().getPhysicalPath())
-    return len(brain.getPath().replace(portal_url, '').split('/')) - 1
 
 
 class MobileNavigation(BrowserView):
@@ -26,15 +20,12 @@ class MobileNavigation(BrowserView):
      {'title': '<String>',
       'description': '<String>',
       'id' <String>:
-      'childrenIds': '<List> of <String>s',
       'url': '<String>',
-      'externallink': '<Boolean>',
-      'nodes': '<List> of nodes'}
+      'externallink': '<Boolean>'}
     """
 
     def __call__(self):
-        tree = make_tree_by_url(map(self.brain_to_node, self.get_brains()))
-        return tree
+        return map(self.brain_to_node, self.get_brains())
 
     def get_brains(self):
         catalog = api.portal.get_tool('portal_catalog')
@@ -68,35 +59,4 @@ class MobileNavigation(BrowserView):
                 'id': brain.id,
                 'description': brain.Description,
                 'url': get_view_url(brain)[1],
-                'externallink': is_external_link(brain),
-                'depth': get_path_depth(brain)}
-
-
-def make_tree_by_url(nodes):
-    """Creates a nested tree of nodes from a flat list-like object of nodes.
-    Each node is expected to be a dict with a url-like string stored
-    under the key ``url``.
-    Each node will end up with a ``nodes`` key, containing a list
-    of children nodes.
-    The nodes are changed in place, be sure to make copies first when
-    necessary.
-    """
-
-    for node in nodes:
-        node['nodes'] = []
-        node['childrenIds'] = []
-
-    nodes_by_url = dict((node['url'], node) for node in nodes)
-    root = {'nodes': [],
-            'childrenIds': []}
-
-    for node in nodes:
-        parent_url = os.path.dirname(node['url'])
-        if parent_url in nodes_by_url:
-            nodes_by_url[parent_url]['nodes'].append(node)
-            nodes_by_url[parent_url]['childrenIds'].append(node['id'])
-        else:
-            root['nodes'].append(node)
-            root['childrenIds'].append(node['id'])
-
-    return root
+                'externallink': is_external_link(brain)}

@@ -5,89 +5,71 @@
 
     var mobileTree = (function () {
 
-      var storage = [];
-
-      function getPhysicalPath(url) {
-        var relativePath = url.replace(portal_url, "");
-        return relativePath.split("/");
-      }
+      var storage;
 
       function init(nodes){
-        storage = nodes;
+        storage = {node_by_path: {},
+                   nodes_by_parent_path: {},
+                   top_level_nodes: []};
+        nodes.map(storeNode);
       }
 
-      function getNode(physicalPath, items){
-        var pathElement = physicalPath.shift();
-        if (pathElement === "") {
-          // root path, take next one
-          pathElement = physicalPath.shift();
-        }
+      function getPhysicalPath(url) {
+        return url.replace(portal_url + '/', "");
+      }
 
-        var pos = items.childrenIds.indexOf(pathElement);
-        if ( pos !== -1){
+      function getParentPath(path) {
+        var parts = path.split('/');
+        parts.pop();
+        return parts.join('/');
+      }
 
-          if (physicalPath.length > 0) {
-            return getNode(physicalPath, items.nodes[pos]);
-          } else {
+      function storeNode(node) {
+        node.path = getPhysicalPath(node.url);
+        // storage node_by_path
+        storage.node_by_path[node.path] = node;
 
-            return items.nodes[pos];
+        // storage nodes_by_parent_path
+        var parent_path = getParentPath(node.path);
+        if (parent_path) {
+          if (!(parent_path in storage.nodes_by_parent_path)) {
+            storage.nodes_by_parent_path[parent_path] = [];
           }
-        } else {
-
-          return null;
+          storage.nodes_by_parent_path[parent_path].push(node);
         }
+
+        // storage top_level_nodes
+        if (node.path.indexOf('/') === -1) {
+          storage.top_level_nodes.push(node);
+        }
+
+        // register node methods
+        node.nodes = function() { return getChildrenByNode(node); };
+        node.depth = function() { return (node.path.match(/\//g) || []).length; };
       }
 
-      function getChildrenByUrl(url) {
-        var physicalPath = getPhysicalPath(url);
-        return getNode(physicalPath, storage).nodes;
+      function getChildrenByNode(node) {
+        return storage.nodes_by_parent_path[node.path] || [];
       }
 
       function getNodeByUrl(url) {
-        var physicalPath = getPhysicalPath(url);
-        return getNode(physicalPath, storage);
+        return storage.node_by_path[getPhysicalPath(url)];
       }
 
       function getParentNodeByUrl(url) {
-        var physicalPath = getPhysicalPath(url);
-        var parentPhysicalPath = physicalPath.slice(0, physicalPath.length -1);
-        return getNode(parentPhysicalPath, storage);
-      }
-
-      function getAllParentNodesByUrl(url) {
-        //XXX: Implement this in getNode, or a parent pointer
-        var parentNodes = [];
-
-        var node = getNodeByUrl(url);
-
-        function getParent(node) {
-          node = getParentNodeByUrl(node.url);
-
-          if (node === null) {
-            return;
-          }
-
-          parentNodes.push(node);
-          getParent(node);
-        }
-        getParent(node);
-
-        return parentNodes;
-
+        return storage.node_by_path[getParentPath(getPhysicalPath(url))];
       }
 
       function getTopLevelNodes(){
-        return storage.nodes;
+        return storage.top_level_nodes;
       }
 
       return {init: init,
-              getNode: getNode,
-              getChildrenByUrl: getChildrenByUrl,
+              getChildrenByNode: getChildrenByNode,
               getNodeByUrl: getNodeByUrl,
               getTopLevelNodes: getTopLevelNodes,
-              getParentNodeByUrl: getParentNodeByUrl,
-              getAllParentNodesByUrl: getAllParentNodesByUrl
-            };
+              getParentNodeByUrl: getParentNodeByUrl
+             };
 
     })();
 
