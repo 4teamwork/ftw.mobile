@@ -8,6 +8,10 @@
 Introduction
 ============
 
+With ``ftw.mobile`` you can implement simple mobile buttons, which shows a list of options on click.
+
+
+
 
 Installation
 ============
@@ -24,6 +28,65 @@ Installation
 
 Usage
 =====
+
+Two default buttons are registered by default.
+
+- User Menu
+- Navigation
+
+Basically the buttons are rendered in a viewlet, which is visible at an certain viewport size.
+
+
+Register new button
+-------------------
+
+Minimal example
+
+::
+
+    from ftw.mobile.buttons import BaseButton
+
+
+    class UserButton(BaseButton):
+
+        def label(self):
+            return u"User menu"
+
+        def position(self):
+            return 1000
+
+        def data(self):
+            """json data to display"""
+            context_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_context_state')
+
+            user_actions = context_state.actions('user')
+
+            def link_data(item):
+                return {'url': item.get('url'),
+                        'label': item.get('title')}
+            return json.dumps(map(link_data, user_actions))
+
+
+You need to define at least the ``label``, the ``position`` and the ``data`` for a working mobile button.
+
+Keep in mind, that the data method needs to return valid json string in form of:
+
+::
+
+    [
+        {
+            "url": "$LINK_URL",
+            "label": "$LINK_LABEL"
+        },
+        {
+            "url": "$LINK_URL",
+             "label": "$LINK_LABEL"
+        }
+    ]
+
+
+The user button has the postion 1000 and is rendered most right position and the navigation has the position 100, which is on the most left side.
 
 
 

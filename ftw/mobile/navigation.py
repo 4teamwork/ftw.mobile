@@ -26,6 +26,8 @@ class MobileNavigation(BrowserView):
     Node representation:
      {'title': '<String>',
       'description': '<String>',
+      'id' <String>:
+      'childrenIds': '<List> of <String>s',
       'url': '<String>',
       'externallink': '<Boolean>',
       'nodes': '<List> of nodes'}
