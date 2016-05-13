@@ -8,6 +8,12 @@ $mobile-menu-height: 54px !default;
 }
 
 
+#mobile-menu-wrapper {
+  position: absolute;
+  z-index: 10;
+}
+
+
 .ftw-mobile-buttons {
   li {
     width: $size-mobile-button;
@@ -128,7 +134,7 @@ $mobile-menu-height: 54px !default;
           }
 
           &:before {
-            @include auto-text-color($color-primary);
+            @include auto-text-color($color-secondary);
 
             width: 3em;
           }
