@@ -8,13 +8,18 @@
       var storage;
       var endpoint;
 
-      function init(current_url, endpoint_viewname, ready_callback){
+      function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
         var root_node = {url: portal_url};
 
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
-        $.get(current_url + '/' + endpoint + '/startup',
+        var startup_url = current_url + '/' + endpoint + '/startup';
+        if(startup_cachekey) {
+          startup_url += '?cachekey=' + startup_cachekey;
+        }
+
+        $.get(startup_url,
               function(data) {
                 data.map(storeNode);
                 ready_callback();

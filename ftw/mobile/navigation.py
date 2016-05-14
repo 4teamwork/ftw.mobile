@@ -1,8 +1,11 @@
 from functools import partial
+from operator import itemgetter
+from pkg_resources import get_distribution
 from plone import api
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
+import hashlib
 import json
 import logging
 
@@ -35,14 +38,48 @@ class MobileNavigation(BrowserView):
         """Return all nodes relevant for starting up a mobile navigation
         on the current context.
         """
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        response.setHeader('X-Theme-Disabled', 'True')
+        response.enableHTTPCompression(REQUEST=self.request)
+
+        if self.request.get('cachekey'):
+            # Only cache when there is a cache_key in the request.
+            # Representations may be cached by any cache.
+            # The cached representation is to be considered fresh for 1 year
+            # http://stackoverflow.com/a/3001556/880628
+            if api.user.is_anonymous():
+                visibility = 'public'
+            else:
+                visibility = 'private'
+
+            response.setHeader('Cache-Control',
+                               '{}, max-age=31536000'.format(visibility))
+
+        return json.dumps(self.get_nodes_by_query(self.get_startup_query()))
+
+    def get_startup_query(self):
         query = self.get_default_query()
         query['path'] = {'query': list(self.parent_paths_to_nav_root()),
                          'depth': 3}
-        return json.dumps(self.get_nodes_by_query(query))
+        return query
+
+    def get_startup_cachekey(self):
+        cachekey = hashlib.md5()
+        brains = self.get_brains(self.get_startup_query())
+        map(cachekey.update, map(str, map(itemgetter('modified'), brains)))
+        cachekey.update(api.user.get_current().getId() or '')
+        cachekey.update(get_distribution('ftw.mobile').version)
+        return cachekey.hexdigest()
 
     def children(self):
         """Return all nodes
         """
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        response.setHeader('X-Theme-Disabled', 'True')
+        response.enableHTTPCompression(REQUEST=self.request)
+
         query = self.get_default_query()
         query['path'] = {'query': ['/'.join(self.context.getPhysicalPath())],
                          'depth': int(self.request.get('depth', 2))}

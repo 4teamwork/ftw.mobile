@@ -109,7 +109,7 @@
         event.preventDefault();
         render_path(mobileTree.getPhysicalPath($(this).attr('href')));
       });
-    });
+    }, link.data('mobile_startup_cachekey'));
   }
 
 

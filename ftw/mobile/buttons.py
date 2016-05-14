@@ -11,6 +11,7 @@ LINK_TEMPLATE = '''
 <a href="{url}"
    data-mobileurl="{data_url}"
    data-mobileendpoint="{endpoint}"
+   data-mobile_startup_cachekey="{startup_cachekey}"
    data-mobiletemplate="{mobile_template}"
    data-mobiledata='{data}'>
     {label}
@@ -50,9 +51,13 @@ class BaseButton(object):
     def position(self):
         raise NotImplementedError("Implement a position (int)")
 
+    def startup_cachekey(self):
+        return None
+
     def render_button(self):
         return LINK_TEMPLATE.format(url='#',
                                     data_url=self.data_url(),
+                                    startup_cachekey=self.startup_cachekey(),
                                     mobile_template=self.data_template(),
                                     data=self.data(),
                                     label=self.label(),
@@ -93,3 +98,6 @@ class NavigationButton(BaseButton):
 
     def endpoint(self):
         return '@@mobilenav'
+
+    def startup_cachekey(self):
+        return self.context.restrictedTraverse('@@mobilenav').get_startup_cachekey()
