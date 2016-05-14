@@ -41,7 +41,6 @@ class MobileNavigation(BrowserView):
         response = self.request.response
         response.setHeader('Content-Type', 'application/json')
         response.setHeader('X-Theme-Disabled', 'True')
-        response.enableHTTPCompression(REQUEST=self.request)
 
         if self.request.get('cachekey'):
             # Only cache when there is a cache_key in the request.
@@ -78,7 +77,6 @@ class MobileNavigation(BrowserView):
         response = self.request.response
         response.setHeader('Content-Type', 'application/json')
         response.setHeader('X-Theme-Disabled', 'True')
-        response.enableHTTPCompression(REQUEST=self.request)
 
         query = self.get_default_query()
         query['path'] = {'query': ['/'.join(self.context.getPhysicalPath())],
