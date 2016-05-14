@@ -159,6 +159,8 @@ class MobileNavigation(BrowserView):
 
         path_partials = node['absolute_path'].split('/')
         for _ in range(depth - 1):
-            path_partials.pop()
             if '/'.join(path_partials) in query['path']['query']:
                 node['children_loaded'] = True
+                return
+
+            path_partials.pop()

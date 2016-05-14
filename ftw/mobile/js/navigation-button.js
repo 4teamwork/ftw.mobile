@@ -76,19 +76,17 @@
 
       function storeNode(node) {
         node.path = getPhysicalPath(node.url);
-        if (node.path in storage.node_by_path) {
-          return;
+        if (!(node.path in storage.node_by_path)) {
+          // storage nodes_by_parent_path
+          var parent_path = getParentPath(node.path) || '';
+          if (!(parent_path in storage.nodes_by_parent_path)) {
+            storage.nodes_by_parent_path[parent_path] = [];
+          }
+          storage.nodes_by_parent_path[parent_path].push(node);
         }
 
         // storage node_by_path
         storage.node_by_path[node.path] = node;
-
-        // storage nodes_by_parent_path
-        var parent_path = getParentPath(node.path) || '';
-        if (!(parent_path in storage.nodes_by_parent_path)) {
-          storage.nodes_by_parent_path[parent_path] = [];
-        }
-        storage.nodes_by_parent_path[parent_path].push(node);
 
         // Initialize children storage when children assumed to be loaded in the
         // same response in order to avoid unnecessary children loading of empty
