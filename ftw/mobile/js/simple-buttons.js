@@ -68,7 +68,7 @@
             function(items) {
               render(items);
               // prefetch grand children
-              mobileTree.query({path: path, depth: 3});
+              mobileTree.query({path: path, depth: depth + 1});
             },
             showSpinner);
     }
