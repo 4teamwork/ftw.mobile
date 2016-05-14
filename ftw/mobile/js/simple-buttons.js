@@ -58,6 +58,12 @@
     }
 
     function render_path(path) {
+      /* Scroll to the top of the menu wrapper when scrolled down */
+      if($('body').scrollTop() > $('#mobile-menu-wrapper').offset().top) {
+        $('html, body').animate({
+          scrollTop: $('#mobile-menu-wrapper').offset().top
+        }, 100);
+      }
       var parent_path = mobileTree.getParentPath(path);
       var depth = path.indexOf('/') === -1 ? 3 : 2;
       var queries = {toplevel: {path: '/', depth: 2},
