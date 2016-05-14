@@ -35,7 +35,11 @@
       function query(q, success, onRequest) {
         q['path'] = q['path'].replace(/^\//, '');
         load(q['path'], q['depth'],
-             function(items) { success(items); },
+             function(items) {
+               if (typeof success === 'function') {
+                 success(items);
+               }
+             },
              onRequest);
       }
 
@@ -57,7 +61,9 @@
             pending--;
             result[name] = items;
             if(pending === 0) {
-              success(result);
+              if (typeof success === 'function') {
+                success(result);
+              }
             }
           }, onRequest);
         }

@@ -63,9 +63,14 @@
       var queries = {toplevel: {path: '/', depth: 2},
                      parent: {path: parent_path, depth: 1},
                      nodes: {path: path, depth: depth}};
-      mobileTree.queries(queries,
-                         render,
-                         showSpinner);
+      mobileTree.queries(
+            queries,
+            function(items) {
+              render(items);
+              // prefetch grand children
+              mobileTree.query({path: path, depth: 3});
+            },
+            showSpinner);
     }
 
     function render(items) {
