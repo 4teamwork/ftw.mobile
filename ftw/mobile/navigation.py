@@ -59,7 +59,8 @@ class MobileNavigation(BrowserView):
 
     def get_startup_query(self):
         query = self.get_default_query()
-        query['path'] = {'query': list(self.parent_paths_to_nav_root()),
+        query['path'] = {'query': (list(self.parent_paths_to_nav_root()) +
+                                   list(self.get_toplevel_paths())),
                          'depth': 3}
         return query
 
@@ -91,6 +92,11 @@ class MobileNavigation(BrowserView):
             if INavigationRoot.providedBy(obj):
                 return
 
+    def get_toplevel_paths(self):
+        navroot = api.portal.get_navigation_root(self.context)
+        for child in navroot.getFolderContents():
+            yield child.getPath()
+
     def get_nodes_by_query(self, query):
         nodes = map(self.brain_to_node, self.get_brains(query))
         map(partial(self.set_children_loaded_flag, query), nodes)
@@ -100,7 +106,7 @@ class MobileNavigation(BrowserView):
         catalog = api.portal.get_tool('portal_catalog')
         brains = catalog(query)
 
-        warnsize = 500
+        warnsize = 5000
         if len(brains) > warnsize:
             LOG.warning('Query results in more than {} results ({})'
                             .format(warnsize, len(brains)))
