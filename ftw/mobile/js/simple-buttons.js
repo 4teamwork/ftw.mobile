@@ -23,12 +23,12 @@
     link.click(function(event){
       event.preventDefault();
       show_mobile_menu(link, function() {
-        var templateName = link.data('mobiletemplate');
+        var templateName = link.data('mobile_template');
         var templateSource = $('#' + templateName).html();
         var template = Handlebars.compile(templateSource);
 
         $('#mobile-menu-wrapper').html(template({
-          items: link.data('mobiledata'),
+          items: link.data('mobile_data'),
           name: link.parent().attr('id')
         })).show();
       });
@@ -81,7 +81,7 @@
 
     function render(items) {
       hideSpinner();
-      var templateName = link.data('mobiletemplate');
+      var templateName = link.data('mobile_template');
       var templateSource = $('#' + templateName).html();
       var template = Handlebars.compile(templateSource);
       var currentItem = items.nodes[0];
@@ -108,7 +108,7 @@
     }
 
 
-    mobileTree.init(current_url, link.data("mobileendpoint"), function() {
+    mobileTree.init(current_url, link.data("mobile_endpoint"), function() {
       $(link).click(function(event) {
         event.preventDefault();
         show_mobile_menu(link, function() {
@@ -126,9 +126,9 @@
 
   $(document).ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
-    $('.ftw-mobile-buttons a[data-mobiletemplate="ftw-mobile-navigation-template"]').each(initialize_navigation_button);
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]').each(initialize_navigation_button);
 
-    $('.ftw-mobile-buttons a[data-mobiletemplate="ftw-mobile-list-template"]').each(initialize_list_button);
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
   });
 
 })();

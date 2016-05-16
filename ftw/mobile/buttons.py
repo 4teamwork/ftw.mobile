@@ -9,11 +9,10 @@ import json
 
 LINK_TEMPLATE = '''
 <a href="{url}"
-   data-mobileurl="{data_url}"
-   data-mobileendpoint="{endpoint}"
+   data-mobile_endpoint="{endpoint}"
    data-mobile_startup_cachekey="{startup_cachekey}"
-   data-mobiletemplate="{mobile_template}"
-   data-mobiledata='{data}'>
+   data-mobile_template="{mobile_template}"
+   data-mobile_data='{data}'>
     {label}
 </a>
 '''
@@ -34,16 +33,12 @@ class BaseButton(object):
 
     def data(self):
         """json data to display"""
-        return None
-
-    def data_url(self):
-        """Url for json data"""
-        return None
+        return ''
 
     def endpoint(self):
         """Viewname of the mobile navigation endpoint.
         """
-        return None
+        return ''
 
     def data_template(self):
         return 'ftw-mobile-list-template'
@@ -52,11 +47,10 @@ class BaseButton(object):
         raise NotImplementedError("Implement a position (int)")
 
     def startup_cachekey(self):
-        return None
+        return ''
 
     def render_button(self):
         return LINK_TEMPLATE.format(url='#',
-                                    data_url=self.data_url(),
                                     startup_cachekey=self.startup_cachekey(),
                                     mobile_template=self.data_template(),
                                     data=self.data(),
