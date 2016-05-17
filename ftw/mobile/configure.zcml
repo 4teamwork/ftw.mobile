@@ -5,6 +5,7 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:upgrade-step="http://namespaces.zope.org/ftw.upgrade"
     i18n_domain="ftw.mobile">
 
 
@@ -21,6 +22,12 @@
         directory="profiles/default"
         description=""
         provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <include package="ftw.upgrade" file="meta.zcml" />
+    <upgrade-step:directory
+        profile="ftw.mobile:default"
+        directory="upgrades"
         />
 
     <browser:page
