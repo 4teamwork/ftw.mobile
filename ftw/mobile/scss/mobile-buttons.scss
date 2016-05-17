@@ -1,5 +1,5 @@
-$size-mobile-button: 54px !default;
-$font-size-mobile-button: 1.5em !default;
+$size-mobile-button: 72px !default;
+$font-size-mobile-button: 2em !default;
 
 $mobile-menu-height: 54px !default;
 
@@ -7,14 +7,24 @@ $mobile-menu-height: 54px !default;
   border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
 }
 
+#ftw-mobile-wrapper {
+  height: $size-mobile-button;
+  background-color: $color-primary;
+
+  @include tablet {
+    display: none;
+  }
+}
 
 #mobile-menu-wrapper {
   position: absolute;
   z-index: 10;
+  width: 100%;
+  font-size: $font-size-medium;
 }
 
-
 .ftw-mobile-buttons {
+
   li {
     width: $size-mobile-button;
 
@@ -47,6 +57,10 @@ $mobile-menu-height: 54px !default;
 
   ul {
     @include list-horizontal;
+
+    li a {
+      padding: 0;
+    }
   }
 
   @include tablet {
@@ -55,7 +69,13 @@ $mobile-menu-height: 54px !default;
 }
 
 .mobile-menu:not(.mobile-menu-navigation-mobile-button) {
+  width: 100%;
+  padding-left: 0;
+
   li {
+    list-style-type: none;
+    list-style-image: none;
+
     > a {
       display: block;
       padding: ($padding-vertical * 2) $padding-horizontal;
@@ -66,13 +86,7 @@ $mobile-menu-height: 54px !default;
 
       @include auto-border-color($color-primary);
 
-      border-bottom: 1px solid;
-    }
-
-    &:last-child {
-      > a {
-        border-bottom: none;
-      }
+      border-top: 1px solid;
     }
   }
 }
@@ -161,8 +175,6 @@ $mobile-menu-height: 54px !default;
   }
 }
 
-
-
 #mobile-menu-wrapper.spinner {
   position: relative;
 
@@ -194,19 +206,31 @@ $mobile-menu-height: 54px !default;
 }
 
 @-webkit-keyframes sk-rotateplane {
-  0% { -webkit-transform: perspective(120px) }
-  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+  0% {
+    -webkit-transform: perspective(120px);
+  }
+
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+  }
+
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
 }
 
 @keyframes sk-rotateplane {
   0% {
     transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-  } 50% {
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+
+  50% {
     transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-  } 100% {
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+
+  100% {
     transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
     -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
   }
