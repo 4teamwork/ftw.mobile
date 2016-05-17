@@ -1,6 +1,8 @@
 (function() {
   "use strict";
 
+  var root = $(":root");
+
   function show_mobile_menu(link, callback) {
     var wrapper = $('#mobile-menu-wrapper');
     if(wrapper.is(':visible')) {
@@ -35,6 +37,10 @@
     });
   }
 
+  function close() {
+    $('#mobile-menu-wrapper').hide();
+    root.removeClass("menu-open");
+  }
 
   function initialize_navigation_button() {
     var link = $(this);
@@ -111,6 +117,7 @@
     mobileTree.init(current_url, link.data("mobile_endpoint"), function() {
       $(link).click(function(event) {
         event.preventDefault();
+        root.toggleClass("menu-open");
         show_mobile_menu(link, function() {
           open();
         });
@@ -122,6 +129,8 @@
       });
     }, link.data('mobile_startup_cachekey'));
   }
+
+  $(document).on("click", "#ftw-mobile-overlay", close);
 
 
   $(document).ready(function() {

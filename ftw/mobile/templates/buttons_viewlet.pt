@@ -1,4 +1,5 @@
 <div id="ftw-mobile-wrapper">
+    <div id="ftw-mobile-overlay"></div>
     <div class="ftw-mobile-buttons">
 
         <ul>
