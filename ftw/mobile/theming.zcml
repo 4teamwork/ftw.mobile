@@ -11,6 +11,12 @@
           slot="addon"
           profile="ftw.mobile:default"
           />
+
+      <theme:scss
+          file="scss/layout.scss"
+          slot="addon"
+          profile="ftw.mobile:default"
+          />
     </configure>
 
 </configure>
