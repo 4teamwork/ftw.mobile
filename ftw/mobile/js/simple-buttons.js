@@ -1,10 +1,12 @@
 (function() {
   "use strict";
 
-  function show_mobile_menu(link, callback) {
+  var root = $(":root");
+
+  function toggle_mobile_menu(link, callback) {
     var wrapper = $('#mobile-menu-wrapper');
     if(wrapper.is(':visible')) {
-      wrapper.hide();
+      close();
       if(!link.is('.selected')) {
         link.addClass('selected');
         callback();
@@ -17,12 +19,17 @@
     }
   }
 
+  function close() {
+    $('#mobile-menu-wrapper').hide();
+    root.removeClass("menu-open");
+  }
+
 
   function initialize_list_button() {
     var link = $(this);
     link.click(function(event){
       event.preventDefault();
-      show_mobile_menu(link, function() {
+      toggle_mobile_menu(link, function() {
         var templateName = link.data('mobile_template');
         var templateSource = $('#' + templateName).html();
         var template = Handlebars.compile(templateSource);
@@ -34,7 +41,6 @@
       });
     });
   }
-
 
   function initialize_navigation_button() {
     var link = $(this);
@@ -80,7 +86,6 @@
     }
 
     function render(items) {
-      hideSpinner();
       var templateName = link.data('mobile_template');
       var templateSource = $('#' + templateName).html();
       var template = Handlebars.compile(templateSource);
@@ -98,6 +103,8 @@
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id')
       })).show();
+      root.addClass("menu-open");
+      hideSpinner();
     }
 
     function showSpinner() {
@@ -111,7 +118,7 @@
     mobileTree.init(current_url, link.data("mobile_endpoint"), function() {
       $(link).click(function(event) {
         event.preventDefault();
-        show_mobile_menu(link, function() {
+        toggle_mobile_menu(link, function() {
           open();
         });
       });
@@ -122,6 +129,8 @@
       });
     }, link.data('mobile_startup_cachekey'));
   }
+
+  $(document).on("click", "#ftw-mobile-overlay", close);
 
 
   $(document).ready(function() {

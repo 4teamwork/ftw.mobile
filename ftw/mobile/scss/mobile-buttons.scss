@@ -7,12 +7,49 @@ $mobile-menu-height: 54px !default;
   border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
 }
 
+#ftw-mobile-overlay {
+  visibility: hidden;
+  position: fixed;
+  top: $size-mobile-button;
+  left: 0;
+  @media screen\0 {
+    left: calc(100% - #{$size-mobile-button / 2});
+  }
+  right: 0;
+  bottom: 0;
+  z-index: 999 !important;
+  opacity: .8;
+  background: #485563; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #485563 , #29323c); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #485563 , #29323c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 #ftw-mobile-wrapper {
   height: $size-mobile-button;
   background-color: $color-primary;
 
   @include tablet {
     display: none;
+  }
+}
+
+#mobile-menu-wrapper, body {
+  transition: transform .2s ease-in-out;
+}
+
+.menu-open {
+  overflow-x: hidden;
+
+  #ftw-mobile-overlay {
+    visibility: visible;
+  }
+  #mobile-menu-wrapper {
+    transform: translateX(-100%);
+    width: calc(100% - #{$size-mobile-button / 2});
+    top: 0;
+  }
+  body {
+    transform: translateX(100%) translateX(-$size-mobile-button / 2);
   }
 }
 
@@ -77,17 +114,53 @@ $mobile-menu-height: 54px !default;
     list-style-image: none;
 
     > a {
+      @include auto-text-color($color-primary);
+      @include auto-border-color($color-primary);
+
       display: block;
       padding: ($padding-vertical * 2) $padding-horizontal;
 
-      @include auto-text-color($color-primary);
 
       background-color: $color-primary;
 
-      @include auto-border-color($color-primary);
 
       border-top: 1px solid;
     }
+  }
+}
+
+.mobileActionNav {
+  @extend .fa-icon;
+  width: 1%;
+  font-size: 0;
+  padding: $padding-vertical 0;
+  white-space: nowrap;
+
+  &.down {
+    @extend .fa-chevron-right;
+  }
+
+  &.up {
+    @extend .fa-chevron-left;
+
+    &:before {
+      text-align: left;
+    }
+  }
+
+  &:before {
+    @include auto-text-color($color-secondary);
+    width: $line-height-base * 2;
+  }
+}
+
+.topLevelTabs {
+  @include tab-list($color-tab: $color-content-background, $color-tab-select: $color-content-background);
+
+  > li > a {
+    background-color: $color-secondary;
+
+    @include auto-text-color($color-secondary);
   }
 }
 
@@ -95,81 +168,37 @@ $mobile-menu-height: 54px !default;
   background-color: $color-secondary;
   padding: $padding-vertical $padding-horizontal;
 
-  > .topLevelTabs {
-    @include tab-list($color-tab: $color-content-background, $color-tab-select: $color-content-background);
-
-    > li > a {
-      background-color: $color-secondary;
-
-      @include auto-text-color($color-secondary);
-    }
-  }
-
   > .tabPanes {
     margin-top: $margin-vertical;
   }
 
-  .tabPane > ul {
-    margin-right: $margin-horizontal * 2;
+  .tabPane ul {
+    @include list();
 
     li {
-      display: block;
-      position: relative;
 
       > a {
-        display: block;
-        padding: $padding-vertical $padding-horizontal;
-        margin-right: $margin-horizontal * 4;
-
         @include auto-text-color($color-secondary);
-
-        &.mobileActionNav {
-          width: 3em;
-          padding: $padding-vertical 0;
-          margin-right: 0;
-          overflow: hidden;
-          white-space: nowrap;
-          color: transparent;
-          position: absolute;
-          top: 0;
-
-          @extend .fa-icon;
-
-          &.down {
-            right: 0;
-
-            @extend .fa-chevron-right;
-          }
-
-          &.up {
-            left: 0;
-
-            @extend .fa-chevron-left;
-          }
-
-          &:before {
-            @include auto-text-color($color-secondary);
-
-            width: 3em;
-          }
+        display: table-cell;
+        padding: $padding-vertical 0;
+        &:before {
+          font-size: $font-size-medium;
         }
       }
 
       > ul {
-        margin-left: $margin-horizontal * 2;
 
-        li a {
+        li  > a {
+          @include auto-text-color();
           background-color: $color-primary;
+          padding-left: $padding-horizontal;
 
-          @include auto-text-color($color-primary);
-
-          margin-bottom: 2px;
+          &.mobileActionNav {
+            &:before {
+              @include auto-text-color();
+            }
+          }
         }
-      }
-
-      &.navParentNode a:not(.up) {
-        margin-left: $margin-horizontal * 4;
-        margin-right: 0;
       }
     }
   }
