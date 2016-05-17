@@ -13,7 +13,7 @@ $mobile-menu-height: 54px !default;
   top: $size-mobile-button;
   left: 0;
   @media screen\0 {
-    left: calc(100% - #{$size-mobile-button});
+    left: calc(100% - #{$size-mobile-button / 2});
   }
   right: 0;
   bottom: 0;
@@ -45,11 +45,11 @@ $mobile-menu-height: 54px !default;
   }
   #mobile-menu-wrapper {
     transform: translateX(-100%);
-    width: calc(100% - #{$size-mobile-button});
+    width: calc(100% - #{$size-mobile-button / 2});
     top: 0;
   }
   body {
-    transform: translateX(100%) translateX(-$size-mobile-button);
+    transform: translateX(100%) translateX(-$size-mobile-button / 2);
   }
 }
 
