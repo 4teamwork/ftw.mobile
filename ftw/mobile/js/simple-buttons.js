@@ -3,10 +3,11 @@
 
   var root = $(":root");
 
-  function show_mobile_menu(link, callback) {
+  function toggle_mobile_menu(link, callback) {
     var wrapper = $('#mobile-menu-wrapper');
     if(wrapper.is(':visible')) {
       wrapper.hide();
+      root.removeClass("menu-open");
       if(!link.is('.selected')) {
         link.addClass('selected');
         callback();
@@ -24,7 +25,7 @@
     var link = $(this);
     link.click(function(event){
       event.preventDefault();
-      show_mobile_menu(link, function() {
+      toggle_mobile_menu(link, function() {
         var templateName = link.data('mobile_template');
         var templateSource = $('#' + templateName).html();
         var template = Handlebars.compile(templateSource);
@@ -35,11 +36,6 @@
         })).show();
       });
     });
-  }
-
-  function close() {
-    $('#mobile-menu-wrapper').hide();
-    root.removeClass("menu-open");
   }
 
   function initialize_navigation_button() {
@@ -86,7 +82,6 @@
     }
 
     function render(items) {
-      hideSpinner();
       var templateName = link.data('mobile_template');
       var templateSource = $('#' + templateName).html();
       var template = Handlebars.compile(templateSource);
@@ -104,6 +99,8 @@
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id')
       })).show();
+      root.addClass("menu-open");
+      hideSpinner();
     }
 
     function showSpinner() {
@@ -117,8 +114,7 @@
     mobileTree.init(current_url, link.data("mobile_endpoint"), function() {
       $(link).click(function(event) {
         event.preventDefault();
-        root.toggleClass("menu-open");
-        show_mobile_menu(link, function() {
+        toggle_mobile_menu(link, function() {
           open();
         });
       });
