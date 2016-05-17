@@ -17,9 +17,6 @@ class TestUserButton(FunctionalTestCase):
     def test_user_button_label(self):
         self.assertEquals('User menu', self.user_button.label())
 
-    def test_user_button_data_url(self):
-        self.assertEquals('', self.user_button.data_url())
-
     def test_user_button_data_template(self):
         self.assertEquals('ftw-mobile-list-template',
                           self.user_button.data_template())
@@ -46,8 +43,11 @@ class TestUserButton(FunctionalTestCase):
 
         self.assertEquals(u'User menu', link.text)
         self.assertEquals(u'#', link.attrib['href'])
-        self.assertEquals(u'', link.attrib['data-mobileurl'])
+        self.assertEquals(u'', link.attrib['data-mobile_endpoint'])
+        self.assertEquals(u'', link.attrib['data-mobile_startup_cachekey'])
+        self.assertEquals(u'ftw-mobile-list-template',
+                          link.attrib['data-mobile_template'])
 
         self.assertTrue(
-            isinstance(json.loads(link.attrib['data-mobiledata']), list),
+            isinstance(json.loads(link.attrib['data-mobile_data']), list),
             'Expect valid json data in mobile-data')

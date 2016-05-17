@@ -1,7 +1,16 @@
+from functools import partial
+from operator import itemgetter
+from pkg_resources import get_distribution
 from plone import api
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
-import os
+import hashlib
+import json
+import logging
+
+
+LOG = logging.getLogger('ftw.mobile')
 
 
 def is_external_link(brain):
@@ -10,11 +19,6 @@ def is_external_link(brain):
         return not url.startswith(api.portal.get().absolute_url())
     else:
         return False
-
-
-def get_path_depth(brain):
-    portal_url = '/'.join(api.portal.get().getPhysicalPath())
-    return len(brain.getPath().replace(portal_url, '').split('/')) - 1
 
 
 class MobileNavigation(BrowserView):
@@ -26,28 +30,91 @@ class MobileNavigation(BrowserView):
      {'title': '<String>',
       'description': '<String>',
       'id' <String>:
-      'childrenIds': '<List> of <String>s',
       'url': '<String>',
-      'externallink': '<Boolean>',
-      'nodes': '<List> of nodes'}
+      'externallink': '<Boolean>'}
     """
 
-    def __init__(self, context, request):
-        super(MobileNavigation, self).__init__(context, request)
+    def startup(self):
+        """Return all nodes relevant for starting up a mobile navigation
+        on the current context.
+        """
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        response.setHeader('X-Theme-Disabled', 'True')
 
-        self.startpath = None
-        self.depth = None
+        if self.request.get('cachekey'):
+            # Only cache when there is a cache_key in the request.
+            # Representations may be cached by any cache.
+            # The cached representation is to be considered fresh for 1 year
+            # http://stackoverflow.com/a/3001556/880628
+            if api.user.is_anonymous():
+                visibility = 'public'
+            else:
+                visibility = 'private'
 
-    def __call__(self):
-        tree = make_tree_by_url(map(self.brain_to_node, self.get_brains()))
-        return tree
+            response.setHeader('Cache-Control',
+                               '{}, max-age=31536000'.format(visibility))
 
-    def get_brains(self):
+        return json.dumps(self.get_nodes_by_query(self.get_startup_query()))
+
+    def get_startup_query(self):
+        query = self.get_default_query()
+        query['path'] = {'query': (list(self.parent_paths_to_nav_root()) +
+                                   list(self.get_toplevel_paths())),
+                         'depth': 3}
+        return query
+
+    def get_startup_cachekey(self):
+        cachekey = hashlib.md5()
+        brains = self.get_brains(self.get_startup_query())
+        map(cachekey.update, map(str, map(itemgetter('modified'), brains)))
+        cachekey.update(api.user.get_current().getId() or '')
+        cachekey.update(get_distribution('ftw.mobile').version)
+        return cachekey.hexdigest()
+
+    def children(self):
+        """Return all nodes
+        """
+        response = self.request.response
+        response.setHeader('Content-Type', 'application/json')
+        response.setHeader('X-Theme-Disabled', 'True')
+
+        query = self.get_default_query()
+        query['path'] = {'query': ['/'.join(self.context.getPhysicalPath())],
+                         'depth': int(self.request.get('depth', 2))}
+        return json.dumps(self.get_nodes_by_query(query))
+
+    def parent_paths_to_nav_root(self):
+        """Generator of the paths of all parents up to the navigation_root.
+        """
+        for obj in self.context.aq_chain:
+            yield '/'.join(obj.getPhysicalPath())
+            if INavigationRoot.providedBy(obj):
+                return
+
+    def get_toplevel_paths(self):
+        navroot = api.portal.get_navigation_root(self.context)
+        for child in navroot.getFolderContents():
+            yield child.getPath()
+
+    def get_nodes_by_query(self, query):
+        nodes = map(self.brain_to_node, self.get_brains(query))
+        map(partial(self.set_children_loaded_flag, query), nodes)
+        return nodes
+
+    def get_brains(self, query):
         catalog = api.portal.get_tool('portal_catalog')
-        return [brain for brain in catalog(self.get_query())
+        brains = catalog(query)
+
+        warnsize = 5000
+        if len(brains) > warnsize:
+            LOG.warning('Query results in more than {} results ({})'
+                            .format(warnsize, len(brains)))
+
+        return [brain for brain in brains
                 if not brain.exclude_from_nav]
 
-    def get_query(self):
+    def get_default_query(self):
         portal_types = api.portal.get_tool('portal_types')
         portal_properties = api.portal.get_tool('portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
@@ -74,41 +141,30 @@ class MobileNavigation(BrowserView):
                 'id': brain.id,
                 'description': brain.Description,
                 'url': get_view_url(brain)[1],
-                'externallink': is_external_link(brain),
-                'depth': get_path_depth(brain)}
+                'absolute_path': brain.getPath(),
+                'externallink': is_external_link(brain)}
 
+    def set_children_loaded_flag(self, query, node):
+        if (not isinstance(query.get('path', None), dict)
+            or 'depth' not in query.get('path', {})):
+            # Since we have no path depth limitation we assume that all
+            # items were provided in a single response, thus
+            # all children are assumed to be loaded.
+            node['children_loaded'] = True
+            return
 
-def make_tree_by_url(nodes):
-    """Creates a nested tree of nodes from a flat list-like object of nodes.
-    Each node is expected to be a dict with a url-like string stored
-    under the key ``url``.
-    Each node will end up with a ``nodes`` key, containing a list
-    of children nodes.
-    The nodes are changed in place, be sure to make copies first when
-    necessary.
-    """
+        depth = query['path']['depth']
+        if depth == -1:
+            # Since we have no path depth limitation we assume that all
+            # items were provided in a single response, thus
+            # all children are assumed to be loaded.
+            node['children_loaded'] = True
+            return
 
-    for node in nodes:
-        node['nodes'] = []
-        node['childrenIds'] = []
+        path_partials = node['absolute_path'].split('/')
+        for _ in range(depth - 1):
+            if '/'.join(path_partials) in query['path']['query']:
+                node['children_loaded'] = True
+                return
 
-    nodes_by_url = dict((node['url'], node) for node in nodes)
-    root = {'nodes': [],
-            'childrenIds': []}
-
-    for node in nodes:
-        parent_url = os.path.dirname(node['url'])
-        if parent_url in nodes_by_url:
-            nodes_by_url[parent_url]['nodes'].append(node)
-            nodes_by_url[parent_url]['childrenIds'].append(node['id'])
-        else:
-            root['nodes'].append(node)
-            root['childrenIds'].append(node['id'])
-
-    return root
-
-
-def tree_size(nodes_or_node):
-    if isinstance(nodes_or_node, list):
-        return sum(map(tree_size, nodes_or_node))
-    return sum(map(tree_size, nodes_or_node.get('nodes', []))) + 1
+            path_partials.pop()

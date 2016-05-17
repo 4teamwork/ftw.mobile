@@ -1,6 +1,5 @@
 from ftw.mobile import _
 from ftw.mobile.interfaces import IMobileButton
-from ftw.mobile.navigation import MobileNavigation
 from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.interface import implements
@@ -10,9 +9,10 @@ import json
 
 LINK_TEMPLATE = '''
 <a href="{url}"
-   data-mobileurl="{data_url}"
-   data-mobiletemplate="{mobile_template}"
-   data-mobiledata='{data}'>
+   data-mobile_endpoint="{endpoint}"
+   data-mobile_startup_cachekey="{startup_cachekey}"
+   data-mobile_template="{mobile_template}"
+   data-mobile_data='{data}'>
     {label}
 </a>
 '''
@@ -33,10 +33,11 @@ class BaseButton(object):
 
     def data(self):
         """json data to display"""
-        return json.dumps([])
+        return ''
 
-    def data_url(self):
-        """Url for json data"""
+    def endpoint(self):
+        """Viewname of the mobile navigation endpoint.
+        """
         return ''
 
     def data_template(self):
@@ -45,12 +46,16 @@ class BaseButton(object):
     def position(self):
         raise NotImplementedError("Implement a position (int)")
 
+    def startup_cachekey(self):
+        return ''
+
     def render_button(self):
         return LINK_TEMPLATE.format(url='#',
-                                    data_url=self.data_url(),
+                                    startup_cachekey=self.startup_cachekey(),
                                     mobile_template=self.data_template(),
                                     data=self.data(),
-                                    label=self.label())
+                                    label=self.label(),
+                                    endpoint=self.endpoint())
 
 
 class UserButton(BaseButton):
@@ -85,7 +90,8 @@ class NavigationButton(BaseButton):
     def data_template(self):
         return 'ftw-mobile-navigation-template'
 
-    def data(self):
-        """json data to display"""
-        view = MobileNavigation(self.context, self.request)
-        return json.dumps(view())
+    def endpoint(self):
+        return '@@mobilenav'
+
+    def startup_cachekey(self):
+        return self.context.restrictedTraverse('@@mobilenav').get_startup_cachekey()

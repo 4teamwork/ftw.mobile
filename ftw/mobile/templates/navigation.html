@@ -7,22 +7,30 @@
         <ul class="topLevelTabs">
             {{#each toplevel}}
 
-                <li><a href="{{url}}">{{title}}</a></li>
+                <li class="{{cssclass}}"><a href="{{url}}">{{title}}</a></li>
 
              {{/each}}
 
         </ul>
 
         <div class="tabPanes">
-            {{#each nodes}}
-                <div class="tabPane">
-                    <ul>
-                         {{> list maxdepth=maxdepth}}
-                     </ul>
+            <div class="tabPane">
+                <ul>
+                  {{#if parentNode}}
 
-                </div>
-            {{/each}}
+                  <li class="navParentNode">
+                      <a href="{{parentNode.url}}" class="mobileActionNav up" i18n:translate="label_goto_parent">
+                          Nächst höherer Inhalt {{parentNode.title}} anzeigen.
+                      </a>
 
+                      <a href="{{currentNode.url}}">{{currentNode.title}}</a>
+                  </li>
+
+                  {{/if}}
+
+                  {{> list}}
+                </ul>
+            </div>
         </div>
 
     </div>
@@ -30,21 +38,8 @@
 
 
 <script id="ftw-mobile-navigation-list-template" type="text/x-handlebars-template">
-    {{#if parentNode}}
-
-        <li class="navParentNode">
-            <a href="{{parentNode.url}}" class="mobileActionNav up" i18n:translate="label_goto_parent">
-                Nächst höherer Inhalt {{parentNode.title}} anzeigen.
-            </a>
-
-            <a href="{{url}}">{{title}}</a>
-        </li>
-
-    {{/if}}
-
-
      {{#each nodes}}
-        <li class="nav-depth-{{depth}}">
+        <li>
 
             <a href="{{url}}">{{title}}</a>
 
@@ -52,13 +47,11 @@
                 Unterhinhalte von: {{title}} anzeigen
             </a>
 
-            {{#ifDepth depth ../maxdepth}}
-                {{#if nodes}}
-                    <ul>
-                        {{> list maxdepth=../maxdepth}}
-                    </ul>
-                {{/if}}
-            {{/ifDepth}}
+            {{#if nodes}}
+                <ul>
+                    {{> list}}
+                </ul>
+            {{/if}}
         </li>
     {{/each}}
 </script>

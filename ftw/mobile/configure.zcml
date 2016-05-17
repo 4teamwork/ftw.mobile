@@ -23,6 +23,13 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <browser:page
+        for="*"
+        name="mobilenav"
+        class=".navigation.MobileNavigation"
+        permission="zope2.View"
+        allowed_attributes="startup children"
+        />
 
     <browser:viewlet
         name="ftw.mobile.simple.button.template.js"

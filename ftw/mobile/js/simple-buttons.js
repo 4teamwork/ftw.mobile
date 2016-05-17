@@ -1,131 +1,134 @@
 (function() {
-
   "use strict";
 
-  $(function() {
+  function show_mobile_menu(link, callback) {
+    var wrapper = $('#mobile-menu-wrapper');
+    if(wrapper.is(':visible')) {
+      wrapper.hide();
+      if(!link.is('.selected')) {
+        link.addClass('selected');
+        callback();
+      } else {
+        $('.ftw-mobile-buttons a').removeClass('selected');
+      }
+    } else {
+      link.addClass('selected');
+      callback();
+    }
+  }
 
 
-    function mobileNavigationTabs(navigation){
-
-      var firsTab = 0;
-      var topleveltabs = $('.topLevelTabs', navigation);
-      var links = topleveltabs.find('a');
-
-      links.each(function(index, link){
-        if (window.location.href.indexOf($(link).attr("href")) !== -1) {
-          firsTab = links.index(link);
-          return;
-        }
-      });
-
-      topleveltabs.tabs('.tabPanes > .tabPane',
-                        {"current": "selected",
-                         "initialIndex": firsTab});
-
-
-      $("body").on("click", "a.mobileActionNav", function(event){
-        event.preventDefault();
-        var self = $(this);
-        var node = mobileTree.getNodeByUrl(self.attr("href"));
-        var templateSource = $("#ftw-mobile-navigation-list-template").html();
+  function initialize_list_button() {
+    var link = $(this);
+    link.click(function(event){
+      event.preventDefault();
+      show_mobile_menu(link, function() {
+        var templateName = link.data('mobile_template');
+        var templateSource = $('#' + templateName).html();
         var template = Handlebars.compile(templateSource);
 
-        var context = node;
-        var parentNode = mobileTree.getParentNodeByUrl(self.attr("href"));
+        $('#mobile-menu-wrapper').html(template({
+          items: link.data('mobile_data'),
+          name: link.parent().attr('id')
+        })).show();
+      });
+    });
+  }
 
-        if (parentNode === null) {
-          context['maxdepth'] = 3;
-        } else {
-          context['maxdepth'] = node.depth;
-          context['parentNode'] = parentNode;
+
+  function initialize_navigation_button() {
+    var link = $(this);
+    var current_url = location.href.split('?')[0].split('#')[0];
+
+    function open() {
+      var current_path = mobileTree.getPhysicalPath(current_url);
+      while( current_path && !mobileTree.isLoaded(current_path, 1)) {
+        // the current context is not visible in the navigation;
+        // lets try the parent
+        current_path = mobileTree.getParentPath(current_path);
+      }
+
+      if(current_path === '') {
+        mobileTree.query({path: '/', depth: 2}, function(toplevel) {
+          render_path(toplevel[0].path);
+        });
+      } else {
+        render_path(current_path);
+      }
+    }
+
+    function render_path(path) {
+      /* Scroll to the top of the menu wrapper when scrolled down */
+      if($('body').scrollTop() > $('#mobile-menu-wrapper').offset().top) {
+        $('html, body').animate({
+          scrollTop: $('#mobile-menu-wrapper').offset().top
+        }, 100);
+      }
+      var parent_path = mobileTree.getParentPath(path);
+      var depth = path.indexOf('/') === -1 ? 3 : 2;
+      var queries = {toplevel: {path: '/', depth: 2},
+                     parent: {path: parent_path, depth: 1},
+                     nodes: {path: path, depth: depth}};
+      mobileTree.queries(
+            queries,
+            function(items) {
+              render(items);
+              // prefetch grand children
+              mobileTree.query({path: path, depth: depth + 1});
+            },
+            showSpinner);
+    }
+
+    function render(items) {
+      hideSpinner();
+      var templateName = link.data('mobile_template');
+      var templateSource = $('#' + templateName).html();
+      var template = Handlebars.compile(templateSource);
+      var currentItem = items.nodes[0];
+      $(items.toplevel).each(function() {
+        if(currentItem.path.indexOf(this.path) > -1) {
+          this.cssclass = 'selected';
         }
-
-        var html = $(template(context));
-        self.parents('.tabPane').find('> ul').html(html);
-
-        // Do no persist
-        delete context['parentNode'];
-
       });
 
+      $('#mobile-menu-wrapper').html(template({
+        toplevel: items.toplevel,
+        currentNode: currentItem,
+        nodes: currentItem.nodes,
+        parentNode: items.parent ? items.parent[0] : null,
+        name: link.parent().attr('id')
+      })).show();
     }
 
-    function hideAllMenues(){
-      $(".mobile-menu").hide();
+    function showSpinner() {
+      $('#mobile-menu-wrapper').addClass('spinner');
+    }
+    function hideSpinner() {
+      $('#mobile-menu-wrapper').removeClass('spinner');
     }
 
-    $("body").on("click", ".ftw-mobile-buttons a", function(event){
-      event.preventDefault();
-      var link = $(event.target);
-      var templateName = link.data("mobiletemplate");
-      var templateSource = $("#" + templateName).html();
-      var template = Handlebars.compile(templateSource);
 
-      var name = link.parent().attr("id");
-      var context;
-      var depth;
-      var currentURL = window.location.href;
-
-      if (templateName !== "ftw-mobile-navigation-template") {
-        context = {"items": link.data("mobiledata"), "name": name};
-
-      } else {
-        mobileTree.init(link.data("mobiledata"));
-
-        context = {"toplevel": mobileTree.getTopLevelNodes(),
-                   "nodes": [],
-                   "name": name,
-                   "maxdepth": []};
-
-
-        var defaultDepth = 1;
-        var rootDepth = 3;
-
-        $(context['toplevel']).each(function(index, node){
-          if (currentURL.indexOf(node.url) !== -1) {
-            var currentNode = mobileTree.getNodeByUrl(currentURL);
-            context.nodes.push(currentNode);
-            context.nodes[context.nodes.length - 1]['maxdepth'] = currentNode.depth + defaultDepth;
-            context.nodes[context.nodes.length - 1]['parentNode'] = mobileTree.getParentNodeByUrl(currentURL);
-
-          } else {
-            context.nodes.push(node);
-            context.nodes[context.nodes.length - 1]['maxdepth'] = rootDepth;
-          }
-
+    mobileTree.init(current_url, link.data("mobile_endpoint"), function() {
+      $(link).click(function(event) {
+        event.preventDefault();
+        show_mobile_menu(link, function() {
+          open();
         });
+      });
 
-        Handlebars.registerHelper('ifDepth', function(depth, maxdepth, options) {
-          if(depth < maxdepth) {
-            return options.fn(this);
-          }
-          return options.inverse(this);
-        });
+      $(document).on('click', '.topLevelTabs a, a.mobileActionNav', function(event) {
+        event.preventDefault();
+        render_path(mobileTree.getPhysicalPath($(this).attr('href')));
+      });
+    }, link.data('mobile_startup_cachekey'));
+  }
 
-        Handlebars.registerPartial( "list", $( "#ftw-mobile-navigation-list-template" ).html() );
-      }
 
-      var container = link.parents(".ftw-mobile-buttons");
+  $(document).ready(function() {
+    Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]').each(initialize_navigation_button);
 
-      var menu = $(".mobile-menu-" + name);
-
-      if (menu.length === 0) {
-        hideAllMenues();
-        var html = $(template(context));
-        html.insertAfter(container);
-
-        if (templateName === "ftw-mobile-navigation-template") {
-          mobileNavigationTabs($(".mobile-menu-" + name));
-        }
-
-      } else if (menu.is(":visible")) {
-        menu.hide();
-
-      } else {
-        hideAllMenues();
-        menu.show();
-      }
-    });
-
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
   });
+
 })();
