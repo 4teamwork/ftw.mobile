@@ -6,8 +6,7 @@
   function toggle_mobile_menu(link, callback) {
     var wrapper = $('#mobile-menu-wrapper');
     if(wrapper.is(':visible')) {
-      wrapper.hide();
-      root.removeClass("menu-open");
+      close();
       if(!link.is('.selected')) {
         link.addClass('selected');
         callback();
@@ -18,6 +17,11 @@
       link.addClass('selected');
       callback();
     }
+  }
+
+  function close() {
+    $('#mobile-menu-wrapper').hide();
+    root.removeClass("menu-open");
   }
 
 
