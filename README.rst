@@ -65,12 +65,12 @@ Minimal example
             def link_data(item):
                 return {'url': item.get('url'),
                         'label': item.get('title')}
-            return json.dumps(map(link_data, user_actions))
+            return map(link_data, user_actions)
 
 
 You need to define at least the ``label``, the ``position`` and the ``data`` for a working mobile button.
 
-Keep in mind, that the data method needs to return valid json string in form of:
+Keep in mind, that the data method needs to return valid json data structure:
 
 ::
 

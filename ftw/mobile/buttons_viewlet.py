@@ -18,8 +18,9 @@ class MobileButtonViewlet(ViewletBase):
         buttons.sort(key=self.sort_buttons)
 
         for name, button in buttons:
-            yield {'html': button.render_button(),
-                   'name': name}
+            if button.available():
+                yield {'html': button.render_button(),
+                       'name': name}
 
     def sort_buttons(self, button):
         return button[1].position()

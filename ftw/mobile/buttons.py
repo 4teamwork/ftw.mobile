@@ -33,7 +33,7 @@ class BaseButton(object):
 
     def data(self):
         """json data to display"""
-        return ''
+        return []
 
     def endpoint(self):
         """Viewname of the mobile navigation endpoint.
@@ -46,6 +46,9 @@ class BaseButton(object):
     def position(self):
         raise NotImplementedError("Implement a position (int)")
 
+    def available(self):
+        return self.data() or self.endpoint()
+
     def startup_cachekey(self):
         return ''
 
@@ -53,7 +56,7 @@ class BaseButton(object):
         return LINK_TEMPLATE.format(url='#',
                                     startup_cachekey=self.startup_cachekey(),
                                     mobile_template=self.data_template(),
-                                    data=self.data(),
+                                    data=json.dumps(self.data()),
                                     label=self.label(),
                                     endpoint=self.endpoint())
 
@@ -76,7 +79,7 @@ class UserButton(BaseButton):
         def link_data(item):
             return {'url': item.get('url'),
                     'label': item.get('title')}
-        return json.dumps(map(link_data, user_actions))
+        return map(link_data, user_actions)
 
 
 class NavigationButton(BaseButton):

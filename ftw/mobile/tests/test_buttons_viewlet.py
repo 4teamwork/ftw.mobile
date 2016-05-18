@@ -5,6 +5,7 @@ from ftw.testbrowser import browsing
 from zope.component import getGlobalSiteManager
 from zope.component import provideAdapter
 from zope.interface import Interface
+import json
 import transaction
 
 
@@ -63,7 +64,22 @@ class TestUserButton(FunctionalTestCase):
         finally:
             self.unregister_button('somebutton')
 
-    def register_button(self, name, position):
+    @browsing
+    def test_button_with_empty_json_result_is_filtered(self, browser):
+
+        self.register_button('somebutton', position=500, data=[])
+
+        try:
+            browser.login().visit()
+            self.assertEquals(['Mobile navigation', 'User menu'],
+                              browser.css('.ftw-mobile-buttons a').text)
+        finally:
+            self.unregister_button('somebutton')
+
+    def register_button(self, name, position, data=None):
+
+        if data is None:
+            data = [{'label': 'dummy', 'url': 'http://url.com'}]
 
         class SomeButton(BaseButton):
             def label(self):
@@ -71,6 +87,9 @@ class TestUserButton(FunctionalTestCase):
 
             def position(self):
                 return position
+
+            def data(self):
+                return data
 
         self.buttonklass = SomeButton
 
