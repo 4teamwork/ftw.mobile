@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from functools import partial
 from operator import itemgetter
 from pkg_resources import get_distribution
@@ -88,7 +89,8 @@ class MobileNavigation(BrowserView):
         """Generator of the paths of all parents up to the navigation_root.
         """
         for obj in self.context.aq_chain:
-            yield '/'.join(obj.getPhysicalPath())
+            if hasattr(aq_base(obj), 'getPhysicalPath'):
+                yield '/'.join(obj.getPhysicalPath())
             if INavigationRoot.providedBy(obj):
                 return
 
