@@ -14,7 +14,7 @@ class IMobileButton(Interface):
         """Label of button"""
 
     def data():
-        """json data to display"""
+        """json serializeable data to display"""
 
     def data_url(self):
         """Url to call for json data"""
@@ -24,6 +24,9 @@ class IMobileButton(Interface):
         """Defines the template used to render the menu"""
 
     def position():
+        """defines the order of the mobile buttons"""
+
+    def available():
         """defines the order of the mobile buttons"""
 
     def render_button():

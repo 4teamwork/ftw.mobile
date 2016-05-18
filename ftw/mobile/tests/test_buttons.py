@@ -32,7 +32,7 @@ class TestUserButton(FunctionalTestCase):
              u'label': u'Preferences'},
             {u'url': u'http://nohost/plone/logout',
              u'label': u'Log out'}, ]
-        self.assertEquals(expect, json.loads((self.user_button.data())))
+        self.assertEquals(expect, (self.user_button.data()))
 
     @browsing
     def test_user_button_rendering(self, browser):
