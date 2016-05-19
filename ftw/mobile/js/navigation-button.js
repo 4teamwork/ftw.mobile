@@ -7,10 +7,11 @@
 
       var storage;
       var endpoint;
+      var root_url;
 
       function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
-        var root_node = {url: portal_url};
-
+        root_url = $(".ftw-mobile-buttons").data("navrooturl");
+        var root_node = {url: root_url};
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
@@ -70,8 +71,7 @@
       }
 
       function getPhysicalPath(url) {
-        // XXX Use navigation root
-        return url.replace(portal_url, "").replace(/^\//, '').replace(/\/$/, '');
+        return url.replace(root_url, "").replace(/^\//, '').replace(/\/$/, '');
       }
 
       function getParentPath(path) {

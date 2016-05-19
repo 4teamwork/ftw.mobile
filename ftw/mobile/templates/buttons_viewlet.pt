@@ -1,6 +1,8 @@
 <div id="ftw-mobile-wrapper">
     <div id="ftw-mobile-overlay"></div>
-    <div class="ftw-mobile-buttons">
+    <div class="ftw-mobile-buttons"
+         tal:attributes="data-navrooturl string:${view/nav_root_url};
+                         data-currenturl string:${view/current_url}">
 
         <ul>
             <li tal:repeat="button view/buttons" tal:attributes="id button/name">

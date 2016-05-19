@@ -44,7 +44,7 @@
 
   function initialize_navigation_button() {
     var link = $(this);
-    var current_url = location.href.split('?')[0].split('#')[0];
+    var current_url = link.parents(".ftw-mobile-buttons").data('currenturl');
 
     function open() {
       var current_path = mobileTree.getPhysicalPath(current_url);
