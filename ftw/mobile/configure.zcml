@@ -8,6 +8,7 @@
     xmlns:upgrade-step="http://namespaces.zope.org/ftw.upgrade"
     i18n_domain="ftw.mobile">
 
+    <i18n:registerTranslations directory="locales" />
 
     <include file="theming.zcml" />
 
