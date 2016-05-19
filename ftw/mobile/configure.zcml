@@ -42,7 +42,7 @@
         name="ftw.mobile.simple.button.template.js"
         for="*"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="templates/list.html"
+        template="templates/list.html.pt"
         permission="zope2.View"
         layer="ftw.mobile.interfaces.IMobileLayer"
         />
@@ -52,7 +52,7 @@
         name="ftw.mobile.navigation.template.js"
         for="*"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        template="templates/navigation.html"
+        template="templates/navigation.html.pt"
         permission="zope2.View"
         layer="ftw.mobile.interfaces.IMobileLayer"
         />
