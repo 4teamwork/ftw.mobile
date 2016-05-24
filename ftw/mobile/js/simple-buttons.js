@@ -20,7 +20,7 @@
   }
 
   function close() {
-    $('#mobile-menu-wrapper').hide();
+    $('#mobile-menu-wrapper').removeClass("open");
     root.removeClass("menu-open");
   }
 
@@ -34,10 +34,13 @@
         var templateSource = $('#' + templateName).html();
         var template = Handlebars.compile(templateSource);
 
-        $('#mobile-menu-wrapper').html(template({
+        var menu = $('#mobile-menu-wrapper');
+        menu.html(template({
           items: link.data('mobile_data'),
           name: link.parent().attr('id')
-        })).show();
+        }));
+        menu.addClass("open");
+
       });
     });
   }
@@ -102,7 +105,7 @@
         nodes: currentItem.nodes,
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id')
-      })).show();
+      })).addClass("open");
       root.addClass("menu-open");
       hideSpinner();
     }
