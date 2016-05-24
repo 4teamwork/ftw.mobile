@@ -3,6 +3,8 @@ $font-size-mobile-button: 2em !default;
 
 $mobile-menu-height: 54px !default;
 
+$color-mobile-button: $color-primary !default;
+
 @mixin auto-border-color($color: $color-primary) {
   border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
 }
@@ -26,7 +28,7 @@ $mobile-menu-height: 54px !default;
 
 #ftw-mobile-wrapper {
   height: $size-mobile-button;
-  background-color: $color-primary;
+  background-color: $color-mobile-button;
 
   @include tablet {
     display: none;
@@ -79,9 +81,9 @@ $mobile-menu-height: 54px !default;
       width: $size-mobile-button;
 
       &:before {
-        @include auto-text-color($color-primary);
+        @include auto-text-color($color-mobile-button);
 
-        background-color: $color-primary;
+        background-color: $color-mobile-button;
         width: $size-mobile-button;
         line-height: $size-mobile-button;
         font-size: $font-size-mobile-button;
