@@ -138,9 +138,23 @@
 
   $(document).ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
-    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]').each(initialize_navigation_button);
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
 
     $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
+  });
+
+  window.mobileNavLoaded = false;
+  $(window).resize(function() {
+
+    if (window.mobileNavLoaded) { return; }
+
+    var mobileNavButton = $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible');
+    var mobileMenuWrapper = $('.mobile-menu.mobile-menu-navigation-mobile-button');
+
+    if (mobileNavButton.length !== 0 && mobileMenuWrapper.length === 0) {
+      window.mobileNavLoaded = true;
+      mobileNavButton.each(initialize_navigation_button);
+    }
   });
 
 })();
