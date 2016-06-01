@@ -21,6 +21,7 @@
 
   function close() {
     $('#mobile-menu-wrapper').removeClass("open");
+    $('.ftw-mobile-buttons a').removeClass('selected');
     root.removeClass("menu-open");
   }
 
@@ -133,7 +134,10 @@
     }, link.data('mobile_startup_cachekey'));
   }
 
-  $(document).on("click", "#ftw-mobile-overlay", close);
+  $(document).on("click", "#ftw-mobile-overlay", function(){
+    close();
+    $('.ftw-mobile-buttons a').removeClass('selected');
+  });
 
 
   $(document).ready(function() {
