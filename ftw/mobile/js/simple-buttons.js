@@ -45,7 +45,16 @@
     });
   }
 
+  window.begun_mobile_initialization = false;
   function initialize_navigation_button() {
+    /* This function may be called a lot when resizing, but it should only
+       work the very first time. */
+    if(window.begun_mobile_initialization) {
+      return;
+    } else {
+      window.begun_mobile_initialization = true;
+    }
+
     var link = $(this);
     var current_url = link.parents(".ftw-mobile-buttons").data('currenturl');
 
@@ -133,14 +142,22 @@
     }, link.data('mobile_startup_cachekey'));
   }
 
-  $(document).on("click", "#ftw-mobile-overlay", close);
+  $(document).on("click", "#ftw-mobile-overlay", function(){
+    close();
+    $('.ftw-mobile-buttons a').removeClass('selected');
+  });
 
 
   $(document).ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
-    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]').each(initialize_navigation_button);
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
 
     $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
+  });
+
+  $(window).resize(function() {
+    /* initialize_navigation_button will only work once and then disable itself */
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
   });
 
 })();
