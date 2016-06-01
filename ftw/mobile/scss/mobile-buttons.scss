@@ -164,12 +164,21 @@ $color-mobile-button: $color-primary !default;
 .topLevelTabs {
   @include tab-list($color-tab: $color-content-background, $color-tab-select: $color-content-background);
 
+  &:before {
+    visibility: hidden;
+  }
+
   > li > a {
     background-color: $color-secondary;
 
     @include auto-text-color($color-secondary);
   }
 }
+
+.menu-open .topLevelTabs:before {
+  visibility: visible;
+}
+
 
 .mobile-menu.mobile-menu-navigation-mobile-button {
   background-color: $color-secondary;
