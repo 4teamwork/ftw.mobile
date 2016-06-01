@@ -21,7 +21,6 @@
 
   function close() {
     $('#mobile-menu-wrapper').removeClass("open");
-    $('.ftw-mobile-buttons a').removeClass('selected');
     root.removeClass("menu-open");
   }
 
@@ -46,7 +45,16 @@
     });
   }
 
+  window.begun_mobile_initialization = false;
   function initialize_navigation_button() {
+    /* This function may be called a lot when resizing, but it should only
+       work the very first time. */
+    if(window.begun_mobile_initialization) {
+      return;
+    } else {
+      window.begun_mobile_initialization = true;
+    }
+
     var link = $(this);
     var current_url = link.parents(".ftw-mobile-buttons").data('currenturl');
 
@@ -147,18 +155,9 @@
     $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
   });
 
-  window.mobileNavLoaded = false;
   $(window).resize(function() {
-
-    if (window.mobileNavLoaded) { return; }
-
-    var mobileNavButton = $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible');
-    var mobileMenuWrapper = $('.mobile-menu.mobile-menu-navigation-mobile-button');
-
-    if (mobileNavButton.length !== 0 && mobileMenuWrapper.length === 0) {
-      window.mobileNavLoaded = true;
-      mobileNavButton.each(initialize_navigation_button);
-    }
+    /* initialize_navigation_button will only work once and then disable itself */
+    $('.ftw-mobile-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
   });
 
 })();
