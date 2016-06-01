@@ -67,7 +67,11 @@ class MobileNavigation(BrowserView):
 
     def get_startup_cachekey(self):
         cachekey = hashlib.md5()
-        brains = self.get_brains(self.get_startup_query())
+        query = self.get_startup_query()
+        query['sort_on'] = 'modified'
+        query['sort_order'] = 'reverse'
+        query['sort_limit'] = 50
+        brains = self.get_brains(query)[:query['sort_limit']]
         map(cachekey.update, map(str, map(itemgetter('modified'), brains)))
         cachekey.update(api.user.get_current().getId() or '')
         cachekey.update(get_distribution('ftw.mobile').version)
