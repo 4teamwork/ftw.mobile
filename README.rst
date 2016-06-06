@@ -8,8 +8,8 @@
 Introduction
 ============
 
-With ``ftw.mobile`` you can implement simple mobile buttons, which shows a list of options on click.
-
+With ``ftw.mobile`` you can implement mobile buttons, which shows a list of options on click.
+The package needs ftw.theming, which provides the basic styles.
 
 
 
@@ -40,7 +40,7 @@ Basically the buttons are rendered in a viewlet, which is visible at an certain 
 Register new button
 -------------------
 
-Minimal example
+Minimal example:
 
 ::
 
@@ -88,6 +88,12 @@ Keep in mind, that the data method needs to return valid json data structure:
 
 The user button has the postion 1000 and is rendered most right position and the navigation has the position 100, which is on the most left side.
 
+The navigation button is somehow special across his complexity. The navigation button is not considered a `simple` button ;-)
+
+
+Details Navigation Button
+-------------------------
+TODO: Some info about the nav button and its behavior.
 
 
 Development
