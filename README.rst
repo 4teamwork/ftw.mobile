@@ -96,9 +96,8 @@ The navigation button is somehow special across his complexity. The navigation b
 
 Details Navigation Button
 -------------------------
-TODO:
-    - Some info about the nav button and its behavior.
-    - Structure dependencies -> bierik?
+
+The mobilenavigation adds two additional wrappers arround all children of the body on pageload.
 
 
 Development

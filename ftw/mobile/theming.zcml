@@ -7,9 +7,16 @@
       <include package="ftw.theming" />
 
       <theme:scss
-          file="scss/mobile-buttons.scss"
+          file="scss/mobile-menu-buttons.scss"
           slot="addon"
           profile="ftw.mobile:default"
+          />
+
+      <theme:scss
+          file="scss/mobile-menu.scss"
+          slot="addon"
+          profile="ftw.mobile:default"
+          after="scss/mobile-menu-buttons.scss"
           />
 
       <theme:scss
