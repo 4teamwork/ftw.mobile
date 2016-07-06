@@ -1,0 +1,97 @@
+#ftw-mobile-menu {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  font-size: $font-size-medium;
+  max-width: calc(100% - #{$size-mobile-button});
+  @include translate(-100%);
+
+  &.open {
+    @include translate();
+    max-width: none;
+  }
+
+  > ul {
+    margin: 0;
+    position: absolute;
+    top: $size-mobile-button;
+  }
+}
+
+#offcanvas-content {
+  height: 100vh;
+  transition: transform .2s ease-in-out;
+}
+
+#ftw-mobile-wrapper {
+  @include tablet {
+    display: none;
+  }
+}
+
+#ftw-mobile-menu-overlay {
+  @include linear-gradient(
+    to left,
+    #29323c,
+    #485563
+  );
+  cursor: pointer;
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  opacity: .8;
+}
+
+@include ie-only("#ftw-mobile-menu-overlay") {
+  left: calc(100% - #{$size-mobile-button});
+}
+
+.menu-open {
+
+  body {
+    overflow: hidden;
+  }
+
+  #offcanvas-wrapper {
+    overflow: hidden;
+  }
+
+  #offcanvas-content {
+    @include transform(translate(100%) translate(-$size-mobile-button));
+  }
+
+  #ftw-mobile-menu {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: 100vh;
+  }
+
+  #ftw-mobile-menu-overlay {
+    visibility: visible;
+  }
+}
+
+.mobile-menu-navigation-mobile-button {
+  &:before {
+    pointer-events: none;
+    @include linear-gradient(
+      to right,
+      rgba(255,255,255, 0),
+      $color-content-background 80%
+    );
+
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 1;
+    height: $size-mobile-button;
+  }
+}

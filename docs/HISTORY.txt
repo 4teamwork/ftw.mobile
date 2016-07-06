@@ -5,7 +5,10 @@ Changelog
 1.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix offcanvas navigation on iOS devices.
+  Rework revealing offcanvas navigation using two additional wrappers.
+  Refactor styling.
+  [Kevin Bieri]
 
 
 1.0.0a1 (2016-07-06)

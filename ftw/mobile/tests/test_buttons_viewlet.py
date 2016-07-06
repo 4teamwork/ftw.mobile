@@ -19,14 +19,14 @@ class TestUserButton(FunctionalTestCase):
     def test_viewlet_is_available(self, browser):
         browser.login().visit()
 
-        self.assertTrue(browser.css('.ftw-mobile-buttons'),
+        self.assertTrue(browser.css('#ftw-mobile-menu-buttons'),
                         'Expect the ftw mobile viewlet on the site.')
 
     @browsing
     def test_default_buttons(self, browser):
         browser.login().visit()
         self.assertEquals(['Mobile navigation', 'User menu'],
-                          browser.css('.ftw-mobile-buttons a').text)
+                          browser.css('#ftw-mobile-menu-buttons a').text)
 
     @browsing
     def test_buttons_at_the_end(self, browser):
@@ -36,7 +36,7 @@ class TestUserButton(FunctionalTestCase):
         try:
             browser.login().visit()
             self.assertEquals(['Mobile navigation', 'User menu', 'somebutton'],
-                              browser.css('.ftw-mobile-buttons a').text)
+                              browser.css('#ftw-mobile-menu-buttons a').text)
         finally:
             self.unregister_button('somebutton')
 
@@ -48,7 +48,7 @@ class TestUserButton(FunctionalTestCase):
         try:
             browser.login().visit()
             self.assertEquals(['somebutton', 'Mobile navigation', 'User menu'],
-                              browser.css('.ftw-mobile-buttons a').text)
+                              browser.css('#ftw-mobile-menu-buttons a').text)
         finally:
             self.unregister_button('somebutton')
 
@@ -60,7 +60,7 @@ class TestUserButton(FunctionalTestCase):
         try:
             browser.login().visit()
             self.assertEquals(['Mobile navigation', 'somebutton', 'User menu'],
-                              browser.css('.ftw-mobile-buttons a').text)
+                              browser.css('#ftw-mobile-menu-buttons a').text)
         finally:
             self.unregister_button('somebutton')
 
@@ -72,7 +72,7 @@ class TestUserButton(FunctionalTestCase):
         try:
             browser.login().visit()
             self.assertEquals(['Mobile navigation', 'User menu'],
-                              browser.css('.ftw-mobile-buttons a').text)
+                              browser.css('#ftw-mobile-menu-buttons a').text)
         finally:
             self.unregister_button('somebutton')
 

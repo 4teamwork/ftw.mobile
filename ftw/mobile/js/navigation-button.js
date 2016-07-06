@@ -10,7 +10,7 @@
       var root_url;
 
       function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
-        root_url = $(".ftw-mobile-buttons").data("navrooturl");
+        root_url = $("#ftw-mobile-menu-buttons").data("navrooturl");
         var root_node = {url: root_url};
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};

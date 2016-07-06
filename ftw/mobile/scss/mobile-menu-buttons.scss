@@ -1,0 +1,175 @@
+$size-mobile-button: 72px !default;
+$font-size-mobile-button: 2em !default;
+
+$mobile-menu-height: 54px !default;
+
+$color-mobile-button: $color-primary !default;
+
+@mixin auto-border-color($color: $color-primary) {
+  border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
+}
+
+#ftw-mobile-menu-buttons {
+
+  ul {
+    @include list-horizontal;
+    li {
+      width: $size-mobile-button;
+      display: inline-block;
+      vertical-align: middle;
+      float: none;
+
+      a {
+        @extend .fa-icon;
+
+        padding: 0;
+        color: transparent;
+        overflow: hidden;
+        white-space: nowrap;
+        width: $size-mobile-button;
+
+        &:before {
+          @include auto-text-color($color-mobile-button);
+
+          background-color: $color-mobile-button;
+          width: $size-mobile-button;
+          line-height: $size-mobile-button;
+          font-size: $font-size-mobile-button;
+        }
+      }
+    }
+  }
+}
+
+#user-mobile-button a {
+  @extend .fa-user;
+}
+
+#navigation-mobile-button a {
+  @extend .fa-navicon;
+}
+
+.topLevelTabs {
+  @include tab-list();
+  white-space: nowrap;
+  overflow-x: auto;
+  font-size: 0;
+
+  &::-webkit-scrollbar {
+      display: none;
+  }
+
+  > li {
+    display: inline-block;
+    float: none;
+    > a {
+      height: $size-mobile-button;
+      line-height: $size-mobile-button / 1.5;
+      font-size: $font-size-medium;
+    }
+  }
+}
+
+.tabPanes {
+  margin-top: $margin-vertical;
+}
+
+.tabPane ul {
+  @include list-group();
+  float: left;
+  width: 100%;
+
+  > li {
+    @include clearfix();
+    font-size: 0;
+
+    &:last-child > a, &:first-child > a {
+      border-radius: 0;
+    }
+
+    > a {
+      display: block;
+      float: left;
+      width: calc(100% - #{$size-mobile-button});
+      font-size: $font-size-medium;
+      padding-right: 0;
+      > span {
+        @include hidden-structure();
+      }
+      &.mobileActionNav {
+        width: $size-mobile-button;
+      }
+    }
+
+    > ul {
+      > li {
+        &:last-child > a, &:first-child > a {
+          border-radius: 0;
+        }
+
+        > a {
+          padding-left: $padding-horizontal * 2;
+          background-color: $color-gray-light;
+          &.mobileActionNav {
+            padding-left: $padding-horizontal;
+          }
+        }
+      }
+      border-bottom: 1px solid $color-gray-dark;
+    }
+  }
+}
+
+.mobileActionNav {
+  @extend .fa-icon;
+  &.down {
+    @extend .fa-chevron-right;
+  }
+  &.up {
+    @extend .fa-chevron-left;
+  }
+  &:before {
+    height: 0;
+    font-size: $font-size-medium;
+  }
+}
+
+#ftw-mobile-menu {
+  > ul {
+    @include list-group();
+    width: 100%;
+  }
+
+  &.spinner {
+    &:before {
+      content: "";
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    &:after {
+      @include animation(sk-rotateplane, 1.2s infinite ease-in-out);
+      position: fixed;
+      content: "";
+      width: 60px;
+      height: 60px;
+      background-color: #888;
+      top: 50%;
+      left: 50%;
+      margin-left: -30px;
+      margin-top: -30px;
+      z-index: 10;
+    }
+  }
+}
+
+@include keyframes(sk-rotateplane) {
+  0% { @include transform(perspective(120px) rotateX(0) rotateY(0)); }
+  50% { @include transform(perspective(120px) rotateX(-180deg) rotateY(0)); }
+  100% { @include transform(perspective(120px) rotateX(-180deg) rotateY(-180deg)); }
+}

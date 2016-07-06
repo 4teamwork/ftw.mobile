@@ -19,8 +19,8 @@
                   {{#if parentNode}}
 
                   <li class="navParentNode">
-                      <a href="{{parentNode.url}}" class="mobileActionNav up" i18n:translate="label_goto_parent">
-                          Nächst höherer Inhalt {{parentNode.title}} anzeigen.
+                      <a href="{{parentNode.url}}" class="mobileActionNav up">
+                          <span i18n:translate="label_goto_parent">Nächst höherer Inhalt {{parentNode.title}} anzeigen.</span>
                       </a>
 
                       <a href="{{currentNode.url}}">{{currentNode.title}}</a>
@@ -44,7 +44,7 @@
             <a href="{{url}}">{{title}}</a>
 
             <a href="{{url}}" class="mobileActionNav down" i18n:translate="label_goto_children">
-                Unterhinhalte von: {{title}} anzeigen
+                <span>Unterhinhalte von: {{title}} anzeigen</span>
             </a>
 
             {{#if nodes}}
