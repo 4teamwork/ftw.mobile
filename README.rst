@@ -11,6 +11,9 @@ Introduction
 With ``ftw.mobile`` you can implement mobile buttons, which shows a list of options on click.
 The package needs ftw.theming, which provides the basic styles.
 
+Plus it provides a mobile navigation, which is also displayed as a mobile button, but nbehaves completely different.
+
+**ALPHA STATE: This software is currently under heavy development and the actual version may not be compatible with the final version.**
 
 
 Installation
@@ -93,7 +96,9 @@ The navigation button is somehow special across his complexity. The navigation b
 
 Details Navigation Button
 -------------------------
-TODO: Some info about the nav button and its behavior.
+TODO:
+    - Some info about the nav button and its behavior.
+    - Structure dependencies -> bierik?
 
 
 Development
