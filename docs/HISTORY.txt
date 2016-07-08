@@ -5,7 +5,8 @@ Changelog
 1.0.0a3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Introduce transitionend marker on root element.
+  [Kevin Bieri]
 
 
 1.0.0a2 (2016-07-06)

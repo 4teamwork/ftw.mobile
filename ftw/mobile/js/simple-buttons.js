@@ -6,10 +6,20 @@
 
   var root = $(":root");
 
+  var vendorTransitionEnd = [
+    "webkitTransitionEnd",
+    "transitionEnd"
+  ];
+
   // Here we need to wrap the whole content in the body
   // with the offcanvas wrapper to make the slide in navigation
   // working on Safari and on iOS devices
-  function prepareHTML() { $("body > *").wrapAll(offcanvasWrapper()); }
+  function prepareHTML() {
+    $("body > *").wrapAll(offcanvasWrapper());
+
+    // Prepare initial closed state
+    root.addClass("menu-closed");
+  }
 
   function openMenu() { $('#ftw-mobile-menu').addClass("open"); }
 
@@ -18,9 +28,31 @@
     $('#ftw-mobile-menu').removeClass("open");
   }
 
-  function slideOut() { root.removeClass("menu-open"); }
+  function slideOut() {
+    root.removeClass("menu-open");
+    root.on(vendorTransitionEnd.join(" "), function() {
+      root.removeClass("menu-opened");
+      root.addClass("menu-closed");
+      root.off(vendorTransitionEnd.join(" "));
+    });
+  }
 
-  function toggleNavigation() { root.toggleClass("menu-open"); }
+  function slideIn() {
+    root.addClass("menu-open");
+    root.on(vendorTransitionEnd.join(" "), function() {
+      root.addClass("menu-opened");
+      root.removeClass("menu-closed");
+      root.off(vendorTransitionEnd.join(" "));
+    });
+  }
+
+  function toggleNavigation() {
+    if(root.hasClass("menu-open")) {
+      slideOut();
+    } else {
+      slideIn();
+    }
+  }
 
   function closeLinks() { $("#ftw-mobile-menu-buttons .selected").removeClass("selected"); }
 
@@ -159,5 +191,10 @@
     /* initialize_navigation_button will only work once and then disable itself */
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
   });
+
+  window.mobileMenu = {
+    slideIn: slideIn,
+    slideOut: slideOut
+  };
 
 })(window.Handlebars, window.mobileTree);
