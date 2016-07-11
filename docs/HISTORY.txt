@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.0a3 (unreleased)
+1.0.0a3 (2016-07-11)
 --------------------
 
 - Introduce transitionend marker on root element.
