@@ -3,6 +3,7 @@ from ftw.builder import create
 from ftw.mobile.tests import FunctionalTestCase
 from ftw.testbrowser import browsing
 from operator import itemgetter
+from Products.CMFCore.utils import getToolByName
 
 
 class TestMobileNavigation(FunctionalTestCase):
@@ -109,6 +110,30 @@ class TestMobileNavigation(FunctionalTestCase):
               u'title': u'The Folder',
               u'url': u'http://nohost/plone/the-folder'}],
             browser.json)
+
+    @browsing
+    def test_startup_with_no_View_permission_on_parent(self, browser):
+        """Regression test: the navigation should not break when the current
+        user has no View permission on any parent.
+        """
+
+        self.grant('Manager')
+        wftool = getToolByName(self.portal, 'portal_workflow')
+        wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
+
+        one = create(Builder('folder').titled('Folder One'))
+        two = create(Builder('folder').titled('Folder Two').within(one))
+        john = create(Builder('user').named('John', 'Doe')
+                      .with_roles('Reader', on=two))
+
+        browser.login(john).open(two, view='mobilenav/startup')
+
+        self.assertDictEqual(
+            {u'/plone/folder-one': u'Folder One',
+             u'/plone/folder-one/folder-two': u'Folder Two'},
+
+            dict(map(lambda item: (item['absolute_path'], item['title']),
+                     browser.json)))
 
     @browsing
     def test_children_endpoint_fetches_two_levels(self, browser):
