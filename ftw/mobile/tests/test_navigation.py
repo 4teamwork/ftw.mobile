@@ -4,6 +4,7 @@ from ftw.mobile.tests import FunctionalTestCase
 from ftw.testbrowser import browsing
 from operator import itemgetter
 from Products.CMFCore.utils import getToolByName
+from zExceptions import Unauthorized
 
 
 class TestMobileNavigation(FunctionalTestCase):
@@ -134,6 +135,28 @@ class TestMobileNavigation(FunctionalTestCase):
 
             dict(map(lambda item: (item['absolute_path'], item['title']),
                      browser.json)))
+
+    @browsing
+    def test_startup_does_not_work_on_unauthorized_content(self, browser):
+        """For security it is essential that the `startup` endpoint does
+        not work on a context where the current user has no `View` permission.
+        This is not protected by ZCML since the `children` endpoint needs
+        to be public.
+
+        The `startup` endpoint may provide infos of unpublished content (such
+        as the title). This is necessary for the navigation to work and follows
+        Plone principal but it should not be possible to misuse the endpoint
+        for getting those informations on _any_ content.
+        """
+        self.grant('Manager')
+        wftool = getToolByName(self.portal, 'portal_workflow')
+        wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
+        folder = create(Builder('folder').titled('Folder'))
+        john = create(Builder('user').named('John', 'Doe'))
+
+        browser.login(john)
+        with self.assertRaises(Unauthorized):
+            browser.open(folder, view='mobilenav/startup')
 
     @browsing
     def test_children_endpoint_fetches_two_levels(self, browser):

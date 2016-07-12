@@ -6,6 +6,7 @@ from plone import api
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
+from zExceptions import Unauthorized
 import hashlib
 import json
 import logging
@@ -39,6 +40,9 @@ class MobileNavigation(BrowserView):
         """Return all nodes relevant for starting up a mobile navigation
         on the current context.
         """
+        if not api.user.has_permission('View', obj=self.context):
+            raise Unauthorized()
+
         response = self.request.response
         response.setHeader('Content-Type', 'application/json')
         response.setHeader('X-Theme-Disabled', 'True')
