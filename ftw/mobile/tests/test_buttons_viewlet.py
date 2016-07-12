@@ -5,7 +5,6 @@ from ftw.testbrowser import browsing
 from zope.component import getGlobalSiteManager
 from zope.component import provideAdapter
 from zope.interface import Interface
-import json
 import transaction
 
 

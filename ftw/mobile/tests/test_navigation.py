@@ -1,12 +1,8 @@
 from ftw.builder import Builder
 from ftw.builder import create
-from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.tests import FunctionalTestCase
 from ftw.testbrowser import browsing
-from itertools import groupby
 from operator import itemgetter
-from zope.component import getMultiAdapter
-import json
 
 
 class TestMobileNavigation(FunctionalTestCase):
