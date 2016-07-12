@@ -178,3 +178,31 @@ class TestMobileNavigation(FunctionalTestCase):
               u'title': u'The Folder',
               u'url': u'http://nohost/plone/the-folder'}],
             browser.json)
+
+    @browsing
+    def test_children_fetching_on_unauthorized_works(self, browser):
+        """The JavaScript may fetch children now and then, sometimes even
+        on objects on which the current user has no View permission.
+        In order for the JavaScript to work properly, this should not fail
+        with an unauthorized error but return possible children.
+
+        This might be a situation where the unauthorized object was already
+        loaded as parent and the JavaScript is trying to fetch its children,
+        which may even be published / visible.
+        """
+
+        self.grant('Manager')
+        wftool = getToolByName(self.portal, 'portal_workflow')
+        wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
+
+        container = create(Builder('folder').titled('Container'))
+        visible_child = create(Builder('folder').titled('visible child')
+                               .within(container))
+        create(Builder('folder').titled('invisible child').within(container))
+        john = create(Builder('user').named('John', 'Doe')
+                      .with_roles('Reader', on=visible_child))
+
+        browser.login(john).open(container, view='mobilenav/children')
+        self.assertItemsEqual(
+            [u'/plone/container/visible-child'],
+            map(itemgetter('absolute_path'), browser.json))
