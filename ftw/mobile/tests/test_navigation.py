@@ -109,3 +109,47 @@ class TestMobileNavigation(FunctionalTestCase):
               u'title': u'The Folder',
               u'url': u'http://nohost/plone/the-folder'}],
             browser.json)
+
+    @browsing
+    def test_children_endpoint_fetches_two_levels(self, browser):
+        self.grant('Manager')
+        create(Builder('folder').titled('Five').within(
+            create(Builder('folder').titled('Four').within(
+                create(Builder('folder').titled('Three').within(
+                    create(Builder('folder').titled('Two').within(
+                        create(Builder('folder').titled('One'))))))))))
+
+        browser.open(self.portal.one, view='mobilenav/children')
+        self.assertItemsEqual(
+            [
+                u'/plone/one',
+                u'/plone/one/two',
+                u'/plone/one/two/three',
+            ],
+            map(itemgetter('absolute_path'), browser.json))
+
+        browser.open(self.portal.one.two, view='mobilenav/children')
+        self.assertItemsEqual(
+            [
+                u'/plone/one/two',
+                u'/plone/one/two/three',
+                u'/plone/one/two/three/four',
+            ],
+            map(itemgetter('absolute_path'), browser.json))
+
+    @browsing
+    def test_children_item_data(self, browser):
+        self.grant('Manager')
+        create(Builder('folder')
+               .titled('The Folder')
+               .having(description='A very nice folder'))
+
+        browser.open(view='mobilenav/children')
+        self.assertEquals(
+            [{u'absolute_path': u'/plone/the-folder',
+              u'description': u'A very nice folder',
+              u'externallink': False,
+              u'id': u'the-folder',
+              u'title': u'The Folder',
+              u'url': u'http://nohost/plone/the-folder'}],
+            browser.json)
