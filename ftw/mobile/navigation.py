@@ -151,8 +151,8 @@ class MobileNavigation(BrowserView):
                 'externallink': is_external_link(brain)}
 
     def set_children_loaded_flag(self, query, node):
-        if (not isinstance(query.get('path', None), dict)
-            or 'depth' not in query.get('path', {})):
+        if not isinstance(query.get('path', None), dict) \
+           or 'depth' not in query.get('path', {}):
             # Since we have no path depth limitation we assume that all
             # items were provided in a single response, thus
             # all children are assumed to be loaded.

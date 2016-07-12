@@ -97,4 +97,5 @@ class NavigationButton(BaseButton):
         return '@@mobilenav'
 
     def startup_cachekey(self):
-        return self.context.restrictedTraverse('@@mobilenav').get_startup_cachekey()
+        return (self.context.restrictedTraverse('@@mobilenav')
+                .get_startup_cachekey())
