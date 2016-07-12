@@ -91,3 +91,21 @@ class TestMobileNavigation(FunctionalTestCase):
             'private, max-age=31536000',
             browser.headers.get('cache-control'),
             'Expected private cache control since request is authenticated.')
+
+    @browsing
+    def test_startup_item_data(self, browser):
+        self.grant('Manager')
+        create(Builder('folder')
+               .titled('The Folder')
+               .having(description='A very nice folder'))
+
+        browser.open(view='mobilenav/startup')
+        self.assertEquals(
+            [{u'absolute_path': u'/plone/the-folder',
+              u'children_loaded': True,
+              u'description': u'A very nice folder',
+              u'externallink': False,
+              u'id': u'the-folder',
+              u'title': u'The Folder',
+              u'url': u'http://nohost/plone/the-folder'}],
+            browser.json)
