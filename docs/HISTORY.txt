@@ -5,7 +5,8 @@ Changelog
 1.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use zindex system from ftw.theming to fix dropdown menues
+  [Kevin Bieri]
 
 
 1.0.0a3 (2016-07-11)
