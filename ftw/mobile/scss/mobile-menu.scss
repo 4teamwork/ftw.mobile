@@ -1,7 +1,7 @@
 #ftw-mobile-menu {
+  z-index: $zindex-portal-top + $zindex-header + $zindex-dropdown;
   position: absolute;
   top: 0;
-  z-index: 10;
   width: 100%;
   font-size: $font-size-medium;
   max-width: calc(100% - #{$size-mobile-button});
@@ -43,7 +43,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 999;
+  z-index: $zindex-overlay;
   opacity: .8;
 }
 
