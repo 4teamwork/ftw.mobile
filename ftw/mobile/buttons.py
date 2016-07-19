@@ -5,6 +5,8 @@ from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.interface import implements
 from zope.interface import Interface
+from collections import OrderedDict
+from plone import api
 import json
 
 
@@ -13,7 +15,8 @@ LINK_TEMPLATE = '''
    data-mobile_endpoint="{endpoint}"
    data-mobile_startup_cachekey="{startup_cachekey}"
    data-mobile_template="{mobile_template}"
-   data-mobile_data='{data}'>
+   data-mobile_data='{data}'
+   data-mobile_label='{label}'>
     {label}
 </a>
 '''
@@ -101,3 +104,33 @@ class NavigationButton(BaseButton):
     def startup_cachekey(self):
         return (self.context.restrictedTraverse('@@mobilenav')
                 .get_startup_cachekey())
+
+
+class MultilanguageButton(BaseButton):
+
+    def label(self):
+        context = self.context.aq_inner
+        portal_state = getMultiAdapter(
+            (context, self.request),
+            name=u'plone_portal_state')
+        current_language = portal_state.language()
+        return current_language
+
+    def position(self):
+        return 300
+
+    def data(self):
+        portal_languages = self.context.portal_languages
+
+        langs = portal_languages.getAvailableLanguages()
+        supported = portal_languages.supported_langs
+
+        def link_data(code):
+            language = langs[code]
+            portal_url = api.portal.get().absolute_url()
+
+            url = '{0}?set_language={1}'.format(portal_url, code)
+            return {'url': url,
+                    'label': language['native']}
+
+        return map(link_data, supported)
