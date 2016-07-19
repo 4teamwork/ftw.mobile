@@ -11,6 +11,9 @@ Changelog
 1.0.1 (2016-07-18)
 ------------------
 
+- Pevent scrolling when navigation is open
+  [Kevin Bieri]
+
 - Use zindex system from ftw.theming to fix dropdown menues
   [Kevin Bieri]
 
