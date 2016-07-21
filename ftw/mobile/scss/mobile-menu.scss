@@ -51,13 +51,13 @@
   left: calc(100% - #{$size-mobile-button});
 }
 
+html.menu-open {
+  overflow: hidden;
+}
+
 .menu-open {
 
   body {
-    overflow: hidden;
-  }
-
-  #offcanvas-wrapper {
     overflow: hidden;
   }
 
