@@ -6,6 +6,7 @@ from plone import api
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
+from zExceptions import Unauthorized
 import hashlib
 import json
 import logging
@@ -39,6 +40,9 @@ class MobileNavigation(BrowserView):
         """Return all nodes relevant for starting up a mobile navigation
         on the current context.
         """
+        if not api.user.has_permission('View', obj=self.context):
+            raise Unauthorized()
+
         response = self.request.response
         response.setHeader('Content-Type', 'application/json')
         response.setHeader('X-Theme-Disabled', 'True')
@@ -56,7 +60,9 @@ class MobileNavigation(BrowserView):
             response.setHeader('Cache-Control',
                                '{}, max-age=31536000'.format(visibility))
 
-        return json.dumps(self.get_nodes_by_query(self.get_startup_query()))
+        nodes = self.get_nodes_by_query(self.get_startup_query())
+        nodes = self.prepend_unauthorized_parents(nodes)
+        return json.dumps(nodes)
 
     def get_startup_query(self):
         query = self.get_default_query()
@@ -98,19 +104,53 @@ class MobileNavigation(BrowserView):
             if INavigationRoot.providedBy(obj):
                 return
 
+    def prepend_unauthorized_parents(self, nodes):
+        """For the navigation to work properly, we need to make sure that
+        the parents are included on startup.
+        Otherwise no tree can be built and the navigation would not work.
+        There might be the problem that the current user is not authorized
+        to access a parent (View permission).
+        For beeing consistent with other Plone navigations such as the
+        navigation portlet or breadcrumbs we want to render the parents
+        anyway and let the user hit an "Anauthorized"-error when the user
+        clicks.
+        This has the advantage that we can build the navigation tree properly.
+
+        This method prepends the missing parents by doing an unrestricted
+        catalog query.
+        """
+
+        nodes_paths = map(itemgetter('absolute_path'), nodes)
+        missing_paths = filter(lambda path: path not in nodes_paths,
+                               self.parent_paths_to_nav_root())
+        if not missing_paths:
+            return nodes
+
+        query = self.get_default_query()
+        query['path'] = {'query': missing_paths,
+                         'depth': 0}
+        parents = self.get_nodes_by_query(query, unrestricted_search=True)
+        return parents + nodes
+
     def get_toplevel_paths(self):
         navroot = api.portal.get_navigation_root(self.context)
         for child in navroot.getFolderContents():
             yield child.getPath()
 
-    def get_nodes_by_query(self, query):
-        nodes = map(self.brain_to_node, self.get_brains(query))
+    def get_nodes_by_query(self, query, unrestricted_search=False):
+        nodes = map(self.brain_to_node,
+                    self.get_brains(query,
+                                    unrestricted_search=unrestricted_search))
         map(partial(self.set_children_loaded_flag, query), nodes)
         return nodes
 
-    def get_brains(self, query):
+    def get_brains(self, query, unrestricted_search=False):
         catalog = api.portal.get_tool('portal_catalog')
-        brains = catalog(query)
+
+        if unrestricted_search:
+            brains = catalog.unrestrictedSearchResults(query)
+        else:
+            brains = catalog.searchResults(query)
 
         warnsize = 5000
         if len(brains) > warnsize:
