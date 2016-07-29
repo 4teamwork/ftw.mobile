@@ -8,6 +8,8 @@ Changelog
 - Fix hightlighting more than one top level tab
   [Kevin]
 
+- Translate user menu actions. [jone]
+
 - Fix issues when the user has no permission to view a parent. [jone]
 
 

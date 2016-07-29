@@ -1,8 +1,10 @@
 from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.tests import FunctionalTestCase
 from ftw.testbrowser import browsing
+from plone import api
 from zope.component import getMultiAdapter
 import json
+import transaction
 
 
 class TestUserButton(FunctionalTestCase):
@@ -51,3 +53,22 @@ class TestUserButton(FunctionalTestCase):
         self.assertTrue(
             isinstance(json.loads(link.attrib['data-mobile_data']), list),
             'Expect valid json data in mobile-data')
+
+    @browsing
+    def test_user_button_labels_are_translated(self, browser):
+        lang_tool = api.portal.get_tool('portal_languages')
+        lang_tool.setDefaultLanguage('de')
+        transaction.commit()
+
+        browser.login().open()
+        link = browser.css('#user-mobile-button a').first
+        data = link.attrib.get('data-mobile_data')
+        self.assertEquals(
+            [{u'url': u'http://nohost/plone/dashboard',
+              u'label': u'Pers\xf6nliche Seite'},
+             {u'url': u'http://nohost/plone/@@personal-preferences',
+              u'label': u'Meine Einstellungen'},
+             {u'url': u'http://nohost/plone/logout',
+              u'label': u'Abmelden'},
+            ],
+            json.loads(data))
