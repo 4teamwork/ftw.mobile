@@ -5,6 +5,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- Fix hightlighting more than one top level tab
+  [Kevin]
+
 - Fix issues when the user has no permission to view a parent. [jone]
 
 
