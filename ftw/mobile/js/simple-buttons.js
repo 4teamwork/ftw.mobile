@@ -135,7 +135,7 @@
       var template = Handlebars.compile(templateSource);
       var currentItem = items.nodes[0];
       $(items.toplevel).each(function() {
-        if(currentItem.path.indexOf(this.path) > -1) {
+        if((currentItem.path + "/").indexOf(this.path + "/") > -1) {
           this.cssclass = 'selected';
         }
       });
