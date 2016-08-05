@@ -2,6 +2,7 @@ from ftw.mobile import _
 from ftw.mobile.interfaces import IMobileButton
 from zope.component import adapts
 from zope.component import getMultiAdapter
+from zope.i18n import translate
 from zope.interface import implements
 from zope.interface import Interface
 import json
@@ -78,7 +79,8 @@ class UserButton(BaseButton):
 
         def link_data(item):
             return {'url': item.get('url'),
-                    'label': item.get('title')}
+                    'label': translate(item.get('title'),
+                                       context=self.request)}
         return map(link_data, user_actions)
 
 
