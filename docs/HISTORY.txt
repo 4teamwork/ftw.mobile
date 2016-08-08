@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.2 (unreleased)
+1.0.2 (2016-08-08)
 ------------------
 
 - Fix hightlighting more than one top level tab
