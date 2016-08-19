@@ -70,6 +70,7 @@
     var link = $(this);
     link.click(function(event){
       event.preventDefault();
+      event.stopPropagation();
       var templateName = link.data('mobile_template');
       var templateSource = $('#' + templateName).html();
       var template = Handlebars.compile(templateSource);
@@ -173,12 +174,12 @@
     }, link.data('mobile_startup_cachekey'));
   }
 
-  $(document).on("click", "#ftw-mobile-menu-overlay", function(){
+  $(document)
+  .on("click", "#ftw-mobile-menu-overlay", function(){
     slideOut();
-  });
-
-
-  $(document).ready(function() {
+  })
+  .on("click", closeMenu)
+  .ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
 
