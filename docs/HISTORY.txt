@@ -5,7 +5,7 @@ Changelog
 1.0.3 (unreleased)
 ------------------
 
-- Make it possible to close the menu when clicking somewhere outside of the menu
+- Make it possible to close the menu when clicking somewhere outside of the menu [Kevin Bieri]
 
 
 1.0.2 (2016-08-08)
