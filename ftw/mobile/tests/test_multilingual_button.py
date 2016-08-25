@@ -1,6 +1,9 @@
+import copy
 from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.tests import FunctionalTestCase
 from ftw.testbrowser import browsing
+from plone.app.multilingual.browser.setup import SetupMultilingualSite
+from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 import json
 import transaction
@@ -8,33 +11,33 @@ import transaction
 
 class TestMultilingualButton(FunctionalTestCase):
 
-    supportedLanguages = ['de', 'fr', 'en']
-
-    def set_lang(self, lang='de'):
-        self.ltool.manage_setLanguageSettings(
-            lang, self.supportedLanguages,
-            setUseCombinedLanguageCodes=False)
+    supported_languages = ['de', 'fr', 'en']
 
     def setUp(self):
         super(TestMultilingualButton, self).setUp()
-
         self.grant('Manager')
-        self.button = getMultiAdapter((self.portal, self.request),
-                                      IMobileButton,
-                                      name="multilanguage-mobile-button")
 
-        self.ltool = self.portal.portal_languages
+        self.language_tool = getToolByName(self.portal, 'portal_languages')
+        for lang in self.supported_languages:
+            self.language_tool.addSupportedLanguage(lang)
 
-        self.set_lang()
-        self.request['LANGUAGE'] = 'de'
+        pam_setup_tool = SetupMultilingualSite()
+        pam_setup_tool.setupSite(self.portal)
 
+        self.button = getMultiAdapter(
+            (self.portal, self.request),
+            IMobileButton,
+            name='multilanguage-mobile-button'
+        )
+
+    def _set_lang(self, lang='de'):
+        self.language_tool.manage_setLanguageSettings(
+            lang, self.supported_languages,
+            setUseCombinedLanguageCodes=False)
         transaction.commit()
 
-    def tearDown(self):
-        self.ltool.setLanguageBindings()
-
     def test_label(self):
-        import pdb; pdb.set_trace()
+        self._set_lang('de')
         self.assertEquals(u'de', self.button.label())
 
     def test_data_template(self):
@@ -45,17 +48,29 @@ class TestMultilingualButton(FunctionalTestCase):
         self.assertEquals(300, self.button.position())
 
     def test_data(self):
-        expect = [
-            {'url': u'http://nohost/plone?set_language=de',
-             'label': u'Deutsch'},
-            {'url': u'http://nohost/plone?set_language=fr',
-             'label': u'Fran\xe7ais'},
-            {'url': u'http://nohost/plone?set_language=en',
-             'label': u'English'}, ]
-        self.assertEquals(expect, (self.button.data()))
+        self._set_lang('de')
+        self.assertEquals(
+            [
+                {
+                    'label': u'Deutsch',
+                    'url': u'http://nohost/plone/@@multilingual-selector/notg/de?set_language=de',
+                },
+                {
+                    'label': u'Fran\xe7ais',
+                    'url': u'http://nohost/plone/@@multilingual-selector/notg/fr?set_language=fr',
+                },
+                {
+                    'label': u'English',
+                    'url': u'http://nohost/plone/@@multilingual-selector/notg/en?set_language=en',
+                }
+            ],
+            self.button.data()
+        )
 
     @browsing
     def test_rendering(self, browser):
+        self._set_lang('de')
+
         html = self.button.render_button()
         browser.open_html(html)
 
@@ -71,3 +86,30 @@ class TestMultilingualButton(FunctionalTestCase):
         self.assertTrue(
             isinstance(json.loads(link.attrib['data-mobile_data']), list),
             'Expect valid json data in mobile-data')
+
+    def test_button_is_not_available(self):
+        # The button must be here because of the 3 configured languages.
+        self.assertEqual(
+            True,
+            self.button.available()
+        )
+
+        # Remove languages, keep only "de".
+        langs = copy.deepcopy(self.supported_languages)
+        langs.remove('de')
+        self.language_tool.removeSupportedLanguages(langs)
+        self.assertEqual(
+            ['de'],
+            self.language_tool.getSupportedLanguages()
+        )
+
+        # Make sure the button is no longer available.
+        button = getMultiAdapter(
+            (self.portal, self.request),
+            IMobileButton,
+            name='multilanguage-mobile-button'
+        )
+        self.assertEqual(
+            False,
+            button.available()
+        )

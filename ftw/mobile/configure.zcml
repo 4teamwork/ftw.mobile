@@ -71,7 +71,7 @@
     <adapter factory=".buttons.NavigationButton" name="navigation-mobile-button" />
 
     <configure zcml:condition="installed plone.app.multilingual">
-        <adapter factory=".buttons.MultilanguageButton" name="multilanguage-mobile-button" />
+        <adapter factory=".buttons_multilingual.MultilanguageButton" name="multilanguage-mobile-button" />
     </configure>
 
 </configure>
