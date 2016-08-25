@@ -24,6 +24,7 @@ class TestMultilingualButton(FunctionalTestCase):
         pam_setup_tool = SetupMultilingualSite()
         pam_setup_tool.setupSite(self.portal)
 
+        self._set_lang('de')
         self.button = getMultiAdapter(
             (self.portal, self.request),
             IMobileButton,
@@ -37,7 +38,6 @@ class TestMultilingualButton(FunctionalTestCase):
         transaction.commit()
 
     def test_label(self):
-        self._set_lang('de')
         self.assertEquals(u'de', self.button.label())
 
     def test_data_template(self):
@@ -48,7 +48,6 @@ class TestMultilingualButton(FunctionalTestCase):
         self.assertEquals(300, self.button.position())
 
     def test_data(self):
-        self._set_lang('de')
         self.assertEquals(
             [
                 {
@@ -69,8 +68,6 @@ class TestMultilingualButton(FunctionalTestCase):
 
     @browsing
     def test_rendering(self, browser):
-        self._set_lang('de')
-
         html = self.button.render_button()
         browser.open_html(html)
 
