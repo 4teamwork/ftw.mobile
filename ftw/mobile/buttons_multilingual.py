@@ -2,9 +2,17 @@ from ftw.mobile.buttons import BaseButton
 from plone import api
 from plone.app.multilingual.browser.selector import addQuery
 from plone.app.multilingual.browser.selector import getPostPath
-from plone.multilingual.interfaces import ITG
-from plone.multilingual.interfaces import NOTG
 from zope.component import queryAdapter
+
+try:
+    from plone.app.multilingual.interfaces import ITG  # plone.app.multilingual 2.x
+except ImportError:
+    from plone.multilingual.interfaces import ITG  # plone.app.multilingual 1.x
+
+try:
+    from plone.app.multilingual.interfaces import NOTG  # plone.app.multilingual 2.x
+except ImportError:
+    from plone.multilingual.interfaces import NOTG  # plone.app.multilingual 1.x
 
 
 class MultilanguageButton(BaseButton):
