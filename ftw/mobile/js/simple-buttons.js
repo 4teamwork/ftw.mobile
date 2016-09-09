@@ -141,6 +141,7 @@
         }
       });
 
+      var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').html(template({
         toplevel: items.toplevel,
         currentNode: currentItem,
@@ -148,6 +149,7 @@
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id')
       }));
+      $('.topLevelTabs').scrollLeft(tabs_scroll_left);
       hideSpinner();
     }
 
@@ -167,7 +169,26 @@
         toggleNavigation();
       });
 
-      $(document).on('click', '.topLevelTabs a, a.mobileActionNav', function(event) {
+      $(document).on('click', '.topLevelTabs a', function(event) {
+        var path = mobileTree.getPhysicalPath($(this).attr('href'));
+        mobileTree.query(
+          {path: path, depth: 2},
+          function(items) {
+            var has_children = (items[0].nodes.length > 0);
+            if (!has_children) {
+              // When clicking on a top level node without children
+              // the browser must open this node. We do not "preventDefault()"
+              // for the link target to be opened.
+              return;
+            } else {
+              event.preventDefault();
+              render_path(path);
+            }
+          },
+          showSpinner);
+      });
+
+      $(document).on('click', 'a.mobileActionNav', function(event) {
         event.preventDefault();
         render_path(mobileTree.getPhysicalPath($(this).attr('href')));
       });
