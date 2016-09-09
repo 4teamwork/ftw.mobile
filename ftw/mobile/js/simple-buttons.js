@@ -141,6 +141,7 @@
         }
       });
 
+      var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').html(template({
         toplevel: items.toplevel,
         currentNode: currentItem,
@@ -148,6 +149,7 @@
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id')
       }));
+      $('.topLevelTabs').scrollLeft(tabs_scroll_left);
       hideSpinner();
     }
 

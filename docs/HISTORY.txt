@@ -5,7 +5,7 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Scroll back to the top level node after having clicked it. [jone]
 
 
 1.1.0 (2016-09-09)
