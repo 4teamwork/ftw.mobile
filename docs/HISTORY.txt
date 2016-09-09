@@ -5,6 +5,9 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
+- Open the target behind a top level node not having children after
+  having clicked it. [jone, mbaechtold]
+
 - Scroll back to the top level node after having clicked it. [jone]
 
 
