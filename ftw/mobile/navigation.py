@@ -129,7 +129,8 @@ class MobileNavigation(BrowserView):
         query = self.get_default_query()
         query['path'] = {'query': missing_paths,
                          'depth': 0}
-        parents = self.get_nodes_by_query(query, unrestricted_search=True)
+        parents = self.get_nodes_by_query(query, unrestricted_search=True,
+                                          filter_exclude_from_nav=False)
         return parents + nodes
 
     def get_toplevel_paths(self):
@@ -137,14 +138,17 @@ class MobileNavigation(BrowserView):
         for child in navroot.getFolderContents():
             yield child.getPath()
 
-    def get_nodes_by_query(self, query, unrestricted_search=False):
+    def get_nodes_by_query(self, query, unrestricted_search=False,
+                           filter_exclude_from_nav=True):
         nodes = map(self.brain_to_node,
                     self.get_brains(query,
-                                    unrestricted_search=unrestricted_search))
+                                    unrestricted_search=unrestricted_search,
+                                    filter_exclude_from_nav=filter_exclude_from_nav))
         map(partial(self.set_children_loaded_flag, query), nodes)
         return nodes
 
-    def get_brains(self, query, unrestricted_search=False):
+    def get_brains(self, query, unrestricted_search=False,
+                   filter_exclude_from_nav=True):
         catalog = api.portal.get_tool('portal_catalog')
 
         if unrestricted_search:
@@ -157,8 +161,10 @@ class MobileNavigation(BrowserView):
             LOG.warning('Query results in more than {} results ({})'
                             .format(warnsize, len(brains)))
 
-        return [brain for brain in brains
-                if not brain.exclude_from_nav]
+        if filter_exclude_from_nav:
+            brains = [brain for brain in brains if not brain.exclude_from_nav]
+
+        return brains
 
     def get_default_query(self):
         portal_types = api.portal.get_tool('portal_types')

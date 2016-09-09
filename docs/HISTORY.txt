@@ -5,6 +5,9 @@ Changelog
 1.0.3 (unreleased)
 ------------------
 
+- Fix crash when parent is excluded from navigation by also including
+  parents when excluded from navigation. [jone]
+
 - Make it possible to close the menu when clicking somewhere outside of the menu [Kevin Bieri]
 
 
