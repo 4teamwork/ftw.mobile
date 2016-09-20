@@ -49,6 +49,27 @@ $color-mobile-button: $color-primary !default;
   @extend .fa-navicon;
 }
 
+#multilanguage-mobile-button a {
+  @extend .fa-flag;
+
+  position: relative;
+
+  &:after {
+    content: attr(data-mobile_label);
+    color: $color-primary;
+    position: absolute;
+    width: $size-mobile-button;
+    height: $size-mobile-button;
+    left: 2px;
+    top: -3px;
+    text-align: center;
+    line-height: $size-mobile-button;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: $font-size-small;
+  }
+}
+
 .topLevelTabs {
   @include tab-list();
   white-space: nowrap;

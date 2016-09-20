@@ -5,6 +5,7 @@ from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
+from Testing.ZopeTestCase.utils import setupCoreSessions
 from zope.configuration import xmlconfig
 
 
@@ -20,8 +21,11 @@ class FtwMobileLayer(PloneSandboxLayer):
             '</configure>',
             context=configurationContext)
 
+        setupCoreSessions(app)
+
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'ftw.mobile:default')
+        applyProfile(portal, 'plone.app.multilingual:default')
 
 
 FTW_MOBILE_FIXTURE = FtwMobileLayer()

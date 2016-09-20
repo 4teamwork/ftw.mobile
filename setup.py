@@ -10,6 +10,7 @@ tests_require = [
     'ftw.testbrowser',
     'ftw.testing',
     'transaction',
+    'plone.app.multilingual',
     'unittest2',
 ]
 

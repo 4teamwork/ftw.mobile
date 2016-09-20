@@ -1,11 +1,11 @@
 #ftw-mobile-menu {
+  @include translate(-100%);
   z-index: $zindex-portal-top + $zindex-header + $zindex-dropdown;
   position: absolute;
   top: 0;
   width: 100%;
   font-size: $font-size-medium;
   max-width: calc(100% - #{$size-mobile-button});
-  @include translate(-100%);
 
   &.open {
     @include translate();
@@ -16,6 +16,7 @@
     margin: 0;
     position: absolute;
     top: $size-mobile-button;
+    box-shadow: $box-shadow-primary;
   }
 }
 
@@ -94,4 +95,12 @@ html.menu-open {
     z-index: 1;
     height: $size-mobile-button;
   }
+}
+
+// plone.app.multilingual
+#portal-languageselector-wrapper {
+  @include screen-large() {
+    display: block;
+  }
+  display: none;
 }

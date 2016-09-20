@@ -13,7 +13,8 @@ LINK_TEMPLATE = '''
    data-mobile_endpoint="{endpoint}"
    data-mobile_startup_cachekey="{startup_cachekey}"
    data-mobile_template="{mobile_template}"
-   data-mobile_data='{data}'>
+   data-mobile_data='{data}'
+   data-mobile_label='{label}'>
     {label}
 </a>
 '''
