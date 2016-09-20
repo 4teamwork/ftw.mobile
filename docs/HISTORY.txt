@@ -5,7 +5,7 @@ Changelog
 1.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add support for plone.app.multilingual [Kevin Bieri]
 
 
 1.2.0 (2016-09-09)
@@ -19,8 +19,6 @@ Changelog
 
 1.1.0 (2016-09-09)
 ------------------
-
-- Add support for plone.app.multilingual [Kevin Bieri]
 
 - Fix crash when parent is excluded from navigation by also including
   parents when excluded from navigation. [jone]
