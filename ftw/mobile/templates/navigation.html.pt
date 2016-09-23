@@ -39,7 +39,7 @@
 
 <script id="ftw-mobile-navigation-list-template" type="text/x-handlebars-template">
      {{#each nodes}}
-        <li>
+        <li class="node {{#if has_children}}has-children{{else}}has-no-children{{/if}}">
 
             <a href="{{url}}">{{title}}</a>
 

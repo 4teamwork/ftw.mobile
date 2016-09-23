@@ -11,18 +11,21 @@ class TestMobileNavigation(FunctionalTestCase):
 
     @browsing
     def test_startup(self, browser):
+        self.maxDiff = None
         self.grant('Manager')
-        create(Builder('folder').titled('five').within(
-            create(Builder('folder').titled('four').within(
-                create(Builder('folder').titled('three').within(
-                    create(Builder('folder').titled('two').within(
-                        create(Builder('folder').titled('one'))))))))))
+        create(Builder('folder').titled('six').within(
+            create(Builder('folder').titled('five').within(
+                create(Builder('folder').titled('four').within(
+                    create(Builder('folder').titled('three').within(
+                        create(Builder('folder').titled('two').within(
+                            create(Builder('folder').titled('one'))))))))))))
 
-        create(Builder('folder').titled('e').within(
-            create(Builder('folder').titled('d').within(
-                create(Builder('folder').titled('c').within(
-                    create(Builder('folder').titled('b').within(
-                        create(Builder('folder').titled('a'))))))))))
+        create(Builder('folder').titled('f').within(
+            create(Builder('folder').titled('e').within(
+                create(Builder('folder').titled('d').within(
+                    create(Builder('folder').titled('c').within(
+                        create(Builder('folder').titled('b').within(
+                            create(Builder('folder').titled('a'))))))))))))
 
         browser.open(view='mobilenav/startup')
         expected_startup_paths = [
@@ -30,10 +33,12 @@ class TestMobileNavigation(FunctionalTestCase):
             u'/plone/a/b',
             u'/plone/a/b/c',
             u'/plone/a/b/c/d',
+            u'/plone/a/b/c/d/e',
             u'/plone/one',
             u'/plone/one/two',
             u'/plone/one/two/three',
             u'/plone/one/two/three/four',
+            u'/plone/one/two/three/four/five',
         ]
         self.assertItemsEqual(
             expected_startup_paths,
@@ -42,7 +47,7 @@ class TestMobileNavigation(FunctionalTestCase):
         browser.open(self.portal.one.two, view='mobilenav/startup')
         self.assertItemsEqual(
             expected_startup_paths + [
-                u'/plone/one/two/three/four/five',
+                u'/plone/one/two/three/four/five/six',
             ],
             map(itemgetter('absolute_path'), browser.json))
 
@@ -53,15 +58,17 @@ class TestMobileNavigation(FunctionalTestCase):
         # has no children it may still have a "children_loaded" property.
         # The responses are expected to contain all children of a node, or none.
         self.assertEquals(
-            {False: [u'/plone/a/b/c',
-                     u'/plone/a/b/c/d',
-                     u'/plone/one/two/three/four',
-                     u'/plone/one/two/three/four/five'],
+            {False: [u'/plone/a/b/c/d',
+                     u'/plone/a/b/c/d/e',
+                     u'/plone/one/two/three/four/five',
+                     u'/plone/one/two/three/four/five/six'],
              True: [u'/plone/a',
                     u'/plone/a/b',
+                    u'/plone/a/b/c',
                     u'/plone/one',
                     u'/plone/one/two',
-                    u'/plone/one/two/three']},
+                    u'/plone/one/two/three',
+                    u'/plone/one/two/three/four']},
 
             {True: map(itemgetter('absolute_path'),
                        filter(lambda item: item.get('children_loaded'),
