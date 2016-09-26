@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.4.0 (unreleased)
+1.4.0 (2016-09-26)
 ------------------
 
 - Install ``ftw.gopip`` for better performance. [jone]
