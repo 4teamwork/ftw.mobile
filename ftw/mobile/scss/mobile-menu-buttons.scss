@@ -155,6 +155,11 @@ $color-mobile-button: $color-primary !default;
   }
 }
 
+.has-no-children a.mobileActionNav.down {
+  display: none;
+}
+
+
 #ftw-mobile-menu {
   > ul {
     @include list-group();

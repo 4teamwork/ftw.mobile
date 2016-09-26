@@ -68,7 +68,7 @@ class MobileNavigation(BrowserView):
         query = self.get_default_query()
         query['path'] = {'query': (list(self.parent_paths_to_nav_root()) +
                                    list(self.get_toplevel_paths())),
-                         'depth': 3}
+                         'depth': 4}
         return query
 
     def get_startup_cachekey(self):

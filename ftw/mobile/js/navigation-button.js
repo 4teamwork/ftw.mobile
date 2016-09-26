@@ -80,6 +80,22 @@
         return parts.join('/');
       }
 
+      function isPathInQueryOrParent(path, queryPath, queryDepth) {
+        if(queryPath.indexOf(path) === 0) {
+          /* path is a parent of queryPath */
+          return true;
+        }
+
+        if(path.indexOf(queryPath) !== 0) {
+          /* path is not in queryPath */
+          return false;
+        }
+
+        var relPath = path.slice(queryPath.length).replace(/^\//, '');
+        var wasQueried = relPath.split('/').length < queryDepth;
+        return wasQueried;
+      }
+
       function storeNode(node) {
         node.path = getPhysicalPath(node.url);
         if (!(node.path in storage.node_by_path)) {
@@ -103,15 +119,23 @@
       }
 
       function load(path, depth, callback, onRequest) {
-        var success = function() { callback(treeify(queryResults(path, depth))); };
-        if (isLoaded(path, depth)) {
+        /** We will need to know whether there are children for each
+            requested node.
+            In order to do that, we need to make sure that we have loaded one
+            level deeper than requested.
+        **/
+        var queryDepth = depth;
+        var requestDepth = depth + 1;
+        var success = function() { callback(treeify(queryResults(path, requestDepth),
+                                             path, queryDepth)); };
+        if (isLoaded(path, requestDepth)) {
           success();
         } else {
           if (typeof onRequest === 'function') {
             onRequest();
           }
           $.get(portal_url + '/' + path + '/' + endpoint + '/children',
-                {'depth:int': depth},
+                {'depth:int': requestDepth},
                 function(data) {
                   data.map(storeNode);
                   success();
@@ -120,7 +144,13 @@
         }
       }
 
-      function treeify(items) {
+      function treeify(items, queryPath, queryDepth) {
+        /** The items will contain items which are deeper than "depth",
+            so that we can decide whether nodes have children.
+            We need to make sure that those items will not end up in the
+            ".nodes"-list of their parents.
+        **/
+
         items = copyItems(items);
         var tree = [];
         var by_path = {};
@@ -128,14 +158,22 @@
         $(items).each(function() {
           by_path[this.path] = this;
           this.nodes = [];
+          this.has_children = false;
         });
 
         $(items).each(function() {
-          var parent_path = getParentPath(this.path);
-          if(!(parent_path in by_path)) {
-            tree.push(this);
-          } else {
-            by_path[parent_path].nodes.push(this);
+          var parentPath = getParentPath(this.path);
+
+          if(isPathInQueryOrParent(this.path, queryPath, queryDepth)) {
+            if(!(parentPath in by_path)) {
+              tree.push(this);
+            } else {
+              by_path[parentPath].nodes.push(this);
+            }
+          }
+
+          if(parentPath in by_path) {
+            by_path[parentPath].has_children = true;
           }
         });
         return tree;
