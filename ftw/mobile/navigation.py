@@ -141,9 +141,10 @@ class MobileNavigation(BrowserView):
     def get_nodes_by_query(self, query, unrestricted_search=False,
                            filter_exclude_from_nav=True):
         nodes = map(self.brain_to_node,
-                    self.get_brains(query,
-                                    unrestricted_search=unrestricted_search,
-                                    filter_exclude_from_nav=filter_exclude_from_nav))
+                    self.get_brains(
+                        query,
+                        unrestricted_search=unrestricted_search,
+                        filter_exclude_from_nav=filter_exclude_from_nav))
         map(partial(self.set_children_loaded_flag, query), nodes)
         return nodes
 
