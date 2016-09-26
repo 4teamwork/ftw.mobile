@@ -29,6 +29,17 @@ Installation
         ftw.mobile
 
 
+Dependencies
+============
+
+**Warning:**
+This package installs `ftw.gopip <https://github.com/4teamwork/ftw.gopip>`_,
+replacing the ``getObjPositionInParent`` catalog index with a ``FieldIndex``.
+The reason is that ``ftw.mobile`` needs to do large catalog queries sorted by
+``getObjPositionInParent``, which is too slow in standard Plone.
+See the ``ftw.gopip`` readme for further details.
+
+
 Usage
 =====
 

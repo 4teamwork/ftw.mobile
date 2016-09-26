@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.3.1.dev0'
+version = '1.4.0.dev0'
 maintainer = 'Mathias Leimgruber'
 
 tests_require = [
@@ -57,6 +57,7 @@ setup(name='ftw.mobile',
           'Plone',
           'Products.CMFCore',
           'Zope2',
+          'ftw.gopip',
           'ftw.theming >= 1.6.0',
           'ftw.upgrade',
           'plone.api',
