@@ -13,8 +13,6 @@ The package needs ftw.theming, which provides the basic styles.
 
 Plus it provides a mobile navigation, which is also displayed as a mobile button, but nbehaves completely different.
 
-**ALPHA STATE: This software is currently under heavy development and the actual version may not be compatible with the final version.**
-
 
 Installation
 ============
