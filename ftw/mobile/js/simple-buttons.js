@@ -15,7 +15,12 @@
   // with the offcanvas wrapper to make the slide in navigation
   // working on Safari and on iOS devices
   function prepareHTML() {
-    $("body > *").wrapAll(offcanvasWrapper());
+    var scripts = $("body script").detach();
+    $("body").wrapInner(offcanvasWrapper());
+
+    scripts.each(function(script) {
+      $(script).parent().append(script);
+    });
 
     // Prepare initial closed state
     root.addClass("menu-closed");
