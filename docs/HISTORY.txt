@@ -5,7 +5,8 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prevent inline javascript from evaluating twice.
+  [Kevin Bieri]
 
 
 1.4.0 (2016-09-26)
