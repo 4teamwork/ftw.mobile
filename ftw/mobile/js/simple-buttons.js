@@ -228,6 +228,12 @@
   .on("click", closeMenu)
   .ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
+
+    var translations = $("#ftw-mobile-menu-buttons").data('i18n');
+    Handlebars.registerHelper('i18n', function(msgid){
+      return translations[msgid];
+    });
+
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
 
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);

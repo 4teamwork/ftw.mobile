@@ -1,5 +1,3 @@
-<div i18n:domain="ftw.mobile" tal:omit-tag="python:True">
-
 <script id="ftw-mobile-navigation-template" type="text/x-handlebars-template">
 
     <div class="mobile-menu mobile-menu-{{name}}">
@@ -20,7 +18,7 @@
 
                   <li class="navParentNode {{#if parentNode.active}}navActiveNode{{/if}}">
                       <a href="{{parentNode.url}}" class="mobileActionNav up">
-                          <span i18n:translate="label_goto_parent">Nächst höherer Inhalt {{parentNode.title}} anzeigen.</span>
+                          <span>{{i18n "label_goto_parent"}} {{parentNode.title}}</span>
                       </a>
 
                       <a href="{{parentNode.url}}">{{parentNode.title}}</a>
@@ -49,8 +47,8 @@
 
             <a href="{{url}}">{{title}}</a>
 
-            <a href="{{url}}" class="mobileActionNav down" i18n:translate="label_goto_children">
-                <span>Unterhinhalte von: {{title}} anzeigen</span>
+            <a href="{{url}}" class="mobileActionNav down">
+                <span>{{i18n "label_goto_children"}} {{title}}</span>
             </a>
 
             {{#if nodes}}
@@ -61,5 +59,3 @@
         </li>
     {{/each}}
 </script>
-
-</div>

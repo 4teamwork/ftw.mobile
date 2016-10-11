@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-05-19 05:58+0000\n"
+"POT-Creation-Date: 2016-10-11 16:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,15 +14,25 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0\n"
 "Preferred-Encodings: utf-8 latin1\n"
 
-#: ./ftw/mobile/buttons.py:88
+#: ./ftw/mobile/buttons.py:91
 msgid "Mobile navigation"
 msgstr "Mobile Navigation"
 
-#: ./ftw/mobile/buttons.py:67
+#: ./ftw/mobile/buttons.py:69
 msgid "User menu"
 msgstr "Benutzermenu"
 
 #: ./ftw/mobile/configure.zcml:26
-msgid "ftw.mobile default profile"
+msgid "ftw.mobile"
 msgstr ""
+
+#. Default: "Go to children of: "
+#: ./ftw/mobile/buttons_viewlet.py:60
+msgid "label_goto_children"
+msgstr "Link zu den Inhalten von: "
+
+#. Default: "Go to parent content of: "
+#: ./ftw/mobile/buttons_viewlet.py:57
+msgid "label_goto_parent"
+msgstr "Link zum übergeordneten Inhalt: "
 

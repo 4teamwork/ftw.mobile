@@ -5,6 +5,12 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Use helper text for screenreaders also as title attribute on the link itself.
+  [mathias.leimgruber]
+
+- Implement plone translations for handlebars templates.
+  [mathias.leimgruber]
+
 - Do not render handlebars templates with PageTemplate engine.
   [mathias.leimgruber]
 
