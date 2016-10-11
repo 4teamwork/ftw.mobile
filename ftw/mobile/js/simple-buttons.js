@@ -154,6 +154,8 @@
         }
       });
 
+      currentItem.visible = currentItem.path != currentItem.id;
+
       var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').html(template({
         toplevel: items.toplevel,
