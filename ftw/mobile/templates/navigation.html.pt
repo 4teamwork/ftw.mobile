@@ -28,9 +28,11 @@
 
                   {{/if}}
 
+                  {{#if currentNode.visible }}
                   <li class="navCurrentNode {{#if currentNode.active}}navActiveNode{{/if}}">
                       <a href="{{currentNode.url}}">{{currentNode.title}}</a>
                   </li>
+                  {{/if}}
 
                   {{> list}}
                 </ul>
