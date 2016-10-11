@@ -115,7 +115,12 @@
           render_path(toplevel[0].path);
         });
       } else {
-        render_path(current_path);
+        mobileTree.query({path: current_path, depth: 1}, function(toplevel) {
+          if (!toplevel[0].has_children) {
+            current_path = mobileTree.getParentPath(current_path);
+          }
+          render_path(current_path);
+        });
       }
     }
 

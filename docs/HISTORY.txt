@@ -5,6 +5,8 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Leaf nodes: open parent navigation. [jone]
+
 - Prevent inline javascript from evaluating twice.
   [Kevin Bieri]
 
