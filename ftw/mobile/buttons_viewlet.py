@@ -4,11 +4,24 @@ from plone.app.layout.viewlets.common import ViewletBase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getAdapters
 from zope.component import getMultiAdapter
+import os
 
 
 class MobileButtonViewlet(ViewletBase):
 
     template = ViewPageTemplateFile('templates/buttons_viewlet.pt')
+
+    # Do not render handlebar template with PageTemplate engine,
+    # There's actually nothing to process.
+    with open(os.path.join(os.path.dirname(__file__),
+                           'templates',
+                           'list.html'), 'r') as html_file:
+        handlebars_list_html = html_file.read()
+
+    with open(os.path.join(os.path.dirname(__file__),
+                           'templates',
+                           'navigation.html'), 'r') as html_file:
+        handlebars_navigation_html = html_file.read()
 
     def index(self):
         return self.template()

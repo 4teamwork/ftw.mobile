@@ -5,6 +5,9 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Do not render handlebars templates with PageTemplate engine.
+  [mathias.leimgruber]
+
 - Add "navActiveNode" class to the node which is currently loaded. [jone]
 
 - Add separate "current node" item in addition to "parent node". [jone]
