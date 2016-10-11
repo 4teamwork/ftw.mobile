@@ -4,6 +4,15 @@ $font-size-mobile-button: 2em !default;
 $mobile-menu-height: 54px !default;
 
 $color-mobile-button: $color-primary !default;
+$color-mobile-current: $color-gray-dark !default;
+
+@include declare-variables(
+  size-mobile-button,
+  font-size-mobile-button,
+  mobile-menu-height,
+  color-mobile-button,
+  color-mobile-current);
+
 
 @mixin auto-border-color($color: $color-primary) {
   border-color: contrast($color, $color-text-inverted, $color-text, $lightness: 63%);
@@ -138,6 +147,13 @@ $color-mobile-button: $color-primary !default;
       }
       border-bottom: 1px solid $color-gray-dark;
     }
+  }
+
+  .navCurrentNode > a {
+    background-color: $color-mobile-current;
+    @include auto-link-color($color-mobile-current);
+    font-weight: bold;
+    width: 100%;
   }
 }
 
