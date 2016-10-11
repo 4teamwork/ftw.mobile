@@ -5,6 +5,8 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Add "navActiveNode" class to the node which is currently loaded. [jone]
+
 - Add separate "current node" item in addition to "parent node". [jone]
 
 - Leaf nodes: open parent navigation. [jone]
