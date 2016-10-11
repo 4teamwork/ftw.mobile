@@ -18,7 +18,7 @@
                 <ul>
                   {{#if parentNode}}
 
-                  <li class="navParentNode">
+                  <li class="navParentNode {{#if parentNode.active}}navActiveNode{{/if}}">
                       <a href="{{parentNode.url}}" class="mobileActionNav up">
                           <span i18n:translate="label_goto_parent">Nächst höherer Inhalt {{parentNode.title}} anzeigen.</span>
                       </a>
@@ -28,7 +28,7 @@
 
                   {{/if}}
 
-                  <li class="navCurrentNode">
+                  <li class="navCurrentNode {{#if currentNode.active}}navActiveNode{{/if}}">
                       <a href="{{currentNode.url}}">{{currentNode.title}}</a>
                   </li>
 
@@ -43,7 +43,7 @@
 
 <script id="ftw-mobile-navigation-list-template" type="text/x-handlebars-template">
      {{#each nodes}}
-        <li class="node {{#if has_children}}has-children{{else}}has-no-children{{/if}}">
+        <li class="node {{#if has_children}}has-children{{else}}has-no-children{{/if}} {{#if active}}navActiveNode{{/if}}">
 
             <a href="{{url}}">{{title}}</a>
 

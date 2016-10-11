@@ -101,9 +101,11 @@
 
     var link = $(this);
     var current_url = link.parents("#ftw-mobile-menu-buttons").data('currenturl');
+    var active_path;
 
     function open() {
       var current_path = mobileTree.getPhysicalPath(current_url);
+      active_path = current_path;
       while( current_path && !mobileTree.isLoaded(current_path, 1)) {
         // the current context is not visible in the navigation;
         // lets try the parent
@@ -133,6 +135,7 @@
       mobileTree.queries(
             queries,
             function(items) {
+              $.each(items, function() { mark_active_node(this); });
               render(items);
               // prefetch grand children
               mobileTree.query({path: path, depth: depth + 1});
@@ -161,6 +164,17 @@
       }));
       $('.topLevelTabs').scrollLeft(tabs_scroll_left);
       hideSpinner();
+    }
+
+    function mark_active_node(nodes) {
+      $.each(nodes, function() {
+        if(typeof(this.active) !== 'undefined') {
+          // Already processed.
+          return;
+        }
+        this.active = active_path == this.path;
+        mark_active_node(this.nodes);
+      });
     }
 
     function showSpinner() {
