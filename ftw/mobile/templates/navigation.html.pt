@@ -23,10 +23,14 @@
                           <span i18n:translate="label_goto_parent">Nächst höherer Inhalt {{parentNode.title}} anzeigen.</span>
                       </a>
 
-                      <a href="{{currentNode.url}}">{{currentNode.title}}</a>
+                      <a href="{{parentNode.url}}">{{parentNode.title}}</a>
                   </li>
 
                   {{/if}}
+
+                  <li class="navCurrentNode">
+                      <a href="{{currentNode.url}}">{{currentNode.title}}</a>
+                  </li>
 
                   {{> list}}
                 </ul>
