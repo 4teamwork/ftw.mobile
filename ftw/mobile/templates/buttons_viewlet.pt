@@ -1,7 +1,8 @@
 <div id="ftw-mobile-wrapper">
     <nav id="ftw-mobile-menu-buttons"
          tal:attributes="data-navrooturl string:${view/nav_root_url};
-                         data-currenturl string:${view/current_url}">
+                         data-currenturl string:${view/current_url};
+                         data-i18n string:${view/translation_strings}">
         <ul>
             <li tal:repeat="button view/buttons" tal:attributes="id button/name">
                 <a tal:replace="structure button/html" />
@@ -11,3 +12,6 @@
     <div id="ftw-mobile-menu"></div>
     <div id="ftw-mobile-menu-overlay">
 </div>
+
+<tal:HANDLEBARS_LIST_TEMPLATE replace="structure view/handlebars_list_html" />
+<tal:HANDLEBARS_LIST_TEMPLATE replace="structure view/handlebars_navigation_html" />
