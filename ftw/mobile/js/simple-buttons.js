@@ -101,6 +101,7 @@
 
     var link = $(this);
     var current_url = link.parents("#ftw-mobile-menu-buttons").data('currenturl');
+    var settings = link.data('mobile_settings');
     var active_path;
 
     function open() {
@@ -113,9 +114,13 @@
       }
 
       if(current_path === '') {
-        mobileTree.query({path: '/', depth: 2}, function(toplevel) {
-          render_path(toplevel[0].path);
-        });
+        if(settings.show_tabs) {
+          mobileTree.query({path: '/', depth: 2, exclude_root: true}, function(toplevel) {
+            render_path(toplevel[0].path);
+          });
+        } else {
+          render_path(current_path);
+        }
       } else {
         mobileTree.query({path: current_path, depth: 1}, function(toplevel) {
           if (!toplevel[0].has_children) {
@@ -128,9 +133,22 @@
 
     function render_path(path) {
       var parent_path = mobileTree.getParentPath(path);
-      var depth = path.indexOf('/') === -1 ? 3 : 2;
-      var queries = {toplevel: {path: '/', depth: 2},
-                     parent: {path: parent_path, depth: 1},
+      var depth = 2;
+      if (settings.show_two_levels_on_root && path.indexOf('/') === -1) {
+        depth = 3;
+      }
+
+      var show_parent = true;
+      if (path === '') {
+        show_parent = false;
+      } else if (settings.show_tabs && path.indexOf('/') === -1) {
+        show_parent = false;
+      }
+
+      var queries = {toplevel: {path: '/', depth: 2,
+                                exclude_root: settings.show_tabs},
+                     parent: {path: parent_path, depth: 1,
+                              exclude_root: !show_parent},
                      nodes: {path: path, depth: depth}};
       mobileTree.queries(
             queries,
@@ -163,7 +181,8 @@
         currentNode: currentItem,
         nodes: currentItem.nodes,
         parentNode: items.parent ? items.parent[0] : null,
-        name: link.parent().attr('id')
+        name: link.parent().attr('id'),
+        settings: settings
       }));
       $('.topLevelTabs').scrollLeft(tabs_scroll_left);
       hideSpinner();
