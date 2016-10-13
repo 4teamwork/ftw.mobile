@@ -138,6 +138,13 @@
         depth = 3;
       }
 
+      var classes = [];
+      if (depth === 2) {
+        classes.push('mobile-layout-one-level');
+      } else if (depth === 3) {
+        classes.push('mobile-layout-two-levels');
+      }
+
       var show_parent = true;
       if (path === '') {
         show_parent = false;
@@ -154,14 +161,14 @@
             queries,
             function(items) {
               $.each(items, function() { mark_active_node(this); });
-              render(items);
+              render(items, classes);
               // prefetch grand children
               mobileTree.query({path: path, depth: depth + 1});
             },
             showSpinner);
     }
 
-    function render(items) {
+    function render(items, classes) {
       var templateName = link.data('mobile_template');
       var templateSource = $('#' + templateName).html();
       var template = Handlebars.compile(templateSource);
@@ -182,6 +189,7 @@
         nodes: currentItem.nodes,
         parentNode: items.parent ? items.parent[0] : null,
         name: link.parent().attr('id'),
+        classes: classes.join(' '),
         settings: settings
       }));
       $('.topLevelTabs').scrollLeft(tabs_scroll_left);
