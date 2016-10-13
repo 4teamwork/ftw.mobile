@@ -11,7 +11,10 @@
 
       function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
         root_url = $("#ftw-mobile-menu-buttons").data("navrooturl");
-        var root_node = {url: root_url};
+        var root_node = {
+          url: root_url,
+          path: ''
+        };
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
@@ -165,10 +168,10 @@
           var parentPath = getParentPath(this.path);
 
           if(isPathInQueryOrParent(this.path, queryPath, queryDepth)) {
-            if(!(parentPath in by_path)) {
-              tree.push(this);
-            } else {
+            if(parentPath in by_path && parentPath !== this.path) {
               by_path[parentPath].nodes.push(this);
+            } else {
+              tree.push(this);
             }
           }
 
@@ -191,7 +194,7 @@
         }
 
         var results = [];
-        if (path && path in storage.node_by_path) {
+        if (path in storage.node_by_path) {
           results.push(storage.node_by_path[path]);
         }
 
