@@ -38,7 +38,7 @@
       // );
       function query(q, success, onRequest) {
         q['path'] = q['path'].replace(/^\//, '');
-        load(q['path'], q['depth'],
+        load(q['path'], q['depth'], (q['exclude_root'] || false),
              function(items) {
                if (typeof success === 'function') {
                  success(items);
@@ -121,7 +121,7 @@
         }
       }
 
-      function load(path, depth, callback, onRequest) {
+      function load(path, depth, exclude_root, callback, onRequest) {
         /** We will need to know whether there are children for each
             requested node.
             In order to do that, we need to make sure that we have loaded one
@@ -129,7 +129,7 @@
         **/
         var queryDepth = depth;
         var requestDepth = depth + 1;
-        var success = function() { callback(treeify(queryResults(path, requestDepth),
+        var success = function() { callback(treeify(queryResults(path, requestDepth, exclude_root),
                                              path, queryDepth)); };
         if (isLoaded(path, requestDepth)) {
           success();
@@ -188,14 +188,16 @@
         });
       }
 
-      function queryResults(path, depth) {
+      function queryResults(path, depth, exclude_root) {
         if (depth < 1) {
           throw 'mobileTree.queryResults: Unsupported depth < 1';
         }
 
         var results = [];
-        if (path in storage.node_by_path) {
-          results.push(storage.node_by_path[path]);
+        if(!exclude_root) {
+          if (path in storage.node_by_path) {
+            results.push(storage.node_by_path[path]);
+          }
         }
 
         if (depth === 1) {
