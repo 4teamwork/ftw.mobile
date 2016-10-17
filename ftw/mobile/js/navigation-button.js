@@ -11,7 +11,10 @@
 
       function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
         root_url = $("#ftw-mobile-menu-buttons").data("navrooturl");
-        var root_node = {url: root_url};
+        var root_node = {
+          url: root_url,
+          path: ''
+        };
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
@@ -35,7 +38,7 @@
       // );
       function query(q, success, onRequest) {
         q['path'] = q['path'].replace(/^\//, '');
-        load(q['path'], q['depth'],
+        load(q['path'], q['depth'], (q['exclude_root'] || false),
              function(items) {
                if (typeof success === 'function') {
                  success(items);
@@ -118,7 +121,7 @@
         }
       }
 
-      function load(path, depth, callback, onRequest) {
+      function load(path, depth, exclude_root, callback, onRequest) {
         /** We will need to know whether there are children for each
             requested node.
             In order to do that, we need to make sure that we have loaded one
@@ -126,7 +129,7 @@
         **/
         var queryDepth = depth;
         var requestDepth = depth + 1;
-        var success = function() { callback(treeify(queryResults(path, requestDepth),
+        var success = function() { callback(treeify(queryResults(path, requestDepth, exclude_root),
                                              path, queryDepth)); };
         if (isLoaded(path, requestDepth)) {
           success();
@@ -165,10 +168,10 @@
           var parentPath = getParentPath(this.path);
 
           if(isPathInQueryOrParent(this.path, queryPath, queryDepth)) {
-            if(!(parentPath in by_path)) {
-              tree.push(this);
-            } else {
+            if(parentPath in by_path && parentPath !== this.path) {
               by_path[parentPath].nodes.push(this);
+            } else {
+              tree.push(this);
             }
           }
 
@@ -185,14 +188,16 @@
         });
       }
 
-      function queryResults(path, depth) {
+      function queryResults(path, depth, exclude_root) {
         if (depth < 1) {
           throw 'mobileTree.queryResults: Unsupported depth < 1';
         }
 
         var results = [];
-        if (path && path in storage.node_by_path) {
-          results.push(storage.node_by_path[path]);
+        if(!exclude_root) {
+          if (path in storage.node_by_path) {
+            results.push(storage.node_by_path[path]);
+          }
         }
 
         if (depth === 1) {

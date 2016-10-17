@@ -2,6 +2,7 @@
 
     <div class="mobile-menu mobile-menu-{{name}}">
 
+        {{#if settings.show_tabs}}
         <ul class="topLevelTabs">
             {{#each toplevel}}
 
@@ -10,10 +11,11 @@
              {{/each}}
 
         </ul>
+        {{/if}}
 
         <div class="tabPanes">
             <div class="tabPane">
-                <ul>
+                <ul class="{{classes}}">
                   {{#if parentNode}}
 
                   <li class="navParentNode {{#if parentNode.active}}navActiveNode{{/if}}">

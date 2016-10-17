@@ -11,6 +11,8 @@ Changelog
 1.5.0 (2016-10-17)
 ------------------
 
+- Mobile buttons: add settings "show_tabs" and "show_two_levels_on_root". [jone]
+
 - Pass the url of the navigation root to the handlebars template.
   [mbaechtold]
 

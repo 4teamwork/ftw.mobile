@@ -13,6 +13,7 @@ LINK_TEMPLATE = '''
    data-mobile_endpoint="{endpoint}"
    data-mobile_startup_cachekey="{startup_cachekey}"
    data-mobile_template="{mobile_template}"
+   data-mobile_settings='{settings}'
    data-mobile_data='{data}'
    data-mobile_label='{label}'>
     {label}
@@ -54,11 +55,15 @@ class BaseButton(object):
     def startup_cachekey(self):
         return ''
 
+    def settings(self):
+        return {}
+
     def render_button(self):
         return LINK_TEMPLATE.format(url='#',
                                     startup_cachekey=self.startup_cachekey(),
                                     mobile_template=self.data_template(),
                                     data=json.dumps(self.data()),
+                                    settings=json.dumps(self.settings()),
                                     label=self.label(),
                                     endpoint=self.endpoint())
 
@@ -102,3 +107,7 @@ class NavigationButton(BaseButton):
     def startup_cachekey(self):
         return (self.context.restrictedTraverse('@@mobilenav')
                 .get_startup_cachekey())
+
+    def settings(self):
+        return {'show_tabs': True,
+                'show_two_levels_on_root': True}
