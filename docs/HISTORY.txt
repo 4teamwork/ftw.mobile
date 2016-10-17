@@ -5,6 +5,9 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
+- Pass the url of the navigation root to the handlebars template.
+  [mbaechtold]
+
 - Use helper text for screenreaders also as title attribute on the link itself.
   [mathias.leimgruber]
 

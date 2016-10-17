@@ -158,6 +158,7 @@
 
       var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').html(template({
+        navRootUrl: $("#ftw-mobile-menu-buttons").data('navrooturl'),
         toplevel: items.toplevel,
         currentNode: currentItem,
         nodes: currentItem.nodes,
