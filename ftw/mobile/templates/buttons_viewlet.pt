@@ -10,7 +10,7 @@
         </ul>
     </nav>
     <div id="ftw-mobile-menu"></div>
-    <div id="ftw-mobile-menu-overlay">
+    <div id="ftw-mobile-menu-overlay"></div>
 </div>
 
 <tal:HANDLEBARS_LIST_TEMPLATE replace="structure view/handlebars_list_html" />
