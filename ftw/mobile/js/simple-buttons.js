@@ -179,7 +179,11 @@
         }
       });
 
-      currentItem.visible = currentItem.path != currentItem.id;
+      if (settings.show_two_levels_on_root) {
+        currentItem.visible = currentItem.path != currentItem.id;
+      } else {
+        currentItem.visible = currentItem.path !== '';
+      }
 
       var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').html(template({

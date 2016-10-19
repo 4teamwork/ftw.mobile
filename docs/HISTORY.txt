@@ -5,6 +5,8 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
+- Hide current path on root when showing one level. [jone]
+
 - Fix invalid markup in template, causing broken markup with chameleon. [jone]
 
 
