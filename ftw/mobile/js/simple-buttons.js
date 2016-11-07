@@ -26,11 +26,15 @@
     root.addClass("menu-closed");
   }
 
-  function openMenu() { $('#ftw-mobile-menu').addClass("open"); }
+  function openMenu() {
+    $('#ftw-mobile-menu').addClass("open");
+    $('#ftw-mobile-menu').trigger('mobilenav:menu:opened');
+  }
 
   function closeMenu() {
     closeLinks();
     $('#ftw-mobile-menu').removeClass("open");
+    $('#ftw-mobile-menu').trigger('mobilenav:menu:closed');
   }
 
   function slideOut() {
@@ -39,6 +43,7 @@
       root.removeClass("menu-opened");
       root.addClass("menu-closed");
       root.off(vendorTransitionEnd.join(" "));
+      $('#ftw-mobile-menu').trigger('mobilenav:nav:closed');
     });
   }
 
@@ -48,6 +53,7 @@
       root.addClass("menu-opened");
       root.removeClass("menu-closed");
       root.off(vendorTransitionEnd.join(" "));
+      $('#ftw-mobile-menu').trigger('mobilenav:nav:opened');
     });
   }
 
@@ -86,7 +92,9 @@
         name: link.parent().attr('id')
       }));
       toggleLink(link);
+      $('#ftw-mobile-menu').trigger('mobilenav:listbutton:clicked');
     });
+    $('#ftw-mobile-menu').trigger('mobilenav:listbutton:initialized');
   }
 
   window.begun_mobile_initialization = false;
@@ -186,6 +194,7 @@
       }
 
       var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
+      $('#ftw-mobile-menu').trigger('mobilenav:beforerender');
       $('#ftw-mobile-menu').html(template({
         navRootUrl: $("#ftw-mobile-menu-buttons").data('navrooturl'),
         toplevel: items.toplevel,
@@ -197,6 +206,7 @@
         settings: settings
       }));
       $('.topLevelTabs').scrollLeft(tabs_scroll_left);
+      $('#ftw-mobile-menu').trigger('mobilenav:rendered');
       hideSpinner();
     }
 
@@ -213,9 +223,11 @@
 
     function showSpinner() {
       $('#ftw-mobile-menu').addClass('spinner');
+      $('#ftw-mobile-menu').trigger('mobilenav:spinner:show');
     }
     function hideSpinner() {
       $('#ftw-mobile-menu').removeClass('spinner');
+      $('#ftw-mobile-menu').trigger('mobilenav:spinner:hide');
     }
 
 
@@ -251,6 +263,7 @@
         render_path(mobileTree.getPhysicalPath($(this).attr('href')));
       });
     }, link.data('mobile_startup_cachekey'));
+    $('#ftw-mobile-menu').trigger('mobilenav:initialized');
   }
 
   $(document)
