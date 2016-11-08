@@ -5,7 +5,8 @@ Changelog
 1.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Toggle aria-hidden attribute on mobile navigation elements
+  [raphael-s]
 
 
 1.6.0 (2016-11-07)

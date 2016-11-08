@@ -9,7 +9,7 @@
             </li>
         </ul>
     </nav>
-    <div id="ftw-mobile-menu"></div>
+    <div id="ftw-mobile-menu" aria-hidden="true"></div>
     <div id="ftw-mobile-menu-overlay"></div>
 </div>
 
