@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.1 (unreleased)
+1.6.1 (2016-11-08)
 ------------------
 
 - Toggle aria-hidden attribute on mobile navigation elements
