@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.2 (unreleased)
+1.6.2 (2016-11-09)
 ------------------
 
 - Actually mark external links with a "external-link" class in navtree.
