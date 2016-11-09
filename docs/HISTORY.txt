@@ -5,7 +5,8 @@ Changelog
 1.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Actually mark external links with a "external-link" class in navtree.
+  [mathias.leimgruber]
 
 
 1.6.1 (2016-11-08)

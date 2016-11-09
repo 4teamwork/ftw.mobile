@@ -48,7 +48,7 @@
      {{#each nodes}}
         <li class="node {{#if has_children}}has-children{{else}}has-no-children{{/if}} {{#if active}}navActiveNode{{/if}}">
 
-            <a href="{{url}}">{{title}}</a>
+            <a href="{{url}}"{{#if externallink}} class="external-link"{{/if}}>{{title}}</a>
 
             <a href="{{url}}" class="mobileActionNav down"
                title="{{i18n "label_goto_children"}} {{title}}">
