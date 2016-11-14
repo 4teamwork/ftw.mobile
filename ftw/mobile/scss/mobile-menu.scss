@@ -64,6 +64,9 @@ html.menu-open {
 
   #offcanvas-content {
     @include transform(translate(100%) translate(-$size-mobile-button));
+    @include screen-large() {
+      @include transform(none);
+    }
   }
 
   #ftw-mobile-menu {
