@@ -5,7 +5,9 @@ Changelog
 1.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Close the mobile-navigation when the screen size changes from mobile
+  to desktop while the navigation is open.
+  [raphael-s]
 
 
 1.6.2 (2016-11-09)
