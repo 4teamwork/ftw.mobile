@@ -15,9 +15,8 @@
   // with the offcanvas wrapper to make the slide in navigation
   // working on Safari and on iOS devices
   function prepareHTML() {
-    var scripts = $("body script").detach();
+    var scripts = $("body script").not("[type='text/x-handlebars-template']").detach();
     $("body").wrapInner(offcanvasWrapper());
-
     scripts.each(function(script) {
       $(script).parent().append(script);
     });
