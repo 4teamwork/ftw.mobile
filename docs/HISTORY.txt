@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.4 (unreleased)
+1.6.4 (2016-12-01)
 ------------------
 
 - Do not detach script tags of type x-handlebars-template. jQuery is not able to re-attach them.
