@@ -5,6 +5,9 @@ Changelog
 1.6.5 (unreleased)
 ------------------
 
+- Set the `children_loaded` flag on prepended nodes too.
+  [mathias.leimgruber]
+
 - Append current context path to `prepend_unauthorized_parents`, because the current obj may
   be excluded from nav.
   [mathias.leimgruber]

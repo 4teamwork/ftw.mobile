@@ -60,8 +60,11 @@ class MobileNavigation(BrowserView):
             response.setHeader('Cache-Control',
                                '{}, max-age=31536000'.format(visibility))
 
-        nodes = self.get_nodes_by_query(self.get_startup_query())
+        query = self.get_startup_query()
+        nodes = self.get_nodes_by_query(query)
         nodes = self.prepend_unauthorized_parents(nodes)
+        map(partial(self.set_children_loaded_flag, query), nodes)
+
         return json.dumps(nodes)
 
     def get_startup_query(self):
@@ -152,7 +155,6 @@ class MobileNavigation(BrowserView):
                         query,
                         unrestricted_search=unrestricted_search,
                         filter_exclude_from_nav=filter_exclude_from_nav))
-        map(partial(self.set_children_loaded_flag, query), nodes)
         return nodes
 
     def get_brains(self, query, unrestricted_search=False,
