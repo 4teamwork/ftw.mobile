@@ -236,3 +236,17 @@ class TestMobileNavigation(FunctionalTestCase):
         self.assertItemsEqual(
             [u'/plone/container/visible-child'],
             map(itemgetter('absolute_path'), browser.json))
+
+    @browsing
+    def test_children_loaded_flag_on_prepended_items(self, browser):
+        self.grant('Manager')
+        create(Builder('folder').titled('1b').within(
+            create(Builder('folder').titled('1a')
+                                    .having(excludeFromNav=True))))
+        create(Builder('folder').titled('2a'))
+
+        browser.open(self.portal.get('1a').get('1b'), view='mobilenav/startup')
+
+        # 1a was prepended, since it was excluded from nav.
+        response = browser.json
+        self.assertIn('children_loaded', response[0])
