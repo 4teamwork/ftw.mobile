@@ -5,7 +5,9 @@ Changelog
 1.6.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Append current context path to `prepend_unauthorized_parents`, because the current obj may
+  be excluded from nav.
+  [mathias.leimgruber]
 
 
 1.6.4 (2016-12-01)

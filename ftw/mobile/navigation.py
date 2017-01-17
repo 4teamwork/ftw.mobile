@@ -121,8 +121,15 @@ class MobileNavigation(BrowserView):
         """
 
         nodes_paths = map(itemgetter('absolute_path'), nodes)
+        paths_to_check = list(self.parent_paths_to_nav_root())
+
+        # Append current context path also, because the current obj may
+        # be excluded from nav.
+        paths_to_check.append('/'.join(self.context.getPhysicalPath()))
+
         missing_paths = filter(lambda path: path not in nodes_paths,
-                               self.parent_paths_to_nav_root())
+                               paths_to_check)
+
         if not missing_paths:
             return nodes
 
