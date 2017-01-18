@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.5 (unreleased)
+1.6.5 (2017-01-18)
 ------------------
 
 - Set the `children_loaded` flag on prepended nodes too.
