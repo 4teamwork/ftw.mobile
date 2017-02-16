@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.6 (unreleased)
+1.6.6 (2017-02-16)
 ------------------
 
 - Fix mobile menu transition on IE>=9.
