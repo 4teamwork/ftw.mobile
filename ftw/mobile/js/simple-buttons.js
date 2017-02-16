@@ -8,7 +8,7 @@
 
   var vendorTransitionEnd = [
     "webkitTransitionEnd",
-    "transitionEnd"
+    "transitionend"
   ];
 
   // Here we need to wrap the whole content in the body
