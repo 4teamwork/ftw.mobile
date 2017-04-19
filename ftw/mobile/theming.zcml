@@ -24,6 +24,12 @@
           slot="addon"
           profile="ftw.mobile:default"
           />
+
+      <theme:scss
+          file="scss/fastclick.scss"
+          slot="addon"
+          profile="ftw.mobile:default"
+          />
     </configure>
 
 </configure>
