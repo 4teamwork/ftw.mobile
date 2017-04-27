@@ -1,11 +1,12 @@
 #ftw-mobile-menu {
   @include translate(-100%);
-  z-index: $zindex-portal-top + $zindex-header + $zindex-dropdown;
+  z-index: $zindex-overlay + 1;
   position: absolute;
   top: 0;
   width: 100%;
   font-size: $font-size-medium;
   max-width: calc(100% - #{$size-mobile-button});
+  background-color: $color-content-background;
 
   &.open {
     @include translate();
@@ -49,10 +50,6 @@
   transition: opacity .2s linear;
   pointer-events: none;
   will-change: opacity;
-}
-
-@include ie-only("#ftw-mobile-menu-overlay") {
-  left: calc(100% - #{$size-mobile-button});
 }
 
 html.menu-open {

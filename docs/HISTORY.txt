@@ -5,8 +5,12 @@ Changelog
 1.6.7 (unreleased)
 ------------------
 
-- Introduce swipe gesture for closing the mobile menu.
-  [Kevin Bieri]
+- Set focus on active element on the tab navs [Kevin Bieri]
+- Make possible to close the navigation using Escape key [Kevin Bieri]
+- Skip links in the mobile menu when it's closed [Kevin Bieri]
+- Fix icon size for IE11 in mobile navigation [Kevin Bieri]
+- Fix offset of overlay in IE11 and Edge [Kevin Bieri]
+- Introduce swipe gesture for closing the mobile menu. [Kevin Bieri]
 
 
 1.6.6 (2017-02-16)
