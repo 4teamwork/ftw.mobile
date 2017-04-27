@@ -59,6 +59,16 @@ html.menu-open {
   overflow: hidden;
 }
 
+.menu-closed {
+  #ftw-mobile-menu {
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+}
+
 .menu-open {
 
   body {
@@ -76,6 +86,7 @@ html.menu-open {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     height: 100vh;
+    display: block;
   }
 
   #ftw-mobile-menu-overlay {

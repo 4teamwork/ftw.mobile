@@ -40,7 +40,7 @@
     mobileMenu.trigger('mobilenav:menu:closed');
   }
 
-  function slideOut() {
+  function slideOut(link) {
     root.removeClass("menu-open");
     root.on(vendorTransitionEnd.join(" "), function() {
       root.removeClass("menu-opened");
@@ -48,6 +48,10 @@
       root.off(vendorTransitionEnd.join(" "));
       $('#ftw-mobile-menu').attr('aria-hidden', 'true');
       $('#ftw-mobile-menu').trigger('mobilenav:nav:closed');
+      // !!! This implementation of focusing the button is a workaround !!!
+      // The implementation will not work if the button is being renamed.
+      // The origin of the click event should be passed by the caller
+      $("#navigation-mobile-button > a").focus();
     });
   }
 
@@ -59,6 +63,7 @@
       root.off(vendorTransitionEnd.join(" "));
       $('#ftw-mobile-menu').attr('aria-hidden', 'false');
       $('#ftw-mobile-menu').trigger('mobilenav:nav:opened');
+      $('.topLevelTabs > li > a').first().focus();
     });
   }
 
@@ -241,7 +246,7 @@
         event.preventDefault();
         open();
         closeMenu();
-        toggleNavigation();
+        toggleNavigation(link);
       });
 
       $(document).on('click', '.topLevelTabs a', function(event) {
@@ -259,6 +264,7 @@
               event.preventDefault();
               render_path(path);
             }
+            $('.topLevelTabs > li.selected > a').first().focus();
           },
           showSpinner);
       });
@@ -276,6 +282,11 @@
     slideOut();
   })
   .on("click", closeMenu)
+  .on("keyup", function(event) {
+    if(event.which === $.ui.keyCode.ESCAPE) {
+      slideOut();
+    }
+  })
   .ready(function() {
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
 
