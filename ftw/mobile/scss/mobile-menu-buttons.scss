@@ -1,5 +1,5 @@
 $size-mobile-button: 72px !default;
-$font-size-mobile-button: 2em !default;
+$font-size-mobile-button: $font-size-base * 2 !default;
 
 $mobile-menu-height: 54px !default;
 
@@ -36,6 +36,7 @@ $color-mobile-current: $color-gray-dark !default;
         overflow: hidden;
         white-space: nowrap;
         width: $size-mobile-button;
+        font-size: $font-size-mobile-button / 2;
 
         &:before {
           @include auto-text-color($color-mobile-button);
@@ -43,7 +44,6 @@ $color-mobile-current: $color-gray-dark !default;
           background-color: $color-mobile-button;
           width: $size-mobile-button;
           line-height: $size-mobile-button;
-          font-size: $font-size-mobile-button;
         }
       }
     }

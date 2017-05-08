@@ -1,11 +1,12 @@
 #ftw-mobile-menu {
   @include translate(-100%);
-  z-index: $zindex-portal-top + $zindex-header + $zindex-dropdown;
+  z-index: $zindex-overlay + 1;
   position: absolute;
   top: 0;
   width: 100%;
   font-size: $font-size-medium;
   max-width: calc(100% - #{$size-mobile-button});
+  background-color: $color-content-background;
 
   &.open {
     @include translate();
@@ -51,12 +52,18 @@
   will-change: opacity;
 }
 
-@include ie-only("#ftw-mobile-menu-overlay") {
-  left: calc(100% - #{$size-mobile-button});
-}
-
 html.menu-open {
   overflow: hidden;
+}
+
+.menu-closed {
+  #ftw-mobile-menu {
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
 }
 
 .menu-open {
@@ -76,6 +83,7 @@ html.menu-open {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     height: 100vh;
+    display: block;
   }
 
   #ftw-mobile-menu-overlay {
