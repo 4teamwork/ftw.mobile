@@ -1,4 +1,4 @@
-(function(Handlebars, mobileTree) {
+(function(Handlebars, mobileTree, Hammer) {
 
   "use strict";
 
@@ -289,6 +289,10 @@
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-list-template"]').each(initialize_list_button);
 
     prepareHTML();
+
+    var mc = new Hammer.Manager(document.body);
+    mc.add( new Hammer.Swipe({ event: 'swipeleft', direction: Hammer.DIRECTION_LEFT, threshold: 50 }) );
+    mc.on("swipeleft", slideOut)
   });
 
   $(window).resize(function() {
@@ -301,4 +305,4 @@
     slideOut: slideOut
   };
 
-})(window.Handlebars, window.mobileTree);
+})(window.Handlebars, window.mobileTree, window.Hammer);

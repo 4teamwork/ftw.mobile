@@ -22,7 +22,8 @@
 
 #offcanvas-content {
   height: 100vh;
-  transition: transform .2s ease-in-out;
+  transition: transform .2s linear;
+  will-change: transform;
 }
 
 #ftw-mobile-wrapper {
@@ -38,14 +39,16 @@
     #485563
   );
   cursor: pointer;
-  visibility: hidden;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: $zindex-overlay;
-  opacity: .8;
+  opacity: 0;
+  transition: opacity .2s linear;
+  pointer-events: none;
+  will-change: opacity;
 }
 
 @include ie-only("#ftw-mobile-menu-overlay") {
@@ -76,7 +79,8 @@ html.menu-open {
   }
 
   #ftw-mobile-menu-overlay {
-    visibility: visible;
+    opacity: .8;
+    pointer-events: initial;
   }
 }
 

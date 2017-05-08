@@ -7,5 +7,7 @@
               insert-after="++resource++ftw.mobile.js/handlebars.js" />
   <javascript enabled="True" id="++resource++ftw.mobile.js/simple-buttons.js"
               insert-after="++resource++ftw.mobile.js/simple-buttons.js" />
+  <javascript enabled="True" id="++resource++ftw.mobile.js/hammer.js"
+              insert-before="++resource++ftw.mobile.js/simple-buttons.js" />
 
 </object>
