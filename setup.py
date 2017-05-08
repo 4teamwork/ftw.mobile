@@ -7,7 +7,7 @@ maintainer = 'Mathias Leimgruber'
 tests_require = [
     'Products.CMFPlone',
     'ftw.builder',
-    'ftw.testbrowser',
+    'ftw.testbrowser>=1.23.0',
     'ftw.testing',
     'transaction',
     'plone.app.multilingual',

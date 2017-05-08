@@ -162,7 +162,7 @@ class TestMobileNavigation(FunctionalTestCase):
         john = create(Builder('user').named('John', 'Doe'))
 
         browser.login(john)
-        with self.assertRaises(Unauthorized):
+        with browser.expect_unauthorized():
             browser.open(folder, view='mobilenav/startup')
 
     @browsing
