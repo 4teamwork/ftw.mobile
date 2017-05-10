@@ -80,9 +80,14 @@ $color-mobile-current: $color-gray-dark !default;
 }
 
 .topLevelTabs {
-  @include tab-list();
+  @include tab-list(
+    $color-tab: $color-content-background,
+    $color-tab-select: $color-content-background,
+    $color-tab-background: $color-primary,
+    $color-tab-background-select: $color-content-background
+  );
   white-space: nowrap;
-  overflow-x: auto;
+  overflow: scroll;
   font-size: 0;
 
   &::-webkit-scrollbar {
@@ -92,10 +97,17 @@ $color-mobile-current: $color-gray-dark !default;
   > li {
     display: inline-block;
     float: none;
+
     > a {
       height: $size-mobile-button;
       line-height: $size-mobile-button / 1.5;
       font-size: $font-size-medium;
+      text-decoration: none !important;
+
+      &:hover {
+        @include auto-text-color();
+        background-color: $color-primary;
+      }
     }
   }
 }

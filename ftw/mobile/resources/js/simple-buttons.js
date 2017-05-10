@@ -11,6 +11,61 @@
     "transitionend"
   ];
 
+  var arrowScrollController = {
+    active: false,
+    init: function(offset) {
+      this.offset = offset;
+      this.container = $('#ftw-mobile-menu');
+      this.content = $('.topLevelTabs')
+      this.content.scroll(this.trackScroll.bind(this));
+      this.active = false;
+    },
+    scrollTo: function(offset) {
+      this.active = false;
+      this.content.scrollLeft(offset);
+      this.check();
+      this.active = true;
+    },
+    trackScroll: function(event) {
+      if(this.active) {
+        this.scrollPosition = $(event.target).scrollLeft();
+        this.check(this.scrollPosition);
+      }
+    },
+    activateLeft: function() {
+      this.container.removeClass("scroll-right");
+      this.container.addClass("scroll-left");
+    },
+    activateRight: function() {
+      this.container.removeClass("scroll-left");
+      this.container.addClass("scroll-right");
+    },
+    reset: function() {
+      this.container.removeClass("scroll-left scroll-right");
+    },
+    fixScroll: function() {
+      this.scrollTo(this.scrollPosition);
+    },
+    selectCurrent: function() {
+      var current = this.content.children('.selected');
+      this.scrollTo(current.offset().left);
+      current.children('a').first().focus();
+    },
+    check: function(scrollPosition) {
+      scrollPosition = scrollPosition || 0;
+      var scrollWidth = this.content[0].scrollWidth;
+      if(this.content.width() >= scrollWidth - this.offset) {
+        this.reset();
+      } else if(scrollPosition <= this.offset) {
+        this.activateRight();
+      } else if(scrollPosition + this.container.width() >= scrollWidth - this.offset) {
+        this.activateLeft();
+      } else {
+        this.reset();
+      }
+    }
+  }
+
   // Here we need to wrap the whole content in the body
   // with the offcanvas wrapper to make the slide in navigation
   // working on Safari and on iOS devices
@@ -63,7 +118,7 @@
       root.off(vendorTransitionEnd.join(" "));
       $('#ftw-mobile-menu').attr('aria-hidden', 'false');
       $('#ftw-mobile-menu').trigger('mobilenav:nav:opened');
-      $('.topLevelTabs > li > a').first().focus();
+      arrowScrollController.selectCurrent();
     });
   }
 
@@ -203,7 +258,6 @@
         currentItem.visible = currentItem.path !== '';
       }
 
-      var tabs_scroll_left = $('.topLevelTabs').scrollLeft();
       $('#ftw-mobile-menu').trigger('mobilenav:beforerender');
       $('#ftw-mobile-menu').html(template({
         navRootUrl: $("#ftw-mobile-menu-buttons").data('navrooturl'),
@@ -215,7 +269,6 @@
         classes: classes.join(' '),
         settings: settings
       }));
-      $('.topLevelTabs').scrollLeft(tabs_scroll_left);
       $('#ftw-mobile-menu').trigger('mobilenav:rendered');
       hideSpinner();
     }
@@ -247,6 +300,7 @@
         open();
         closeMenu();
         toggleNavigation(link);
+        arrowScrollController.init(60);
       });
 
       $(document).on('click', '.topLevelTabs a', function(event) {
@@ -264,7 +318,8 @@
               event.preventDefault();
               render_path(path);
             }
-            $('.topLevelTabs > li.selected > a').first().focus();
+            arrowScrollController.init(60);
+            arrowScrollController.fixScroll();
           },
           showSpinner);
       });
@@ -301,9 +356,15 @@
 
     prepareHTML();
 
-    var mc = new Hammer.Manager(document.body);
+    var mc = new Hammer.Manager(document.body, { touchAction: 'auto' });
     mc.add( new Hammer.Swipe({ event: 'swipeleft', direction: Hammer.DIRECTION_LEFT, threshold: 50 }) );
-    mc.on("swipeleft", slideOut)
+    mc.on("swipeleft", function(event) {
+      if($(event.target).parents('.topLevelTabs').length) {
+        event.srcEvent.stopPropagation()
+        return false;
+      }
+      slideOut();
+    });
   });
 
   $(window).resize(function() {

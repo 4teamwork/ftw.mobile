@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
+  <javascript remove="True" id="++resource++ftw.mobile.js/handlebars.js" />
+  <javascript remove="True" id="++resource++ftw.mobile.js/navigation-button.js"/>
+  <javascript remove="True" id="++resource++ftw.mobile.js/simple-buttons.js"/>
+  <javascript remove="True" id="++resource++ftw.mobile.js/hammer.js" />
+
   <javascript enabled="True" id="++resource++ftw.mobile/js/handlebars.js" compression="none"
               insert-after="++resource++plone.app.jquery.js" />
   <javascript enabled="True" id="++resource++ftw.mobile/js/navigation-button.js"
