@@ -1,4 +1,4 @@
-(function(Handlebars, mobileTree, Hammer) {
+(function(Handlebars, mobileTree, Hammer, $) {
 
   "use strict";
 
@@ -48,7 +48,7 @@
     },
     selectCurrent: function() {
       var current = this.content.children('.selected');
-      this.scrollTo(current.offset().left);
+      this.scrollTo((current.offset() || { left: 0 }).left);
       current.children('a').first().focus();
     },
     check: function(scrollPosition) {
@@ -95,7 +95,7 @@
     mobileMenu.trigger('mobilenav:menu:closed');
   }
 
-  function slideOut(link) {
+  function slideOut() {
     root.removeClass("menu-open");
     root.on(vendorTransitionEnd.join(" "), function() {
       root.removeClass("menu-opened");
@@ -377,4 +377,4 @@
     slideOut: slideOut
   };
 
-})(window.Handlebars, window.mobileTree, window.Hammer);
+})(window.Handlebars, window.mobileTree, window.Hammer, window.jQuery);

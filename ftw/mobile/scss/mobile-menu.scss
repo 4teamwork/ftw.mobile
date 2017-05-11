@@ -83,6 +83,7 @@ html.menu-open {
 
   #ftw-mobile-menu {
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     height: 100vh;
     display: block;
