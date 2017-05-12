@@ -356,15 +356,12 @@
 
     prepareHTML();
 
-    var mc = new Hammer.Manager(document.body, { touchAction: 'auto' });
-    mc.add( new Hammer.Swipe({ event: 'swipeleft', direction: Hammer.DIRECTION_LEFT, threshold: 50 }) );
-    mc.on("swipeleft", function(event) {
-      if($(event.target).parents('.topLevelTabs').length) {
-        event.srcEvent.stopPropagation()
-        return false;
-      }
-      slideOut();
+    var mc = new Hammer(document.querySelector('#ftw-mobile-menu-overlay'), {
+      dragLockToAxis: true,
+      dragBlockHorizontal: true,
+      threshold: 50
     });
+    mc.on("swipeleft", slideOut);
   });
 
   $(window).resize(function() {
