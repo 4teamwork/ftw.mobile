@@ -5,6 +5,7 @@ Changelog
 1.6.7 (unreleased)
 ------------------
 
+- Fix scroll behavior of top level tabs in mobile navigation. [Kevin Bieri]
 - Fix: ftw.testbrowser compatibility. [mathias.leimgruber]
 - Set focus on active element on the tab navs [Kevin Bieri]
 - Make possible to close the navigation using Escape key [Kevin Bieri]

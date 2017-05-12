@@ -13,8 +13,8 @@
     <include file="theming.zcml" />
 
     <browser:resourceDirectory
-        name="ftw.mobile.js"
-        directory="js"
+        name="ftw.mobile"
+        directory="resources"
         />
 
     <genericsetup:registerProfile

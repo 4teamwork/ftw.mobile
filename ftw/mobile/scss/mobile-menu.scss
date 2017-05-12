@@ -1,3 +1,5 @@
+$arrow-animation-distance: 6px !default;
+
 #ftw-mobile-menu {
   @include translate(-100%);
   z-index: $zindex-overlay + 1;
@@ -47,7 +49,7 @@
   left: 0;
   z-index: $zindex-overlay;
   opacity: 0;
-  transition: opacity .2s linear;
+  transition: opacity .4s linear;
   pointer-events: none;
   will-change: opacity;
 }
@@ -81,6 +83,7 @@ html.menu-open {
 
   #ftw-mobile-menu {
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     height: 100vh;
     display: block;
@@ -93,22 +96,89 @@ html.menu-open {
 }
 
 .mobile-menu-navigation-mobile-button {
-  &:before {
-    pointer-events: none;
-    @include linear-gradient(
-      to right,
-      rgba(255,255,255, 0),
-      $color-content-background 80%
-    );
+  overflow: hidden;
 
+  &:before, &:after {
+    pointer-events: none;
     content: "";
+    display: block;
+    height: $size-mobile-button - 2px;
+    width: 50px;
     position: absolute;
-    right: 0;
     top: 0;
-    bottom: 0;
-    width: 80px;
-    z-index: 1;
-    height: $size-mobile-button;
+    z-index: $zindex-base;
+    background-size: $size-mobile-button / 2, 100%;
+    background-repeat: no-repeat, repeat;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    transition: opacity .2s ease-out;
+    opacity: 0;
+  }
+
+  &:before {
+    left: -$arrow-animation-distance;
+    animation-name: arrow-wobble-left;
+    background-image:
+      embed-resource("../resources/images/arrow-left.svg", $fill-css:('.icon', $color-content-background)),
+      linear-gradient(to left, rgba(0,0,0,0) 0%,rgba(72,85,99,.6) 80%, rgba(72,85,99,.8) 100%)
+    ;
+    background-position: center left 5px, top right;
+  }
+
+  &:after {
+    right: -$arrow-animation-distance;
+    animation-name: arrow-wobble-right;
+    background-image:
+      embed-resource("../resources/images/arrow-right.svg", $fill-css:('.icon', $color-content-background)),
+      linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(72,85,99,.6) 80%, rgba(72,85,99,.8) 100%)
+    ;
+    background-position: center right 5px, top right;
+  }
+}
+
+#ftw-mobile-menu {
+
+  &.scroll-right {
+    .mobile-menu-navigation-mobile-button {
+      &:before {
+        opacity: 0;
+      }
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.scroll-left {
+    .mobile-menu-navigation-mobile-button {
+      &:before {
+        opacity: 1;
+      }
+
+      &:after {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@include keyframes(arrow-wobble-right) {
+  from {
+    @include translate($x: 0);
+  }
+  to {
+    @include translate($x: -$arrow-animation-distance);
+  }
+}
+
+@include keyframes(arrow-wobble-left) {
+  from {
+    @include translate($x: 0);
+  }
+  to {
+    @include translate($x: $arrow-animation-distance);
   }
 }
 
