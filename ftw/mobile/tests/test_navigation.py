@@ -155,6 +155,7 @@ class TestMobileNavigation(FunctionalTestCase):
         Plone principal but it should not be possible to misuse the endpoint
         for getting those informations on _any_ content.
         """
+        browser.exception_bubbling = True
         self.grant('Manager')
         wftool = getToolByName(self.portal, 'portal_workflow')
         wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
