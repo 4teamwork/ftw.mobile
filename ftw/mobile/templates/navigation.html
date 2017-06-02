@@ -23,8 +23,11 @@
                          title="{{i18n "label_goto_parent"}} {{parentNode.title}}">
                           <span>{{i18n "label_goto_parent"}} {{parentNode.title}}</span>
                       </a>
-
-                      <a href="{{parentNode.url}}">{{parentNode.title}}</a>
+                      {{#if parentNode.title}}
+                        <a href="{{parentNode.url}}">{{parentNode.title}}</a>
+                      {{else}}
+                        <a href="{{parentNode.url}}">Startseite</a>
+                      {{/if}}
                   </li>
 
                   {{/if}}
