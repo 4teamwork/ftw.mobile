@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.6.7 (unreleased)
+1.7.0 (2017-06-02)
 ------------------
 
 - Fix scroll behavior of top level tabs in mobile navigation. [Kevin Bieri]
