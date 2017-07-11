@@ -30,7 +30,7 @@ $arrow-animation-distance: 6px !default;
 }
 
 #ftw-mobile-wrapper {
-  @include tablet {
+  @include screen-medium {
     display: none;
   }
 }
