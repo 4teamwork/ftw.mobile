@@ -1,6 +1,7 @@
 from ftw.builder.testing import BUILDER_LAYER
 from ftw.builder.testing import functional_session_factory
 from ftw.builder.testing import set_builder_session_factory
+from ftw.mobile import IS_PLONE_5_OR_GREATER
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import PLONE_FIXTURE
@@ -26,6 +27,9 @@ class FtwMobileLayer(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'ftw.mobile:default')
         applyProfile(portal, 'plone.app.multilingual:default')
+
+        if IS_PLONE_5_OR_GREATER:
+            applyProfile(portal, 'plone.app.contenttypes:default')
 
 
 FTW_MOBILE_FIXTURE = FtwMobileLayer()

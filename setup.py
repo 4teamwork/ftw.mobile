@@ -10,6 +10,7 @@ tests_require = [
     'ftw.testbrowser>=1.23.0',
     'ftw.testing',
     'transaction',
+    'plone.app.contenttypes',
     'plone.app.multilingual',
     'unittest2',
 ]
