@@ -1,12 +1,15 @@
 from Acquisition import aq_base
 from functools import partial
+from ftw.mobile import IS_PLONE_5_OR_GREATER
 from operator import itemgetter
 from pkg_resources import get_distribution
 from plone import api
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.browser.navigation import get_view_url
 from Products.Five.browser import BrowserView
 from zExceptions import Unauthorized
+from zope.component import getUtility
 import hashlib
 import json
 import logging
@@ -180,20 +183,27 @@ class MobileNavigation(BrowserView):
         return brains
 
     def get_default_query(self):
-        portal_types = api.portal.get_tool('portal_types')
-        portal_properties = api.portal.get_tool('portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        exclude_types = getattr(navtree_properties, 'metaTypesNotToList', None)
-        include_types = list(set(portal_types.keys()) - set(exclude_types))
+        if IS_PLONE_5_OR_GREATER:
+            registry = getUtility(IRegistry)
+            include_types = registry['plone.displayed_types']
+            sort_on = registry['plone.sort_tabs_on']
+            sort_order = 'desc' if registry['plone.sort_tabs_reversed'] else 'asc'
+        else:
+            portal_types = api.portal.get_tool('portal_types')
+            portal_properties = api.portal.get_tool('portal_properties')
+            navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        sort_on = getattr(navtree_properties,
-                          'sortAttribute',
-                          'getObjPositionInParent')
+            exclude_types = getattr(navtree_properties, 'metaTypesNotToList', None)
+            include_types = list(set(portal_types.keys()) - set(exclude_types))
 
-        sort_order = getattr(navtree_properties,
-                             'sortOrder',
-                             'asc')
+            sort_on = getattr(navtree_properties,
+                              'sortAttribute',
+                              'getObjPositionInParent')
+
+            sort_order = getattr(navtree_properties,
+                                 'sortOrder',
+                                 'asc')
 
         query = {'portal_type': include_types,
                  'sort_on': sort_on,
