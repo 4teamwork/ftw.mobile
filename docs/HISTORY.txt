@@ -5,7 +5,7 @@ Changelog
 1.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make compatible with ftw.theming 2.0.0. [Kevin Bieri]
 
 
 1.7.0 (2017-06-02)

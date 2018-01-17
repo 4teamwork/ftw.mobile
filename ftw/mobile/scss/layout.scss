@@ -1,6 +1,6 @@
 #portal-personaltools-wrapper {
   display: none;
-  @include tablet {
+  @include screen-medium {
     display: block;
   }
 }
