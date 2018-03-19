@@ -137,7 +137,7 @@
           if (typeof onRequest === 'function') {
             onRequest();
           }
-          $.get(portal_url + '/' + path + '/' + endpoint + '/children',
+          $.get(root_url + '/' + path + '/' + endpoint + '/children',
                 {'depth:int': requestDepth},
                 function(data) {
                   data.map(storeNode);

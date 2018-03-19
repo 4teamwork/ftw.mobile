@@ -5,6 +5,8 @@ Changelog
 1.7.1 (unreleased)
 ------------------
 
+- Fix getting children if the root is not the portal_root. [mathias.leimgruber]
+
 - Make compatible with ftw.theming 2.0.0. [Kevin Bieri]
 
 
