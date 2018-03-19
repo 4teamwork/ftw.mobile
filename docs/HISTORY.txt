@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.1 (unreleased)
+1.8.0 (2018-03-19)
 ------------------
 
 - Fix getting children if the root is not the portal_root. [mathias.leimgruber]
