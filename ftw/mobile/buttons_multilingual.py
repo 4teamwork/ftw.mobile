@@ -34,6 +34,6 @@ class MultilanguageButton(BaseButton, LanguageSelectorViewlet):
     def get_buttons(self):
         translation_languages = self.languages()
         return [
-            dict(url=language['url'], label=language['native'])
+            dict(url=language['url'], label=language.get('native', language['name']))
             for language in translation_languages
         ]
