@@ -2,10 +2,11 @@ Changelog
 =========
 
 
-1.8.1 (unreleased)
+1.9.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow opening top level tabs directly. [Kevin Bieri]
+- Allow showing leafnote siblings. [Kevin Bieri]
 
 
 1.8.0 (2018-03-19)
