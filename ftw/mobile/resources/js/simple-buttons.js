@@ -196,7 +196,7 @@
         }
       } else {
         mobileTree.query({path: current_path, depth: 1}, function(toplevel) {
-          if (!toplevel[0].has_children) {
+          if (settings.show_leaf_node_siblings && !toplevel[0].has_children) {
             current_path = mobileTree.getParentPath(current_path);
           }
           render_path(current_path);
@@ -304,6 +304,7 @@
       });
 
       $(document).on('click', '.topLevelTabs a', function(event) {
+        if (settings.open_top_level_tabs) { return; }
         var path = mobileTree.getPhysicalPath($(this).attr('href'));
         mobileTree.query(
           {path: path, depth: 2},
