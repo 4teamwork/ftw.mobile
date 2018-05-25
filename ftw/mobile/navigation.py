@@ -47,6 +47,8 @@ class MobileNavigation(BrowserView):
         response.setHeader('Content-Type', 'application/json')
         response.setHeader('X-Theme-Disabled', 'True')
 
+        filter_exclude_from_nav = self.request.get('ignore_exclude_from_nav') != ''
+
         if self.request.get('cachekey'):
             # Only cache when there is a cache_key in the request.
             # Representations may be cached by any cache.
@@ -61,7 +63,8 @@ class MobileNavigation(BrowserView):
                                '{}, max-age=31536000'.format(visibility))
 
         query = self.get_startup_query()
-        nodes = self.get_nodes_by_query(query)
+        nodes = self.get_nodes_by_query(
+            query, filter_exclude_from_nav=filter_exclude_from_nav)
         nodes = self.prepend_unauthorized_parents(nodes)
         map(partial(self.set_children_loaded_flag, query), nodes)
 
@@ -169,7 +172,7 @@ class MobileNavigation(BrowserView):
         warnsize = 5000
         if len(brains) > warnsize:
             LOG.warning('Query results in more than {} results ({})'
-                            .format(warnsize, len(brains)))
+                        .format(warnsize, len(brains)))
 
         if filter_exclude_from_nav:
             brains = [brain for brain in brains if not brain.exclude_from_nav]
