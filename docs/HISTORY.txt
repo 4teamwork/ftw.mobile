@@ -2,10 +2,10 @@ Changelog
 =========
 
 
-1.9.1 (unreleased)
+1.10.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow option for ignoring exluded content.
 
 
 1.9.0 (2018-05-24)

@@ -9,7 +9,7 @@
       var endpoint;
       var root_url;
 
-      function init(current_url, endpoint_viewname, ready_callback, startup_cachekey){
+      function init(current_url, endpoint_viewname, ready_callback, startup_cachekey, ignoreExcludeFromNav){
         root_url = $("#ftw-mobile-menu-buttons").data("navrooturl");
         var root_node = {
           url: root_url,
@@ -19,9 +19,21 @@
                    nodes_by_parent_path: {}};
         endpoint = endpoint_viewname;
         var startup_url = current_url + '/' + endpoint + '/startup';
-        if(startup_cachekey) {
-          startup_url += '?cachekey=' + startup_cachekey;
+
+        var params = [];
+
+        if (ignoreExcludeFromNav) {
+          params.push('ignore_exclude_from_nav');
         }
+        if (startup_cachekey) {
+          params.push('cachekey=' + startup_cachekey);
+        }
+
+        if (params.length > 0) {
+          startup_url += '?';
+        }
+
+        startup_url += params.join('&');
 
         $.get(startup_url,
               function(data) {

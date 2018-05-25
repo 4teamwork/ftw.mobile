@@ -329,7 +329,7 @@
         event.preventDefault();
         render_path(mobileTree.getPhysicalPath($(this).attr('href')));
       });
-    }, link.data('mobile_startup_cachekey'));
+    }, link.data('mobile_startup_cachekey'), settings.ignoreExcludeFromNav);
     $('#ftw-mobile-menu').trigger('mobilenav:initialized');
   }
 
