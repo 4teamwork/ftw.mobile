@@ -5,7 +5,7 @@ Changelog
 1.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use portal title on root_node. [mathias.leimgruber]
 
 
 1.10.0 (2018-05-25)
