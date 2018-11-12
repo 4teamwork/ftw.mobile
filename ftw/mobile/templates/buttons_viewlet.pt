@@ -1,6 +1,7 @@
 <div id="ftw-mobile-wrapper">
     <nav id="ftw-mobile-menu-buttons"
          tal:attributes="data-navrooturl string:${view/nav_root_url};
+                         data-portaltitle string: ${view/portal_state/portal_title};
                          data-currenturl string:${view/current_url};
                          data-i18n string:${view/translation_strings}">
         <ul>
