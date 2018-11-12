@@ -8,12 +8,15 @@
       var storage;
       var endpoint;
       var root_url;
+      var root_title;
 
       function init(current_url, endpoint_viewname, ready_callback, startup_cachekey, ignoreExcludeFromNav){
         root_url = $("#ftw-mobile-menu-buttons").data("navrooturl");
+        root_title = $("#ftw-mobile-menu-buttons").data("portaltitle");
         var root_node = {
           url: root_url,
-          path: ''
+          path: '',
+          title: root_title
         };
         storage = {node_by_path: {'': root_node},
                    nodes_by_parent_path: {}};

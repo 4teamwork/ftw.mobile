@@ -118,7 +118,10 @@
       root.off(vendorTransitionEnd.join(" "));
       $('#ftw-mobile-menu').attr('aria-hidden', 'false');
       $('#ftw-mobile-menu').trigger('mobilenav:nav:opened');
-      arrowScrollController.selectCurrent();
+
+      if ($('.topLevelTabs').length === 1) {
+        arrowScrollController.selectCurrent();
+      }
     });
   }
 
