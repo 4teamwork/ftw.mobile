@@ -1,10 +1,10 @@
+from ftw.mobile import IS_PLONE_5_OR_GREATER
 from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.tests import FunctionalTestCase
+from ftw.mobile.tests import utils
 from ftw.testbrowser import browsing
-from plone import api
 from zope.component import getMultiAdapter
 import json
-import transaction
 
 
 class TestUserButton(FunctionalTestCase):
@@ -27,13 +27,37 @@ class TestUserButton(FunctionalTestCase):
         self.assertEquals(1000, self.user_button.position())
 
     def test_user_button_data(self):
-        expect = [
-            {u'url': u'http://nohost/plone/dashboard',
-             u'label': u'Dashboard'},
-            {u'url': u'http://nohost/plone/@@personal-preferences',
-             u'label': u'Preferences'},
-            {u'url': u'http://nohost/plone/logout',
-             u'label': u'Log out'}, ]
+        if IS_PLONE_5_OR_GREATER:
+            # The order of the user actions has changed in Plone 5.
+            expect = [
+                {
+                    u'url': u'http://nohost/plone/@@personal-preferences',
+                    u'label': u'Preferences'
+                },
+                {
+                    u'url': u'http://nohost/plone/dashboard',
+                    u'label': u'Dashboard'
+                },
+                {
+                    u'url': u'http://nohost/plone/logout',
+                    u'label': u'Log out',
+                },
+            ]
+        else:
+            expect = [
+                {
+                    u'url': u'http://nohost/plone/dashboard',
+                    u'label': u'Dashboard'
+                },
+                {
+                    u'url': u'http://nohost/plone/@@personal-preferences',
+                    u'label': u'Preferences'
+                },
+                {
+                    u'url': u'http://nohost/plone/logout',
+                    u'label': u'Log out'
+                },
+            ]
         self.assertEquals(expect, (self.user_button.data()))
 
     @browsing
@@ -56,19 +80,40 @@ class TestUserButton(FunctionalTestCase):
 
     @browsing
     def test_user_button_labels_are_translated(self, browser):
-        lang_tool = api.portal.get_tool('portal_languages')
-        lang_tool.setDefaultLanguage('de')
-        transaction.commit()
+        utils.configure_languages('de')
 
         browser.login().open()
         link = browser.css('#user-mobile-button a').first
         data = link.attrib.get('data-mobile_data')
-        self.assertEquals(
-            [{u'url': u'http://nohost/plone/dashboard',
-              u'label': u'Pers\xf6nliche Seite'},
-             {u'url': u'http://nohost/plone/@@personal-preferences',
-              u'label': u'Meine Einstellungen'},
-             {u'url': u'http://nohost/plone/logout',
-              u'label': u'Abmelden'},
-            ],
-            json.loads(data))
+        if IS_PLONE_5_OR_GREATER:
+            # The order of the user actions has changed in Plone 5.
+            expect = [
+                {
+                    u'url': u'http://nohost/plone/@@personal-preferences',
+                    u'label': u'Meine Einstellungen'
+                },
+                {
+                    u'url': u'http://nohost/plone/dashboard',
+                    u'label': u'Pers\xf6nliche Seite'
+                },
+                {
+                    u'url': u'http://nohost/plone/logout',
+                    u'label': u'Abmelden'
+                }
+            ]
+        else:
+            expect = [
+                {
+                    u'url': u'http://nohost/plone/dashboard',
+                    u'label': u'Pers\xf6nliche Seite'
+                },
+                {
+                    u'url': u'http://nohost/plone/@@personal-preferences',
+                    u'label': u'Meine Einstellungen'
+                },
+                {
+                    u'url': u'http://nohost/plone/logout',
+                    u'label': u'Abmelden'
+                }
+            ]
+        self.assertEquals(expect, json.loads(data))
