@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.10.2 (unreleased)
+1.10.2 (2019-05-16)
 -------------------
 
 - Use a better selector for the script detach part (to catch only actual js). [mathias.leimgruber]
