@@ -37,7 +37,13 @@
 
     <include package="ftw.upgrade" file="meta.zcml" />
     <upgrade-step:directory
+        zcml:condition="not-have plone-5"
         profile="ftw.mobile:default"
+        directory="upgrades"
+        />
+    <upgrade-step:directory
+        zcml:condition="have plone-5"
+        profile="ftw.mobile:default_plone5"
         directory="upgrades"
         />
 
