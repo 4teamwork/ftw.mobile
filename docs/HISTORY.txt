@@ -2,6 +2,13 @@ Changelog
 =========
 
 
+1.7.1 (unreleased)
+-------------------
+
+- Fix JS error in arrowScrollController if there are no topLevelTabs. [mathias.leimgruber]
+- Use portal title on root_node. [mathias.leimgruber]
+
+
 1.7.0 (2017-06-02)
 ------------------
 
