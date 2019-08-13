@@ -13,19 +13,19 @@ class TestMobileNavigation(FunctionalTestCase):
     def test_startup(self, browser):
         self.maxDiff = None
         self.grant('Manager')
-        create(Builder('folder').titled('six').within(
-            create(Builder('folder').titled('five').within(
-                create(Builder('folder').titled('four').within(
-                    create(Builder('folder').titled('three').within(
-                        create(Builder('folder').titled('two').within(
-                            create(Builder('folder').titled('one'))))))))))))
+        create(Builder('folder').titled(u'six').within(
+            create(Builder('folder').titled(u'five').within(
+                create(Builder('folder').titled(u'four').within(
+                    create(Builder('folder').titled(u'three').within(
+                        create(Builder('folder').titled(u'two').within(
+                            create(Builder('folder').titled(u'one'))))))))))))
 
-        create(Builder('folder').titled('f').within(
-            create(Builder('folder').titled('e').within(
-                create(Builder('folder').titled('d').within(
-                    create(Builder('folder').titled('c').within(
-                        create(Builder('folder').titled('b').within(
-                            create(Builder('folder').titled('a'))))))))))))
+        create(Builder('folder').titled(u'f').within(
+            create(Builder('folder').titled(u'e').within(
+                create(Builder('folder').titled(u'd').within(
+                    create(Builder('folder').titled(u'c').within(
+                        create(Builder('folder').titled(u'b').within(
+                            create(Builder('folder').titled(u'a'))))))))))))
 
         browser.open(view='mobilenav/startup')
         expected_startup_paths = [
@@ -105,8 +105,8 @@ class TestMobileNavigation(FunctionalTestCase):
     def test_startup_item_data(self, browser):
         self.grant('Manager')
         create(Builder('folder')
-               .titled('The Folder')
-               .having(description='A very nice folder'))
+               .titled(u'The Folder')
+               .having(description=u'A very nice folder'))
 
         browser.open(view='mobilenav/startup')
         self.assertEquals(
@@ -129,8 +129,8 @@ class TestMobileNavigation(FunctionalTestCase):
         wftool = getToolByName(self.portal, 'portal_workflow')
         wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
 
-        one = create(Builder('folder').titled('Folder One'))
-        two = create(Builder('folder').titled('Folder Two').within(one))
+        one = create(Builder('folder').titled(u'Folder One'))
+        two = create(Builder('folder').titled(u'Folder Two').within(one))
         john = create(Builder('user').named('John', 'Doe')
                       .with_roles('Reader', on=two))
 
@@ -158,7 +158,7 @@ class TestMobileNavigation(FunctionalTestCase):
         self.grant('Manager')
         wftool = getToolByName(self.portal, 'portal_workflow')
         wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
-        folder = create(Builder('folder').titled('Folder'))
+        folder = create(Builder('folder').titled(u'Folder'))
         john = create(Builder('user').named('John', 'Doe'))
 
         browser.login(john)
@@ -168,11 +168,11 @@ class TestMobileNavigation(FunctionalTestCase):
     @browsing
     def test_children_endpoint_fetches_two_levels(self, browser):
         self.grant('Manager')
-        create(Builder('folder').titled('Five').within(
-            create(Builder('folder').titled('Four').within(
-                create(Builder('folder').titled('Three').within(
-                    create(Builder('folder').titled('Two').within(
-                        create(Builder('folder').titled('One'))))))))))
+        create(Builder('folder').titled(u'Five').within(
+            create(Builder('folder').titled(u'Four').within(
+                create(Builder('folder').titled(u'Three').within(
+                    create(Builder('folder').titled(u'Two').within(
+                        create(Builder('folder').titled(u'One'))))))))))
 
         browser.open(self.portal.one, view='mobilenav/children')
         self.assertItemsEqual(
@@ -196,8 +196,8 @@ class TestMobileNavigation(FunctionalTestCase):
     def test_children_item_data(self, browser):
         self.grant('Manager')
         create(Builder('folder')
-               .titled('The Folder')
-               .having(description='A very nice folder'))
+               .titled(u'The Folder')
+               .having(description=u'A very nice folder'))
 
         browser.open(view='mobilenav/children')
         self.assertEquals(
@@ -225,10 +225,10 @@ class TestMobileNavigation(FunctionalTestCase):
         wftool = getToolByName(self.portal, 'portal_workflow')
         wftool.setChainForPortalTypes(['Folder'], 'simple_publication_workflow')
 
-        container = create(Builder('folder').titled('Container'))
-        visible_child = create(Builder('folder').titled('visible child')
+        container = create(Builder('folder').titled(u'Container'))
+        visible_child = create(Builder('folder').titled(u'visible child')
                                .within(container))
-        create(Builder('folder').titled('invisible child').within(container))
+        create(Builder('folder').titled(u'invisible child').within(container))
         john = create(Builder('user').named('John', 'Doe')
                       .with_roles('Reader', on=visible_child))
 
@@ -240,10 +240,10 @@ class TestMobileNavigation(FunctionalTestCase):
     @browsing
     def test_children_loaded_flag_on_prepended_items(self, browser):
         self.grant('Manager')
-        create(Builder('folder').titled('1b').within(
-            create(Builder('folder').titled('1a')
+        create(Builder('folder').titled(u'1b').within(
+            create(Builder('folder').titled(u'1a')
                                     .having(excludeFromNav=True))))
-        create(Builder('folder').titled('2a'))
+        create(Builder('folder').titled(u'2a'))
 
         browser.open(self.portal.get('1a').get('1b'), view='mobilenav/startup')
 

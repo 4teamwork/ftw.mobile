@@ -18,9 +18,19 @@
         />
 
     <genericsetup:registerProfile
+        zcml:condition="not-have plone-5"
         name="default"
         title="ftw.mobile"
         directory="profiles/default"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <genericsetup:registerProfile
+        zcml:condition="have plone-5"
+        name="default"
+        title="ftw.mobile"
+        directory="profiles/default_plone5"
         description=""
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />

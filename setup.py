@@ -10,6 +10,7 @@ tests_require = [
     'ftw.testbrowser>=1.23.0',
     'ftw.testing',
     'transaction',
+    'plone.app.contenttypes',
     'plone.app.multilingual',
     'unittest2',
 ]
@@ -32,6 +33,7 @@ setup(name='ftw.mobile',
       classifiers=[
           'Framework :: Plone',
           'Framework :: Plone :: 4.3',
+          'Framework :: Plone :: 5.1',
           'License :: OSI Approved :: GNU General Public License (GPL)',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.7',

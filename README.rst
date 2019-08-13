@@ -124,6 +124,10 @@ Run ``bin/test`` to test your changes.
 
 Or start an instance by running ``bin/instance fg``.
 
+**Warning:**
+If you ever need to update ``hammer.js`` or ``handlebars.js``, please make sure to remove
+AMD support from these libraries.
+
 Links
 =====
 

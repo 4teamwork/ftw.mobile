@@ -1,12 +1,13 @@
 import copy
+from ftw.mobile import IS_PLONE_5_OR_GREATER
 from ftw.mobile.interfaces import IMobileButton
 from ftw.mobile.tests import FunctionalTestCase
+from ftw.mobile.tests import utils
 from ftw.testbrowser import browsing
-from plone.app.multilingual.browser.setup import SetupMultilingualSite
-from Products.CMFCore.utils import getToolByName
+from plone import api
 from zope.component import getMultiAdapter
+from zope.globalrequest import setRequest
 import json
-import transaction
 
 
 class TestMultilingualButton(FunctionalTestCase):
@@ -17,27 +18,21 @@ class TestMultilingualButton(FunctionalTestCase):
         super(TestMultilingualButton, self).setUp()
         self.grant('Manager')
 
-        self.language_tool = getToolByName(self.portal, 'portal_languages')
-        for lang in self.supported_languages:
-            self.language_tool.addSupportedLanguage(lang)
+        utils.configure_languages('de', self.supported_languages)
+        utils.setup_multilingual_site()
 
-        pam_setup_tool = SetupMultilingualSite()
-        pam_setup_tool.setupSite(self.portal)
-
-        self._set_lang('de')
         self.button = getMultiAdapter(
             (self.portal, self.request),
             IMobileButton,
             name='multilanguage-mobile-button'
         )
 
-    def _set_lang(self, lang='de'):
-        self.language_tool.manage_setLanguageSettings(
-            lang, self.supported_languages,
-            setUseCombinedLanguageCodes=False)
-        transaction.commit()
-
     def test_label(self):
+        if IS_PLONE_5_OR_GREATER:
+            # Force `api.portal.get_current_language()` to return "de", not "en.
+            self.request['LANGUAGE'] = 'de'
+            setRequest(self.request)
+
         self.assertEquals(u'de', self.button.label())
 
     def test_data_template(self):
@@ -68,6 +63,11 @@ class TestMultilingualButton(FunctionalTestCase):
 
     @browsing
     def test_rendering(self, browser):
+        if IS_PLONE_5_OR_GREATER:
+            # Force `api.portal.get_current_language()` to return "de", not "en.
+            self.request['LANGUAGE'] = 'de'
+            setRequest(self.request)
+
         html = self.button.render_button()
         browser.open_html(html)
 
@@ -94,10 +94,11 @@ class TestMultilingualButton(FunctionalTestCase):
         # Remove languages, keep only "de".
         langs = copy.deepcopy(self.supported_languages)
         langs.remove('de')
-        self.language_tool.removeSupportedLanguages(langs)
+        language_tool = api.portal.get_tool('portal_languages')
+        language_tool.removeSupportedLanguages(langs)
         self.assertEqual(
             ['de'],
-            self.language_tool.getSupportedLanguages()
+            language_tool.getSupportedLanguages()
         )
 
         # Make sure the button is no longer available.

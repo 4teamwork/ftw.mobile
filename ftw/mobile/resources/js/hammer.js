@@ -2630,11 +2630,7 @@ assign(Hammer, {
 var freeGlobal = (typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : {})); // jshint ignore:line
 freeGlobal.Hammer = Hammer;
 
-if (typeof define === 'function' && define.amd) {
-    define(function() {
-        return Hammer;
-    });
-} else if (typeof module != 'undefined' && module.exports) {
+if (typeof module != 'undefined' && module.exports) {
     module.exports = Hammer;
 } else {
     window[exportName] = Hammer;
