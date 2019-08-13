@@ -27,7 +27,6 @@
   <records prefix="plone.bundles/ftw-mobile-resources"
            interface="Products.CMFPlone.interfaces.IBundleRegistry">
     <value key="resources">
-      <element>ftw.mobile-handlebars-js</element>
       <element>ftw.mobile-navigation-button-js</element>
       <element>ftw.mobile-handlebars-js</element>
       <element>ftw.mobile-hammer-js</element>
