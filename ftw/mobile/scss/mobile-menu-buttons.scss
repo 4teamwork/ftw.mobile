@@ -119,7 +119,7 @@ $color-mobile-current: $color-gray-dark !default;
 .tabPane ul {
   @include list-group();
   float: left;
-  width: 100%;
+  width: calc(100% - #{$padding-horizontal});
 
   > li {
     @include clearfix();
@@ -132,14 +132,14 @@ $color-mobile-current: $color-gray-dark !default;
     > a {
       display: block;
       float: left;
-      width: calc(100% - #{$size-mobile-button});
       font-size: $font-size-medium;
       padding-right: 0;
+      width: calc(100% - #{$size-mobile-button} - #{$padding-horizontal});
       > span {
         @include hidden-structure();
       }
       &.mobileActionNav {
-        width: $size-mobile-button;
+        width: calc(#{$size-mobile-button} - #{$padding-horizontal});
       }
     }
 
@@ -150,8 +150,8 @@ $color-mobile-current: $color-gray-dark !default;
         }
 
         > a {
-          padding-left: $padding-horizontal * 2;
           background-color: $color-gray-light;
+          padding-left: $padding-horizontal;
           &.mobileActionNav {
             padding-left: $padding-horizontal;
           }
@@ -165,7 +165,7 @@ $color-mobile-current: $color-gray-dark !default;
     background-color: $color-mobile-current;
     @include auto-link-color($color-mobile-current);
     font-weight: bold;
-    width: 100%;
+    width: calc(100% - #{$padding-horizontal});
   }
 }
 

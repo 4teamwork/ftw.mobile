@@ -5,7 +5,7 @@ Changelog
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Place mobile buttons next to text in default layout. [busykoala]
 
 
 2.0.0 (2019-08-13)
