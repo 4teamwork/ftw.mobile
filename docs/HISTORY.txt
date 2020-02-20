@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 - Place mobile buttons next to text in default layout. [busykoala]
+- Allow non-ascii characters in navigation buttons [Nachtalb]
 
 
 2.0.0 (2019-08-13)
