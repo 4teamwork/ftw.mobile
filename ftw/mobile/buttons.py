@@ -8,7 +8,7 @@ from zope.interface import Interface
 import json
 
 
-LINK_TEMPLATE = '''
+LINK_TEMPLATE = u'''
 <a href="{url}"
    data-mobile_endpoint="{endpoint}"
    data-mobile_startup_cachekey="{startup_cachekey}"
