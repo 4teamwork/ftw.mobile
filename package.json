@@ -8,5 +8,10 @@
   "devDependencies": {
     "chokidar-cli": "^2.1.0",
     "requirejs": "^2.3.6"
+  },
+  "scripts": {
+    "build": "r.js -o build.js",
+    "build-js": "r.js -o build.js",
+    "watch": "chokidar \"./ftw/mobile/resources/js/*.js\" -i \"**/*-compiled.js\" -c \"yarn build\""
   }
 }
