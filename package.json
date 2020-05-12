@@ -1,0 +1,12 @@
+{
+  "name": "ftw.mobile",
+  "version": "1.0.0",
+  "repository": "https://github.com/4teamwork/ftw.mobile.git",
+  "author": "4teamwork AG <info@4teamwork.ch>",
+  "license": "GPL2",
+  "private": true,
+  "devDependencies": {
+    "chokidar-cli": "^2.1.0",
+    "requirejs": "^2.3.6"
+  }
+}
