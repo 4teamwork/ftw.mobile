@@ -1,6 +1,12 @@
-
-(function() {
-
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module. (Plone 5 with requirejs)
+    define(['jquery'], factory);
+  } else {
+    // Browser globals (Plone 4 without requirejs)
+    root.mobileTree = factory(root.jQuery);
+  }
+}(typeof self !== 'undefined' ? self : this, function ($) {
   "use strict";
 
     var mobileTree = (function () {
@@ -261,6 +267,6 @@
 
     })();
 
-    window.mobileTree = mobileTree;
+    return mobileTree;
 
-})();
+}));
