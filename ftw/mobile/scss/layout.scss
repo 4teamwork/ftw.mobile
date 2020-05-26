@@ -5,6 +5,11 @@
   }
 }
 
+// Plone 5 toolbar
+body.plone-toolbar-left-default #edit-zone {
+  margin-left: -60px;
+}
+
 .navigation, #portal-breadcrumbs {
   @include screen-large() {
     display: block;
