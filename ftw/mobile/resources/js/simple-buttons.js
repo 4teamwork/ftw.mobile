@@ -1,5 +1,12 @@
-(function(Handlebars, mobileTree, Hammer, $) {
-
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module. (Plone 5 with requirejs)
+    define(['jquery', 'handlebars', 'navigation-button', 'hammer'], factory);
+  } else {
+    // Browser globals (Plone 4 without requirejs)
+    root.mobileMenu = factory(root.jQuery, root.Handlebars, root.mobileTree, root.Hammer);
+  }
+}(typeof self !== 'undefined' ? self : this, function ($, Handlebars, mobileTree, Hammer) {
   "use strict";
 
   var offcanvasWrapper = Handlebars.compile('<div id="offcanvas-wrapper"><div id="offcanvas-content"></div></div>');
@@ -373,9 +380,9 @@
     $('#ftw-mobile-menu-buttons a[data-mobile_template="ftw-mobile-navigation-template"]:visible').each(initialize_navigation_button);
   });
 
-  window.mobileMenu = {
+  return {
     slideIn: slideIn,
     slideOut: slideOut
   };
 
-})(window.Handlebars, window.mobileTree, window.Hammer, window.jQuery);
+}));

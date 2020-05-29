@@ -5,8 +5,8 @@ Changelog
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- AMD-ify JavaScript for Plone 5 (using yarn). [djowett-ftw]
+- Fix Plone 5's toolbar alignment. [djowett-ftw]
 
 2.0.1 (2020-02-20)
 ------------------

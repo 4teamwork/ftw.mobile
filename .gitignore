@@ -8,7 +8,9 @@ buildout.cfg
 coverage/
 develop-eggs/
 eggs/
+node_modules/
 parts/
 src/
 var/
 /README.html
+yarn.lock
