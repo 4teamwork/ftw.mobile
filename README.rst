@@ -8,10 +8,10 @@
 Introduction
 ============
 
-With ``ftw.mobile`` you can implement mobile buttons, which shows a list of options on click.
-The package needs ftw.theming, which provides the basic styles.
+With ``ftw.mobile`` you can implement mobile buttons, which show a list of options when clicked.
+The package depends on ftw.theming, which provides the basic styles.
 
-Plus it provides a mobile navigation, which is also displayed as a mobile button, but nbehaves completely different.
+It also provides a mobile navigation, which is also displayed as a mobile button, but behaves differently.
 
 
 Installation
@@ -32,8 +32,8 @@ Dependencies
 
 **Warning:**
 This package installs `ftw.gopip <https://github.com/4teamwork/ftw.gopip>`_,
-replacing the ``getObjPositionInParent`` catalog index with a ``FieldIndex``.
-The reason is that ``ftw.mobile`` needs to do large catalog queries sorted by
+which replaces the ``getObjPositionInParent`` catalog index with a ``FieldIndex``.
+This is because ``ftw.mobile`` needs to do large catalog queries sorted by
 ``getObjPositionInParent``, which is too slow in standard Plone.
 See the ``ftw.gopip`` readme for further details.
 
@@ -41,16 +41,16 @@ See the ``ftw.gopip`` readme for further details.
 Usage
 =====
 
-Two default buttons are registered by default.
+Two buttons are registered by default.
 
 - User Menu
 - Navigation
 
-Basically the buttons are rendered in a viewlet, which is visible at an certain viewport size.
+The buttons are rendered in a viewlet, which is visible at a certain viewport size.
 
 
-Register new button
--------------------
+Registering a new button
+------------------------
 
 Minimal example:
 
@@ -82,7 +82,7 @@ Minimal example:
 
 You need to define at least the ``label``, the ``position`` and the ``data`` for a working mobile button.
 
-Keep in mind, that the data method needs to return valid json data structure:
+The data method needs to return a valid json data structure as follows:
 
 ::
 
@@ -98,15 +98,15 @@ Keep in mind, that the data method needs to return valid json data structure:
     ]
 
 
-The user button has the postion 1000 and is rendered most right position and the navigation has the position 100, which is on the most left side.
+The user button has the position 1000 which is rendered in the rightmost position and the navigation has the position 100, which is rendered in the leftmost position.
 
-The navigation button is somehow special across his complexity. The navigation button is not considered a `simple` button ;-)
+The navigation button introduces a lot of complexity. It is not considered a `simple` button ;-)
 
 
 Details Navigation Button
 -------------------------
 
-The mobilenavigation adds two additional wrappers arround all children of the body on pageload.
+The JS for the navigation button wraps all children of the body tag with adds two additional divs on pageload.
 
 
 Development
