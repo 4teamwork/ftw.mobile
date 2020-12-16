@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.7.2 (unreleased)
+1.7.2 (2020-12-16)
 ------------------
 
 - Add willopen and willclose nav events. [mathias.leimgruber]
