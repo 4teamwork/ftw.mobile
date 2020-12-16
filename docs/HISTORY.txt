@@ -5,7 +5,7 @@ Changelog
 1.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add willopen and willclose nav events. [mathias.leimgruber]
 
 
 1.7.1 (2019-06-04)
