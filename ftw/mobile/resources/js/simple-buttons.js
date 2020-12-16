@@ -85,6 +85,7 @@
     mobileMenu.addClass("open");
     mobileMenu.attr('aria-hidden', 'false');
     mobileMenu.trigger('mobilenav:menu:opened');
+    
   }
 
   function closeMenu() {
@@ -97,6 +98,7 @@
 
   function slideOut() {
     root.removeClass("menu-open");
+    $('#ftw-mobile-menu').trigger('mobilenav:nav:willclose');
     root.on(vendorTransitionEnd.join(" "), function() {
       root.removeClass("menu-opened");
       root.addClass("menu-closed");
@@ -112,6 +114,7 @@
 
   function slideIn() {
     root.addClass("menu-open");
+    $('#ftw-mobile-menu').trigger('mobilenav:nav:willopen');
     root.on(vendorTransitionEnd.join(" "), function() {
       root.addClass("menu-opened");
       root.removeClass("menu-closed");
