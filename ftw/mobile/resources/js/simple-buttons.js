@@ -356,6 +356,12 @@
     }
   })
   .ready(function() {
+
+    if ($('#ftw-mobile-wrapper').length === 0) {
+      // Do not anything, since ftw.mobile html structure is not available
+      return;
+    }
+
     Handlebars.registerPartial("list", $("#ftw-mobile-navigation-list-template").html());
 
     var translations = $("#ftw-mobile-menu-buttons").data('i18n');
