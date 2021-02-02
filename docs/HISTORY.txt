@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.10.3 (unreleased)
+1.10.3 (2021-02-02)
 -------------------
 
 - Fix JS error by not init nav menu if html structure is missing. [mathias.leimgruber]
