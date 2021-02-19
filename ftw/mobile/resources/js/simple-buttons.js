@@ -351,7 +351,7 @@
   })
   .on("click", closeMenu)
   .on("keyup", function(event) {
-    if(event.which === $.ui.keyCode.ESCAPE) {
+    if(event.which === 27) {  // Escape Key
       slideOut();
     }
   })

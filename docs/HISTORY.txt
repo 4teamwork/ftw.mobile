@@ -5,7 +5,7 @@ Changelog
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix closing nav with ESC with no jQuery UI [Nachtalb]
 
 
 2.2.0 (2021-01-27)
