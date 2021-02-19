@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 - Fix closing nav with ESC with no jQuery UI [Nachtalb]
+- Emit "mobilenav:body:wrapped" after the body has been wrapped [Nachtalb]
 
 
 2.2.0 (2021-01-27)
