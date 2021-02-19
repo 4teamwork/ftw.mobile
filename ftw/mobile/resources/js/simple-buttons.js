@@ -79,6 +79,7 @@
   function prepareHTML() {
     var scripts = $("body script[type='text/javascript'], body script:not([type])").detach();
     $("body").wrapInner(offcanvasWrapper());
+    $('body').trigger('mobilenav:body:wrapped');
     scripts.each(function(script) {
       $(script).parent().append(script);
     });
@@ -351,7 +352,7 @@
   })
   .on("click", closeMenu)
   .on("keyup", function(event) {
-    if(event.which === $.ui.keyCode.ESCAPE) {
+    if(event.which === 27) {  // Escape Key
       slideOut();
     }
   })
